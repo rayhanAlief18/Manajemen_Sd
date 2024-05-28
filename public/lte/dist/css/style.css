@@ -1,0 +1,27 @@
+
+:root {
+  --bs-primary: #460A00; /* Ganti dengan warna yang Anda inginkan */
+}
+
+.nilai .small-box {
+  background-color: #EFBA7A;
+  border-radius: 20px;
+
+  .inner {
+    color: #460A00;
+    text-decoration: none;
+
+    .nama-guru {
+      font-weight:500;
+      margin-bottom: 0px;
+    }
+
+    h4 {
+      font-weight: 600;
+    }
+  }
+}
+
+.nilai .small-box:hover{
+  background-color: #e0b074;
+}
