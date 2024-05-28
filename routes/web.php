@@ -53,5 +53,8 @@ Route::get('/riwayatBayarById/{id}/', [PembayaranSppController::class, 'riwayatB
 Route::get('/DaftarKelas/{id}/', [NilaiSiswaController::class, 'DaftarKelas'])->name('DaftarKelas');
 
 Route::post('/update-semester', [SiswaController::class, 'updateSemester'])->name('siswa.update-semester');
-
+Route::resource('ruangan', RuanganController::class);
+Route::get('/ruangan/lantai/{lantai}', [RuanganController::class, 'showLantai'])->name('showLantai');
+Route::resource('barang', BarangController::class);
+Route::resource('prestasi', PrestasiController::class);
 
