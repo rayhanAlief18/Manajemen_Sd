@@ -45,32 +45,31 @@
                 
     <!-- /.card-header -->
     <!-- form start -->
-    <form action="{{ route('kelas.store') }}" method="POST" class="form-horizontal">
+    <form action="{{ route('kelas.update',$kelas->id) }}" method="POST" class="form-horizontal">
+        @method('PUT')
         @csrf
       <div class="card-body">
           <div class="row ">
             <div class="col-md-6">
               <label for="exampleSelectBorder">Angka Kelas</label>
               <select name="angka_kelas" class="custom-select form-control" id="exampleSelectBorder">
-                      <option   selected> Silahkan pilih kelas... </option>            
-                      <option  value="1"> 1 </option>
-                      <option  value="2"> 2 </option>
-                      <option  value="3"> 3 </option>
-                      <option  value="4"> 4 </option>
-                      <option  value="5"> 5 </option>
-                      <option  value="6"> 6 </option>
-                      <option  value="7"> Lulus </option>
-                      <option  value="8"> Tanpa Kelas </option>
-
+                      <option  value="{{$kelas->angka_kelas}}" selected>{{$kelas->angka_kelas}}</option>
+                      <option  value="1" > 1 </option>
+                      <option  value="2" > 2 </option>
+                      <option  value="3" > 3 </option>
+                      <option  value="4" > 4 </option>
+                      <option  value="5" > 5 </option>
+                      <option  value="6" > 6 </option>
               </select>
             </div>
             <div class="form-group col-md-6">
               <label for="exampleSelectBorder">Wali Kelas</label>
               <select name="wali_kelas" class="custom-select form-control" id="exampleSelectBorder">
-                <option   selected> Silahkan pilih wali kelas... </option>      
-                  
+                <option  value="{{$kelas->nama_guru}}" >{{$kelas->nama_guru}}</option>
                 @foreach ($guru as $guru)
-                      <option name="wali_kelas" value="{{$guru->id}}">{{$guru->nama_guru}}</option>
+                    @if($guru->kelas_id != $kelas->id)
+                        <option name="wali_kelas" value="{{$guru->id}}">{{$guru->nama_guru}}</option>
+                    @endif
                   @endforeach
               </select>
             </div>
@@ -79,7 +78,7 @@
       <!-- /.card-body -->
       <div class="card-footer">
         <button type="submit" class="btn btn-info">Save</button>
-        <button type="submit" class="btn btn-danger float-right">Cancel</button>
+        <button type="reset" class="btn btn-danger float-right">Cancel</button>
       </div>
       <!-- /.card-footer -->
     </form>
