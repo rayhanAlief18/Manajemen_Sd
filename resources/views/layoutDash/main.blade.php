@@ -174,16 +174,15 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="{{url('/')}}" class="nav-link">
+            <a href="{{url('/prestasi')}}" class="nav-link">
               <i class="nav-icon fas fa-address-book"></i>
               <p>
                 Prestasi Siswa
-                {{-- <span class="right badge badge-danger">New</span> --}}
               </p>
             </a>
           </li>
           <li class="nav-item">
-            <a href="pages/widgets.html" class="nav-link">
+            <a href="{{url('/jadwal')}}" class="nav-link">
               <i class="nav-icon fas fa-list"></i>
               <p>
                 Pengelolaan Jadwal
@@ -191,7 +190,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="{{url('kelas')}}" class="nav-link">
+            <a href="{{url('/kelas')}}" class="nav-link">
               <i class="nav-icon fas fa-layer-group"></i>
               <p>
                 Kelas
@@ -419,10 +418,19 @@
 
           <li class="nav-header">Inventaris</li>
           <li class="nav-item">
-            <a href="{{url('/inventaris')}}" class="nav-link">
+            <a href="{{url('/ruangan')}}" class="nav-link">
               <i class="nav-icon fas fa-dolly"></i>
               <p>
-                Data Inventaris
+                Data Ruangan
+                {{-- <span class="badge badge-info right">2</span> --}}
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{{url('/barang')}}" class="nav-link">
+              <i class="nav-icon fas fa-dolly"></i>
+              <p>
+                Data Barang
                 {{-- <span class="badge badge-info right">2</span> --}}
               </p>
             </a>
