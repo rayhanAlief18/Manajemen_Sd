@@ -3,6 +3,9 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\GuruController;
+use App\Http\Controllers\JadwalController;
+use App\Http\Controllers\MataPelajaranController;
+
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\PembayaranSppController;
 use App\Http\Controllers\AlumniController;
@@ -43,6 +46,7 @@ Route::resource('/alumni', AlumniController::class);
 Route::resource('/inventaris', InventarisController::class);
 //operasional
 Route::resource('kelas', KelasController::class);
+Route::resource('jadwal', JadwalController::class);
 
 Route::get('/riwayatbayar', [PembayaranSppController::class, 'riwayatBayar'])->name('RiwayatBayar');
 // Route::get('/DaftarKelas', [NilaiSiswaController::class, 'DaftarKelas'])->name('DaftarKelas');
@@ -53,5 +57,7 @@ Route::get('/riwayatBayarById/{id}/', [PembayaranSppController::class, 'riwayatB
 Route::get('/DaftarKelas/{id}/', [NilaiSiswaController::class, 'DaftarKelas'])->name('DaftarKelas');
 
 Route::post('/update-semester', [SiswaController::class, 'updateSemester'])->name('siswa.update-semester');
+Route::resource('matapelajaran', MataPelajaranController::class);
+
 
 

@@ -95,7 +95,7 @@
               <label for="exampleSelectBorder">Agama</label>
               <select name="agama" class="custom-select form-control" id="exampleSelectBorder">
                 <option readonly selected>Masukkan Data Agama...</option>
-                <option  value="{{$DataGuru->agama}}" selected>{{$DataGuru->agama}}</option>
+                <option value="{{$DataGuru->agama}}" selected>{{$DataGuru->agama}}</option>
                 <option value="islam" >Islam</option>
                 <option value="kristen" >Kristen</option>
                 <option value="hindu" >hindu</option>
@@ -170,25 +170,36 @@
                   <div class="form-group col-md-6">
                     <label for="exampleSelectBorder">Jabatan</label>
                     <select name="jabatan" class="custom-select form-control" id="exampleSelectBorder">
-                      <option readonly selected>Masukkan Jabatan / peran...</option>
-                        <option value="{{$DataGuru->jabatan}}" selected>{{$DataGuru->jabatan}}</option>
-                        <option value="kepala sekolah" >Kepala Sekolah</option>
-                        <option value="guru wali kelas" >Guru wali kelas</option>
-                        {{-- <option value="guru wali kelas" >Guru Tidak Tetap</option> --}}
-                        <option value="admin tata usaha" >Admin Tata Usaha</option>
+                        @if($DataGuru->jabatan == 'kepala sekolah')
+                          <option value="{{$DataGuru->jabatan}}" selected>{{$DataGuru->jabatan}}</option>
+                          <option value="guru wali kelas" >Guru wali kelas</option>
+                          {{-- <option value="guru wali kelas" >Guru Tidak Tetap</option> --}}
+                          <option value="admin tata usaha" >Admin Tata Usaha</option>
+                        @endif
+                        @if($DataGuru->jabatan == 'guru wali kelas')
+                          <option value="{{$DataGuru->jabatan}}" selected>{{$DataGuru->jabatan}}</option>
+                          <option value="kepala sekolah" >Kepala Sekolah</option>
+                          {{-- <option value="guru wali kelas" >Guru Tidak Tetap</option> --}}
+                          <option value="admin tata usaha" >Admin Tata Usaha</option>
+                        @endif
+                        @if($DataGuru->jabatan == 'admin tata usaha')
+                          <option value="{{$DataGuru->jabatan}}" selected>{{$DataGuru->jabatan}}</option>
+                          <option value="kepala sekolah" >Kepala Sekolah</option>
+                          <option value="guru wali kelas" >Guru wali kelas</option>
+                          {{-- <option value="guru wali kelas" >Guru Tidak Tetap</option> --}}
+                        @endif
                     </select>
                   </div>
                   <div class="form-group col-md-6">
                     <label for="exampleSelectBorder">Kelas</label>
                     <select name="kelas_id" class="custom-select form-control" id="exampleSelectBorder">
-                      <option readonly selected>Masukkan kelas...</option>
                       <option value="{{$DataGuru->kelas_id}}" selected>{{$DataGuru->angka_kelas}}</option>
                         @foreach ($kelas as $class)
-                            @if($class->angka_kelas < 7)
+                            @if($class->angka_kelas < 7 && $class->angka_kelas != $DataGuru->angka_kelas) 
                               <option value="{{$class->id}}" >{{$class->angka_kelas}}</option>
                             @endif
                         @endforeach
-                        <option value="{{$class->id}}" >Lulus</option>
+                        <option value="{{$class->id}}" >Tidak Ada Kelas</option>
                     </select>
                   </div>
                   
@@ -198,11 +209,28 @@
                   <div class="form-group col-md-6">
                     <label for="exampleSelectBorder">Role</label>
                     <select name="role" class="custom-select form-control" id="exampleSelectBorder">
-                      <option readonly selected>Masukkan Peran Pengguna...</option>
-                        <option value="{{$DataGuru->role}}" selected>{{$DataGuru->role}}</option>
+                      @if($DataGuru->role == 'kepala sekolah')
+                          <option value="{{$DataGuru->role}}" selected>{{$DataGuru->role}}</option>
+                          <option value="guru wali kelas" >Guru wali kelas</option>
+                          {{-- <option value="guru wali kelas" >Guru Tidak Tetap</option> --}}
+                          <option value="admin tata usaha" >Admin Tata Usaha</option>
+                        @endif
+                        @if($DataGuru->role == 'guru wali kelas')
+                          <option value="{{$DataGuru->role}}" selected>{{$DataGuru->role}}</option>
+                          <option value="kepala sekolah" >Kepala Sekolah</option>
+                          {{-- <option value="guru wali kelas" >Guru Tidak Tetap</option> --}}
+                          <option value="admin tata usaha" >Admin Tata Usaha</option>
+                        @endif
+                        @if($DataGuru->role == 'admin tata usaha')
+                          <option value="{{$DataGuru->role}}" selected>{{$DataGuru->role}}</option>
+                          <option value="kepala sekolah" >Kepala Sekolah</option>
+                          <option value="guru wali kelas" >Guru wali kelas</option>
+                          {{-- <option value="guru wali kelas" >Guru Tidak Tetap</option> --}}
+                        @endif
+                        {{-- <option value="{{$DataGuru->role}}" selected>{{$DataGuru->role}}</option>
                         <option value="kepala sekolah" >Kepala Sekolah</option>
                         <option value="guru wali kelas" >Guru wali kelas</option>
-                        <option value="admin tata usaha" >Admin Tata Usaha</option>
+                        <option value="admin tata usaha" >Admin Tata Usaha</option> --}}
                     </select>
                   </div>
 

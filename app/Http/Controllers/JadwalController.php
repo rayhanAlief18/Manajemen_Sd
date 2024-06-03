@@ -22,19 +22,21 @@ class JadwalController extends Controller
     public function index(string $id = null)
     {
         //
-        $title = "Jadwal Mata Pelajaran Setiap Kelas";
-        // // $jadwal = Jadwal::all();
-        // $DataGuru = Guru::all();
-        // $mapel = MataPelajaran::all();
-        $kelas = Kelas::all();
-        // $jadwal = DB::table('jadwals')->join('gurus','gurus.id','=','jadwals.id_guru')->join('kelas','kelas.id','=','jadwals.id_kelas')->join('mata_pelajarans','mata_pelajarans.id','=','jadwals.id_mapel')
-        //         ->select('jadwals.*','gurus.nama_guru','kelas.angka_kelas', 'kelas.abjad_kelas', 'mata_pelajarans.nama_mata_pelajaran')
-        //         ->get();
+        $title = "Daftar Kelas";
+        // $jadwal = Jadwal::all();
+        $kelas = DB::table('kelas')
+        ->join('gurus', 'gurus.kelas_id', '=', 'kelas.id')
+        ->select('kelas.*', 'gurus.nama_guru')
+        ->get();
+        
+        
         return view('dashboard.Jadwal.index',[
             'title'=>$title,
+            'kelas'=>$kelas
+
+            // 'kelas'=>$kelas,
             // 'DataGuru'=>$DataGuru,
             // 'mapel'=>$mapel,
-            'kelas'=>$kelas,
             // 'jadwal'=>$jadwal,
             // 'DataGuru'=>$DataGuru,
         ]);
@@ -46,7 +48,9 @@ class JadwalController extends Controller
     public function create()
     {
         $title = "Input Data Jadwal Pelajaran";
-        $DataGuru = Guru::all();
+        // $DataGuru = Guru::all();
+        $DataGuru = DB::table('gurus')->join('kelas', 'gurus.kelas_id','=','kelas.id')->select('gurus.*','kelas.angka_kelas')->get();
+
         $mapel = MataPelajaran::all();
         $kelas = Kelas::all();
         return view('dashboard.Jadwal.TambahDataJadwal',[
@@ -132,9 +136,8 @@ class JadwalController extends Controller
             $mapel = MataPelajaran::all();
             $kelas = Kelas::all();
             $jadwal = DB::table('jadwals')->join('gurus','gurus.id','=','jadwals.id_guru')->join('kelas','kelas.id','=','jadwals.id_kelas')->join('mata_pelajarans','mata_pelajarans.id','=','jadwals.id_mapel')
-                ->select('jadwals.*','jadwals.id as id_jadwal','gurus.nama_guru','kelas.angka_kelas','kelas.id', 'mata_pelajarans.nama_mata_pelajaran')->where('kelas.id',$id)
+                ->select('jadwals.*','jadwals.id as id_jadwal','gurus.nama_guru','kelas.angka_kelas','kelas.id as id_kelas', 'mata_pelajarans.nama_pelajaran')->where('kelas.id',$id)
                 ->get();
-
 
         return view('dashboard.Jadwal.DataJadwal',[
             'title'=>$title,
@@ -157,7 +160,7 @@ class JadwalController extends Controller
         $mapel = MataPelajaran::all();
         $kelas = Kelas::all();
         $jadwal = DB::table('jadwals')->join('gurus','gurus.id','=','jadwals.id_guru')->join('kelas','kelas.id','=','jadwals.id_kelas')->join('mata_pelajarans','mata_pelajarans.id','=','jadwals.id_mapel')
-            ->select('jadwals.*','gurus.nama_guru','kelas.angka_kelas','kelas.id', 'mata_pelajarans.nama_mata_pelajaran','mata_pelajarans.id as matapelajaran_id')->where('jadwals.id',$id)
+            ->select('jadwals.*','jadwals.id as id_jadwal','gurus.nama_guru','kelas.angka_kelas','kelas.id', 'mata_pelajarans.nama_pelajaran','mata_pelajarans.id as matapelajaran_id')->where('jadwals.id',$id)
             ->first();
 
             // dd($mapel);
@@ -210,8 +213,7 @@ class JadwalController extends Controller
         $jadwal->jumlah_sesi = $request->jumlah_sesi;
         $jadwal->hari = $request->hari;
         $jadwal->save();
-
-        return redirect()->route('jadwal.index')->with('Success','Jadwal berhasil ubah');
+        return redirect()->route('jadwal.show',$request->id_kelas)->with('Success','Data berhasil diubah');
 
     }
 

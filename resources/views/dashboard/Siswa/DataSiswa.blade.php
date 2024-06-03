@@ -100,7 +100,9 @@
                                         <td>{{ $guru->nama_siswa }}</td>
                                         <td>{{ $guru->tanggal_lahir }}</td>
                                         <td>{{ $guru->jenis_kelamin }}</td>
-                                        <td>{{ $guru->kelas->nama_kelas }}</td>
+                                        <td>
+                                            {{ $guru->kelas->angka_kelas }}
+                                        </td>
                                         {{-- <td>{{ $guru->semester }}</td> --}}
                                         <td>{{ $guru->wali_siswa }}</td>
                                         <td class="text-center">
@@ -209,7 +211,7 @@
 
                                                             <div class="form-group col-sm-4">
                                                                 <label for="wali_siswa{{ $guru->id }}">Kelas</label>
-                                                                <p>{{ $guru->kelas->nama_kelas }}</p>
+                                                                <p>{{ $guru->kelas->angka_kelas }}</p>
                                                             </div>
 
                                                             <div class="form-group col-sm-4">

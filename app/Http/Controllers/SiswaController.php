@@ -209,8 +209,14 @@ class SiswaController extends Controller
         $siswa->kelas_id = $request->kelas;
         $siswa->agama = $request->agama;
         $siswa->tempat = $request->tempat;
+        $siswa->tempat = $request->tempat;
+        $siswa->tempat = $request->tempat;
+        $siswa->tempat = $request->tempat;
         $siswa->anak_ke = $request->anak_ke;
         $siswa->semester = $request->semester;
+        $siswa->NIK = $request->NIK;
+        $siswa->NIS = $request->NIS;
+        $siswa->NO_KK = $request->NO_KK;
 
         // Mengelola file foto siswa
         if ($request->hasFile('foto_siswa')) {

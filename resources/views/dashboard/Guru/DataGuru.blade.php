@@ -45,9 +45,10 @@
               <thead>
               <tr>
                 <th>No</th>
-                <th>NIP</th>
                 <th>Nama</th>
+                <th>Jabatan</th>
                 <th>Kelas</th>
+                <th>Data Siswa</th>
                 <th>Action</th>
               </tr>
               </thead>
@@ -57,10 +58,19 @@
                     <td>{{$loop->iteration}}</td>
                     <td>{{ $guru->nama_guru }}</td>
                     <td>{{ $guru->jabatan}}</td>
-                    <td>{{ $guru->angka_kelas}}</td>
+                    <td>
+                      @if($guru->jabatan == 'guru wali kelas')
+                      {{ $guru->angka_kelas}}
+                      @else
+                      -
+                      @endif
+                    </td>
                     <td >
-                      @if($guru->angka_kelas != 7)
-                      <a href="" class="btn btn-info"><i class="fas fa-person"></i>Data Murid</a>
+                      @if($guru->jabatan == 'guru wali kelas')
+                        <a href="" class="btn btn-info"><i class="fas fa-person"></i>Data Murid</a>
+                      @else
+                        -
+                      @endif
                     </td>
                     <td>
                       <form action="{{route('guru.destroy',$guru->id)}}" method="POST">
@@ -85,16 +95,13 @@
                                             <div class="modal-content">
                                                 <div class="modal-header">
                                                     <h5 class="modal-title" id="showModalLabel{{ $guru->id }}">Detail
-                                                        Siswa</h5>
+                                                        Guru / Kepala Sekolah / Tata Usaha</h5>
                                                     <button type="button" class="close" data-dismiss="modal"
                                                         aria-label="Close">
                                                         <span aria-hidden="true">&times;</span>
                                                     </button>
                                                 </div>
 
-                                                <form action="{{ route('siswa.update', $guru->id) }}" method="POST"
-                                                    enctype="multipart/form-data">
-                                                    @csrf
                                                     <div class="modal-body p-0">
                                                         <div class="card-body row p-4">
                                                             <div class="form-group col-sm-3">
@@ -197,7 +204,7 @@
                                                               </div>
                                                           </div>
                                                               <div class="form-group col-sm-4">
-                                                                <div class="form-group">
+                                                                <div class="form-group ">
                                                                   <label for="wali_siswa{{ $guru->id }}">Jabatan</label>
                                                                     <p>{{ $guru->jabatan}}</p>
                                                                 </div>
@@ -218,7 +225,6 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </form>
                                             </div>
                                         </div>
                                     </div>

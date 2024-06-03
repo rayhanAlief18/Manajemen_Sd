@@ -51,7 +51,7 @@
           <div class="card-body row ">
             <div class="col-md-12">
               <div class="text-center alert alert-secondary" role="alert">
-                Data dirisss
+                Data diri
               </div>
             </div>
 
@@ -179,12 +179,11 @@
                     <select name="kelas_id" class="custom-select form-control" id="exampleSelectBorder">
                       <option readonly selected>Masukkan kelas...</option>
                       @foreach ($kelas as $class)
-                        <option value="{{$class->id}}" >Tidak Memiliki Kelas</option>
                         @if($class->angka_kelas < 7)
                         <option value="{{$class->id}}" >{{$class->angka_kelas}}</option>
                         @endif
                         @endforeach
-                        <option value="{{$class->id}}" >Lulus</option>
+                        <option value="{{$class->id}}" >Tidak Memiliki Kelas</option>
                     </select>
                   </div>
                   

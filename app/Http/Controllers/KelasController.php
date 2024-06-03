@@ -18,10 +18,7 @@ class KelasController extends Controller
     public function index()
     {
         $title = "Data Kelas";
-        $kelas = Kelas::select('kelas.*','gurus.nama_guru') 
-        ->join('gurus', 'kelas.id', '=', 'gurus.kelas_id') // Lakukan join antara tabel kelas dan guru
-        // Di sini Anda bisa menambahkan kriteria join tambahan jika diperlukan
-        ->get(); // Lakukan pengambilan data
+        $kelas = Kelas::all(); 
         return view('dashboard.Operational.Kelas.DataKelas',[
             'title'=>$title,
             'kelas'=>$kelas,
@@ -48,14 +45,11 @@ class KelasController extends Controller
     {
         $messages = [
             'angka_kelas.required' => 'Kelas harus dipilih.',
-            'wali_kelas.required' => 'Guru pengampu harus dipilih.',
             'angka_kelas.unique' => 'Angka sudah dipilih... Tidak bisa duplikat', 
-            'walikelas.unique' => 'Wali kelas sudah dipilih... Tidak bisa duplikat'
         ];
         
         $validator = Validator::make($request->all(), [
             'angka_kelas' => 'required|unique:kelas,angka_kelas',
-            'wali_kelas' => 'required|unique:gurus,nama_guru',
         ],[ ]);
 
         if ($validator->fails()) {
@@ -65,7 +59,6 @@ class KelasController extends Controller
         // ELOQUENT
         $kelas = New kelas;
         $kelas->angka_kelas = $request->angka_kelas;
-        $kelas->wali_kelas = $request->wali_kelas;
         $kelas->save();
 
         return redirect()->route('kelas.index')->with('Success','Data berhasil ditambahkan');
@@ -88,8 +81,8 @@ class KelasController extends Controller
         $title = "Edit Data Kelas";
         $guru = Guru::all();
         // $kelas = Kelas::find($id);
-        $kelas = DB::table('kelas')->join('gurus','kelas.wali_kelas','=','gurus.kelas_id')
-            ->select('kelas.*','gurus.nama_guru')->where('kelas.id',$id)
+        $kelas = DB::table('kelas')
+            ->select('kelas.*')->where('kelas.id',$id)
             ->first();
         
         return view('dashboard.Operational.Kelas.EditDataKelas',[
@@ -106,14 +99,11 @@ class KelasController extends Controller
     {
         $messages = [
             'angka_kelas.required' => 'Kelas harus dipilih.',
-            'wali_kelas.required' => 'Guru pengampu harus dipilih.',
             'angka_kelas.unique' => 'Angka sudah dipilih... Tidak bisa duplikat', 
-            'walikelas.unique' => 'Wali kelas sudah dipilih... Tidak bisa duplikat'
         ];
         
         $validator = Validator::make($request->all(), [
             'angka_kelas' => 'required|unique:kelas,angka_kelas',
-            'wali_kelas' => 'required|unique:gurus,nama_guru',
         ],[ ]);
 
         if ($validator->fails()) {
@@ -123,7 +113,6 @@ class KelasController extends Controller
         // ELOQUENT
         $kelas = Kelas::findOrFail($id);
         $kelas->angka_kelas = $request->angka_kelas;
-        $kelas->wali_kelas = $request->wali_kelas;
         $kelas->save();
 
         return redirect()->route('kelas.index')->with('Success','Data berhasil diubah');   

@@ -9,9 +9,13 @@ class Kelas extends Model
 {
     use HasFactory;
 
+    public function guru()
+    {
+        return $this->belongsTo(Guru::class, 'id');
+    }
+
     protected $fillable = [
-        'nama_kelas',
-        'wali_kelas',
+        'angka_kelas',
     ];
     public function siswa()
 {

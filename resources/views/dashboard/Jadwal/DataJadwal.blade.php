@@ -55,14 +55,18 @@
             Jadwal hari ini
           </div>
           <div class="card-body">
+            {{-- @foreach ($jadwal as $jadwal)
+                
+              @endforeach --}}
+              <a href="" class="btn btn-primary btn-sm my-2">Absensi</a>
             <div class="row">
                 @foreach($jadwal as $jadwalNow)
-                @if($jadwalNow->hari == $hariIni )
+                  @if($jadwalNow->hari == $hariIni )
                 <div class="col-md-3">
                   <div class="card">
                     <div class="card-header bg-success">
                       <div class="d-flex justify-content-start ">
-                        <h5 class="font-weight-bold text-center">{{$jadwalNow ->nama_mata_pelajaran}}</h5>
+                        <h5 class="font-weight-bold text-center">{{$jadwalNow ->nama_pelajaran}}</h5>
                       </div>
                     </div>
                     <div class="d-flex justify-content-between align-items-center pt-3 pl-4  pr-4">
@@ -119,7 +123,7 @@
 
                             <tr>
                                 <td>{{ $senin->angka_kelas}} </td>
-                                <td>{{ $senin->nama_mata_pelajaran }}</td>
+                                <td>{{ $senin->nama_pelajaran }}</td>
                                 <td>{{ $senin->nama_guru}}</td>
                                 <td>{{ $senin->jam_mulai}}</td>
                                 <td>{{ $senin->jam_selesai}}</td>
@@ -169,7 +173,7 @@
                           @if($selasa->hari == "selasa")
                             <tr>
                               <td>{{ $selasa->angka_kelas}} </td>
-                              <td>{{ $selasa->nama_mata_pelajaran }}</td>
+                              <td>{{ $selasa->nama_pelajaran }}</td>
                               <td>{{ $selasa->nama_guru}}</td>
                                 <td>{{ $selasa->jam_mulai}}</td>
                                 <td>{{ $selasa->jam_selesai}}</td>
@@ -219,7 +223,7 @@
                           @if($rabu->hari == "rabu")
                             <tr>
                               <td>{{ $rabu->angka_kelas}}</td>
-                              <td>{{ $rabu->nama_mata_pelajaran }}</td>
+                              <td>{{ $rabu->nama_pelajaran }}</td>
                               <td>{{ $rabu->nama_guru}}</td>
                                 <td>{{ $rabu->jam_mulai}}</td>
                                 <td>{{ $rabu->jam_selesai}}</td>
@@ -269,7 +273,7 @@
                           @if($kamis->hari == "kamis")
                             <tr>
                               <td>{{ $kamis->angka_kelas}}</td>
-                              <td>{{ $kamis->nama_mata_pelajaran }}</td>
+                              <td>{{ $kamis->nama_pelajaran }}</td>
                               <td>{{ $kamis->nama_guru}}</td>
                                 <td>{{ $kamis->jam_mulai}}</td>
                                 <td>{{ $kamis->jam_selesai}}</td>
@@ -319,7 +323,7 @@
                           @if($jumat->hari == "jumat")
                             <tr>
                               <td>{{ $jumat->angka_kelas}}</td>
-                              <td>{{ $jumat->nama_mata_pelajaran }}</td>
+                              <td>{{ $jumat->nama_pelajaran }}</td>
                               <td>{{ $jumat->nama_guru}}</td>
                                 <td>{{ $jumat->jam_mulai}}</td>
                                 <td>{{ $jumat->jam_selesai}}</td>
@@ -369,7 +373,7 @@
                           @if($sabtu->hari == "sabtu")
                             <tr>
                               <td>{{ $sabtu->angka_kelas}}</td>
-                              <td>{{ $sabtu->nama_mata_pelajaran }}</td>
+                              <td>{{ $sabtu->nama_pelajaran }}</td>
                               <td>{{ $sabtu->nama_guru}}</td>
                                 <td>{{ $sabtu->jam_mulai}}</td>
                                 <td>{{ $sabtu->jam_selesai}}</td>
@@ -423,7 +427,7 @@
                                     <select class="custom-select form-control" name="id_mapel" id="mataPelajaran" name="matapelajaran">
                                         <option disabled readonly>Pilih mata pelajaran...</option> 
                                         @foreach ($mapel as $mapel)
-                                            <option name="id_mapel" value="{{$mapel->id}}">{{ $mapel->nama_mata_pelajaran }}</option>
+                                            <option name="id_mapel" value="{{$mapel->id}}">{{ $mapel->nama_pelajaran }}</option>
                                         @endforeach
                                     </select>
                                 </div>

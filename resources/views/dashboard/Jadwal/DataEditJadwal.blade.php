@@ -45,7 +45,7 @@
                 
     <!-- /.card-header -->
     <!-- form start -->
-    <form action="{{ route('jadwal.update',$jadwal->id) }}" method="POST" class="form-horizontal">
+    <form action="{{ route('jadwal.update',$jadwal->id_jadwal) }}" method="POST" class="form-horizontal">
         @csrf
         @method('PUT')
         <div class="card-body">
@@ -53,45 +53,35 @@
                 <div class="form-group col-md-6">
                     <label for="exampleSelectBorder">Mata Pelajaran</label>
                     <select class="custom-select form-control" name="id_mapel" id="exampleSelectBorder">
-                        <option selected>Pilih mata pelajaran...</option> 
-                        <option value="{{$jadwal->id_mapel}}" selected>{{ $jadwal->nama_mata_pelajaran}}</option>
+                        <option value="{{$jadwal->id_mapel}}" selected>{{ $jadwal->nama_pelajaran}}</option>
                         @foreach ($mapel as $mapel)
                             @if($mapel->id != $jadwal->id_mapel)
-                                <option value="{{$mapel->id}}" >{{ $mapel->nama_mata_pelajaran}}</option>
+                                <option value="{{$mapel->id}}" > {{ $mapel->nama_pelajaran}}</option>
                             @endif
                         @endforeach
                     </select>
                 </div>
             <div class="form-group col-md-6">
-            <label for="exampleSelectBorder">Kelas</label>
+            <label for="exampleSelectBorder">Guru Pengampu</label>
                 <select class="custom-select form-control" id="exampleSelectBorder" name="id_guru">
-                    <option name="id_guru" disabled selected>Pilih guru pengampu...</option> 
-                    <option name="id_guru" value="{{$jadwal->id_guru}}" selected>{{ $jadwal->nama_guru}}</option>
-                        @foreach ($DataGuru as $guru)
+                    <option disabled selected>Pilih guru pengampu...</option> 
+                    <option value="{{$jadwal->id_guru}}" selected >{{ $jadwal->nama_guru}}</option>
+                        {{-- @foreach ($DataGuru as $guru)
                             @if($guru->id != $jadwal->id_guru)
                                 <option name="id_guru" value="{{$guru->id}}">{{ $guru->nama_guru}}</option>
                             @endif
-                        @endforeach
+                        @endforeach --}}
                 </select>
             </div>
+            
             <div class="form-group col-md-6">
                 <label for="exampleSelectBorder">Kelas</label>
-                <input name="id_kelas" type="number" class="form-control" placeholder="Masukan jumlah sesi..." readonly value="{{$jadwal->id_kelas}}">{{$jadwal->angka_kelas}}</input> 
-               
+                <input name="id_kelas" type="number" class="form-control" placeholder="Masukan jumlah sesi..." readonly value="{{$jadwal->id_kelas}}"></input> 
             </div>
             <div class="form-group col-md-6">
               <label for="exampleSelectBorder">Hari</label>
-              <select name="hari" class="custom-select form-control" id="exampleSelectBorder">
-                        <option name="hari" disabled selected>Pilih hari...</option>
-                        <option name="hari" value="{{$jadwal->hari}}" selected>{{$jadwal->hari}}</option>
-                        <option name="hari" value="senin" >Senin</option>
-                        <option name="hari" value="selasa" >Selasa</option>
-                        <option name="hari" value="rabu" >Rabu</option>
-                        <option name="hari" value="kamis" >Kamis</option>
-                        <option name="hari" value="jumat" >Jumat</option>
-                        <option name="hari" value="sabtu" >Sabtu</option>
-              </select>
-            </div>
+              <input name="hari" type="text" class="form-control" placeholder="Masukan jumlah sesi..." readonly value="{{$jadwal->hari}}"></input> 
+          </div>
             <div class="form-group col-md-6">
               <label for="exampleSelectBorder">Jam Mulai</label>
               <input name="jam_mulai" type="time" class="form-control" placeholder="Masukan Jam Mulai..." value="{{$jadwal->jam_mulai}}">

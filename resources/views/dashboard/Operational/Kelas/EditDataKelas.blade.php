@@ -53,6 +53,67 @@
             <div class="col-md-6">
               <label for="exampleSelectBorder">Angka Kelas</label>
               <select name="angka_kelas" class="custom-select form-control" id="exampleSelectBorder">
+                    @if($kelas->angka_kelas == 1)
+                      <option  value="{{$kelas->angka_kelas}}" selected>{{$kelas->angka_kelas}}</option>
+                      <option  value="2" > 2 </option>
+                      <option  value="3" > 3 </option>
+                      <option  value="4" > 4 </option>
+                      <option  value="5" > 5 </option>
+                      <option  value="6" > 6 </option>
+                      <option  value="7" > 7 </option>
+                      <option  value="8" > 8 </option>
+                    @endif
+                    @if($kelas->angka_kelas == 2)
+                      <option  value="{{$kelas->angka_kelas}}" selected>{{$kelas->angka_kelas}}</option>
+                      <option  value="1" > 1 </option>
+                      <option  value="3" > 3 </option>
+                      <option  value="4" > 4 </option>
+                      <option  value="5" > 5 </option>
+                      <option  value="6" > 6 </option>
+                      <option  value="7" > 7 </option>
+                      <option  value="8" > 8 </option>
+                    @endif
+                    @if($kelas->angka_kelas == 3)
+                      <option  value="{{$kelas->angka_kelas}}" selected>{{$kelas->angka_kelas}}</option>
+                      <option  value="1" > 1 </option>
+                      <option  value="2" > 2 </option>
+                      <option  value="4" > 4 </option>
+                      <option  value="5" > 5 </option>
+                      <option  value="6" > 6 </option>
+                      <option  value="7" > 7 </option>
+                      <option  value="8" > 8 </option>
+                    @endif
+                    @if($kelas->angka_kelas == 4)
+                      <option  value="{{$kelas->angka_kelas}}" selected>{{$kelas->angka_kelas}}</option>
+                      <option  value="1" > 1 </option>
+                      <option  value="2" > 2 </option>
+                      <option  value="3" > 3 </option>
+                      <option  value="5" > 5 </option>
+                      <option  value="6" > 6 </option>
+                      <option  value="7" > 7 </option>
+                      <option  value="8" > 8 </option>
+                    @endif
+                    @if($kelas->angka_kelas == 5)
+                      <option  value="{{$kelas->angka_kelas}}" selected>{{$kelas->angka_kelas}}</option>
+                      <option  value="1" > 1 </option>
+                      <option  value="2" > 2 </option>
+                      <option  value="3" > 3 </option>
+                      <option  value="4" > 4 </option>
+                      <option  value="6" > 6 </option>
+                      <option  value="7" > 7 </option>
+                      <option  value="8" > 8 </option>
+                    @endif
+                    @if($kelas->angka_kelas == 6)
+                      <option  value="{{$kelas->angka_kelas}}" selected>{{$kelas->angka_kelas}}</option>
+                      <option  value="1" > 1 </option>
+                      <option  value="2" > 2 </option>
+                      <option  value="3" > 3 </option>
+                      <option  value="4" > 4 </option>
+                      <option  value="5" > 5 </option>
+                      <option  value="7" > 7 </option>
+                      <option  value="8" > 8 </option>
+                    @endif
+                    @if($kelas->angka_kelas == 7)
                       <option  value="{{$kelas->angka_kelas}}" selected>{{$kelas->angka_kelas}}</option>
                       <option  value="1" > 1 </option>
                       <option  value="2" > 2 </option>
@@ -60,17 +121,19 @@
                       <option  value="4" > 4 </option>
                       <option  value="5" > 5 </option>
                       <option  value="6" > 6 </option>
-              </select>
-            </div>
-            <div class="form-group col-md-6">
-              <label for="exampleSelectBorder">Wali Kelas</label>
-              <select name="wali_kelas" class="custom-select form-control" id="exampleSelectBorder">
-                <option  value="{{$kelas->nama_guru}}" >{{$kelas->nama_guru}}</option>
-                @foreach ($guru as $guru)
-                    @if($guru->kelas_id != $kelas->id)
-                        <option name="wali_kelas" value="{{$guru->id}}">{{$guru->nama_guru}}</option>
+                      <option  value="8" > 8 </option>
                     @endif
-                  @endforeach
+                    @if($kelas->angka_kelas == 8)
+                    <option  value="{{$kelas->angka_kelas}}" selected>{{$kelas->angka_kelas}}</option>
+                    <option  value="1" > 1 </option>
+                    <option  value="2" > 2 </option>
+                    <option  value="3" > 3 </option>
+                    <option  value="4" > 4 </option>
+                    <option  value="5" > 5 </option>
+                    <option  value="6" > 6 </option>
+                    <option  value="7" > 7 </option>
+                  @endif
+                      
               </select>
             </div>
           </div>

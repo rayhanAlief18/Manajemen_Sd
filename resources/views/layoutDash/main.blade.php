@@ -183,7 +183,15 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="pages/widgets.html" class="nav-link">
+            <a href="{{route('matapelajaran.index')}}" class="nav-link">
+              <i class="nav-icon fas fa-book"></i>
+              <p>
+                Mata Pelajaran
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{{route('jadwal.index')}}" class="nav-link">
               <i class="nav-icon fas fa-list"></i>
               <p>
                 Pengelolaan Jadwal

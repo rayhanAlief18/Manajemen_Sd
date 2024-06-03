@@ -9,8 +9,8 @@ class MataPelajaran extends Model
 {
     use HasFactory;
 
-    public function guru()
-    {
-        return $this->belongsTo(Guru::class);
-    }
+    protected $fillable = [
+        'nama_pelajaran',
+        'kd_pelajaran',
+    ];
 }
