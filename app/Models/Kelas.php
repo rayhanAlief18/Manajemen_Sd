@@ -14,8 +14,11 @@ class Kelas extends Model
         'wali_kelas',
     ];
     public function siswa()
-{
-    return $this->hasMany(Siswa::class);
-}
-
+    {
+        return $this->hasMany(Siswa::class);
+    }
+    public function guru()
+    {
+        return $this->belongsTo(Guru::class);
+    }
 }

@@ -18,13 +18,15 @@ class KelasController extends Controller
     public function index()
     {
         $title = "Data Kelas";
-        $kelas = DB::table('kelas')
-                ->select('kelas.*', 'kelas.id as kelas_id')
-                ->get();
+        $kelas = Kelas::all();
+        // $kelas = DB::table('kelas')
+        //         ->select('kelas.*', 'kelas.id as kelas_id')
+        //         ->get();
 
-        return view('dashboard.Operational.Kelas.DataKelas',[
-            'title'=>$title,
-            'kelas'=>$kelas,
+
+        return view('dashboard.Operational.Kelas.DataKelas', [
+            'title' => $title,
+            'kelas' => $kelas,
         ]);
     }
 
@@ -36,9 +38,9 @@ class KelasController extends Controller
         $title = "Tambah Data Kelas";
         $guru = DB::table('guru')->select('guru.*', 'guru.id,guru.nama_guru')->get();
         $Kelas = "";
-        return view('dashboard.Operational.Kelas.TambahDataKelas',[
-            'title'=>$title,
-            'DataGuru'=>$guru,
+        return view('dashboard.Operational.Kelas.TambahDataKelas', [
+            'title' => $title,
+            'DataGuru' => $guru,
         ]);
     }
 
@@ -52,7 +54,7 @@ class KelasController extends Controller
             'email' => 'Isi :attribute dengan format yang benar',
             'numeric' => 'Isi :attribute dengan angka'
         ];
-        
+
         $validator = Validator::make($request->all(), [
             'nama_kelas' => 'required',
             'wali_kelas' => 'required',
@@ -63,13 +65,12 @@ class KelasController extends Controller
         }
 
         // ELOQUENT
-        $kelas = New kelas;
+        $kelas = new kelas;
         $kelas->nama_kelas = $request->nama_kelas;
         $kelas->wali_kelas = $request->wali_kelas;
         $kelas->save();
 
-        return redirect()->route('kelas.index')->with('Success','Data berhasil ditambahkan');
-
+        return redirect()->route('kelas.index')->with('Success', 'Data berhasil ditambahkan');
     }
 
     /**
