@@ -273,7 +273,6 @@
               <i class="nav-icon fas fa-user-tie"></i>
               <p>
                 Guru
-                <span class="badge badge-info right">2</span>
               </p>
             </a>
           </li>

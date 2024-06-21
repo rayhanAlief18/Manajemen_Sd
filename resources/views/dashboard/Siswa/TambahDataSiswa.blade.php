@@ -49,68 +49,85 @@
                             <div class="form-group col-sm-4">
                                 <label for="nik">NIK</label>
                                 <input type="number" name="NIK" class="form-control" id="nik"
-                                    placeholder="Masukkan NIK...">
+                                    placeholder="Masukkan NIK..." value="{{ old('NIK') }}">
                             </div>
                             <div class="form-group col-sm-4">
                                 <label for="nik">NO KK (Kartu Keluarga)</label>
                                 <input type="number" name="NO_KK" class="form-control" id="nik"
-                                    placeholder="Masukkan NO_KK...">
+                                    placeholder="Masukkan NO_KK..." value="{{ old('NO_KK') }}">
                             </div>
                             <div class="form-group col-sm-4">
                                 <label for="nis">NIS</label>
                                 <input type="number" name="NIS" class="form-control" id="nis"
-                                    placeholder="Masukkan NIS...">
+                                    placeholder="Masukkan NIS..." value="{{ old('NIS') }}">
                             </div>
                             <div class="form-group col-sm-4">
                                 <label for="nisn">NISN</label>
                                 <input type="number" name="NISN" class="form-control" id="nisn"
-                                    placeholder="Masukkan NISN...">
+                                    placeholder="Masukkan NISN..." value="{{ old('NISN') }}">
                             </div>
                             <div class="form-group col-sm-4">
                                 <label for="nama_siswa">Nama Siswa</label>
                                 <input type="text" name="nama_siswa" class="form-control" id="nama_siswa"
-                                    placeholder="Masukkan Nama Siswa...">
+                                    placeholder="Masukkan Nama Siswa..." value="{{ old('nama_siswa') }}">
                             </div>
                             <div class="form-group col-sm-4">
                                 <label for="tanggal_lahir">Tanggal Lahir</label>
                                 <input type="date" name="tanggal_lahir" class="form-control" id="tanggal_lahir"
-                                    placeholder="Masukkan Jenis Kelamin...">
+                                    placeholder="Masukkan Jenis Kelamin..." value="{{ old('tanggal_lahir') }}">
                             </div>
                             <div class="form-group col-sm-4">
                                 <label for="jenis_kelamin">Jenis Kelamin</label>
                                 <select name="jenis_kelamin" class="form-control" id="jenis_kelamin">
-                                    <option value="laki">Laki-Laki</option>
-                                    <option value="perempuan">Perempuan</option>
+                                    <option value="laki" {{ old('jenis_kelamin') == 'laki' ? 'selected' : '' }}>Laki-Laki</option>
+                                    <option value="perempuan" {{ old('jenis_kelamin') == 'lperempuan' ? 'selected' : '' }}>Perempuan</option>
                                 </select>
                             </div>
                             <div class="form-group col-sm-4">
                                 <label for="wali_siswa">Ortu / Wali Siswa</label>
                                 <input type="text" name="wali_siswa" class="form-control" id="wali_siswa"
-                                    placeholder="Masukkan Wali Siswa...">
+                                    placeholder="Masukkan Wali Siswa..." value="{{ old('wali_siswa') }}">
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="exampleSelectBorder">Agama</label>
+                                <select name="agama" class="custom-select form-control" id="exampleSelectBorder">
+                                    <option value="" {{ old('agama') == '' ? 'selected' : '' }} disabled hidden>Masukkan Data Agama...</option>
+                                    <option value="islam" {{ old('agama') == 'islam' ? 'selected' : '' }}>Islam</option>
+                                    <option value="kristen" {{ old('agama') == 'kristen' ? 'selected' : '' }}>Kristen</option>
+                                    <option value="hindu" {{ old('agama') == 'hindu' ? 'selected' : '' }}>Hindu</option>
+                                    <option value="Budha" {{ old('agama') == 'Budha' ? 'selected' : '' }}>Budha</option>
+                                    <option value="khongucu" {{ old('agama') == 'khongucu' ? 'selected' : '' }}>Khongucu</option>
+                                </select>
                             </div>
                             <div class="form-group col-sm-4">
-                                <label for="agama">Agama</label>
-                                <input type="text" name="agama" class="form-control" id="agama"
-                                    placeholder="Masukkan Agama...">
-                            </div>
-                            <div class="form-group col-sm-4">
-                                <label for="tempat">Tempat</label>
+                                <label for="tempat">Alamat</label>
                                 <input type="text" name="tempat" class="form-control" id="tempat"
-                                    placeholder="Masukkan Tempat Tinggal...">
+                                    placeholder="Masukkan Tempat Tinggal..." value="{{ old('tempat') }}">
                             </div>
                             <div class="form-group col-sm-4">
                                 <label for="anak_ke">Anak Ke</label>
                                 <input type="number" name="anak_ke" class="form-control" id="anak_ke"
-                                    placeholder="Masukkan Anak Ke...">
+                                    placeholder="Masukkan Anak Ke..." value="{{ old('anak_ke') }}">
                             </div>
                             <div class="form-group col-sm-4">
                                 <label for="exampleSelectBorder">Kelas</label>
                                 <select name="kelas" class="form-control" id="exampleSelectBorder">
                                     @foreach ($kelas as $class)
-                                        <option name="kelas" value="{{ $class->id }}" selected>{{ $class->nama_kelas }}
+                                        <option value="{{ $class->id }}" {{ old('kelas') == $class->id ? 'selected' : '' }}>
+                                            @if($class->angka_kelas <= 6)
+                                                {{ $class->angka_kelas }}
+                                            @elseif($class->angka_kelas == 7 )
+                                                Lulus
+                                            @elseif($class->angka_kelas == 8 )
+                                                (untuk pegawai)
+                                            @endif
+
                                         </option>
                                     @endforeach
                                 </select>
+                                @error('kelas')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
                             </div>
                             <div class="form-group col-sm-12">
                                 <label for="foto_siswa">Foto Siswa</label>
@@ -119,13 +136,15 @@
                                         <input name="foto_siswa" type="file" id="foto_siswa" multiple>
                                     </div>
                                 </div>
+                                @error('foto_siswa')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
                             </div>
-
+                            
                             <div id="previewContainer">
                                 <img id="previewFoto" src="#" alt="Preview Foto"
                                     style="max-width: 300px; max-height: 300px;">
                             </div>
-
                         </div>
                         <!-- /.card-body -->
 

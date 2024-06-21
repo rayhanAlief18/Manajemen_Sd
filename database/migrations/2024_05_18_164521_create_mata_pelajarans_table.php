@@ -13,12 +13,9 @@ return new class extends Migration
     {
         Schema::create('mata_pelajarans', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('guru_id');
             $table->string('kd_pelajaran')->unique();
             $table->string('nama_pelajaran');
             $table->timestamps();
-
-            $table->foreign('guru_id')->references('id')->on('gurus')->onDelete('cascade');
         });
     }
 

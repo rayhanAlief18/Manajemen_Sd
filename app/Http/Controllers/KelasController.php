@@ -70,7 +70,17 @@ class KelasController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $Title = 'Data Siswa Kelas :';
+        $DataSiswa = DB::table('siswas')
+        ->join('kelas', 'siswa.kelas_id', '=', 'kelas.id')
+        ->select('siswa.*', 'kelas.angka_kelas')
+        ->where('kelas.id', $id)
+        ->first();
+
+        return view('dashboard.Operational.Kelas.TambahDataKelas',[
+            'title'=>$title,
+            'guru'=>$guru,
+        ]);
     }
 
     /**

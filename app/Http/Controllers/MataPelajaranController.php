@@ -41,8 +41,6 @@ class MataPelajaranController extends Controller
     {
         $messages = [
             'required' => ':Attribute harus diisi.',
-            'email' => 'Isi :attribute dengan format yang benar.',
-            'numeric' => 'Isi :attribute dengan angka.',
             'nama_pelajaran.unique' => 'Mata Pelajaran sudah terdaftar...',
             'kd_pelajaran.unique' => 'Kode mata pelajaran sudah terdaftar...'
         ];
@@ -63,7 +61,6 @@ class MataPelajaranController extends Controller
         $mata_pelajaran->nama_pelajaran = $request->nama_pelajaran;
         $mata_pelajaran->kd_pelajaran = $request->kd_pelajaran;
         $mata_pelajaran->save();
-
         return redirect()->route('matapelajaran.index')->with('Success','Data berhasil ditambahkan');
     }
 

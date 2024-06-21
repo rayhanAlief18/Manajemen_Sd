@@ -130,11 +130,13 @@ class JadwalController extends Controller
         $currentDay = Carbon::now()->translatedFormat('l');
         $hariIni = strtolower($currentDay);
 
-            $title="Data Jadwal";
+            $title="Jadwal Kelas : ";
             $jadwal = Jadwal::all();
             $DataGuru = Guru::all();
             $mapel = MataPelajaran::all();
             $kelas = Kelas::all();
+            $kelasNow = Kelas::find($id);
+            $kelasAbs = $id;
             $jadwal = DB::table('jadwals')->join('gurus','gurus.id','=','jadwals.id_guru')->join('kelas','kelas.id','=','jadwals.id_kelas')->join('mata_pelajarans','mata_pelajarans.id','=','jadwals.id_mapel')
                 ->select('jadwals.*','jadwals.id as id_jadwal','gurus.nama_guru','kelas.angka_kelas','kelas.id as id_kelas', 'mata_pelajarans.nama_pelajaran')->where('kelas.id',$id)
                 ->get();
@@ -144,6 +146,8 @@ class JadwalController extends Controller
             'DataGuru'=>$DataGuru,
             'mapel'=>$mapel,
             'kelas'=>$kelas,
+            'kelasNow'=>$kelasNow,
+            'kelasAbs'=>$kelasAbs,
             'jadwal'=>$jadwal,
             'hariIni'=> $hariIni,
         ]);

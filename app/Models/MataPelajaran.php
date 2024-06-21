@@ -10,7 +10,7 @@ class MataPelajaran extends Model
     use HasFactory;
 
     protected $fillable = [
-        'nama_pelajaran',
         'kd_pelajaran',
+        'nama_pelajaran',
     ];
 }

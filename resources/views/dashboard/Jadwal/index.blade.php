@@ -48,9 +48,6 @@
         <a href="{{route('jadwal.create')}}" class="btn btn-primary mb-3"> Tambah Data Jadwal</a>
         
         <div class="card">
-          <div class="card-header bg-success text-center" >
-            Jadwal hari ini
-          </div>
           <div class="card-body">
               
             <div class="row">

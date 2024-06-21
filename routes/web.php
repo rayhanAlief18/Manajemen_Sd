@@ -12,6 +12,7 @@ use App\Http\Controllers\AlumniController;
 use App\Http\Controllers\InventarisController;
 //operational
 use App\Http\Controllers\KelasController;
+use App\Http\Controllers\AbsensiController;
 use App\Http\Controllers\NilaiSiswaController;
 use App\Http\Controllers\SiswaController;
 
@@ -38,6 +39,7 @@ Route::resource('/staff', StaffController::class);
 Route::resource('/siswa', SiswaController::class);
 Route::resource('/BayarSpp', PembayaranSppController::class);
 Route::resource('/nilai', NilaiSiswaController::class);
+Route::resource('/absensi', AbsensiController::class);
 // Route::get('/BayarSpp/{siswa_id}', [PembayaranSppController::class, 'create'])->name('pembayaran.create');
 // Route::get('/BayarSpp/create/{id}', [App\Http\Controllers\PembayaranSppController::class, 'create']);
 
@@ -49,6 +51,7 @@ Route::resource('kelas', KelasController::class);
 Route::resource('jadwal', JadwalController::class);
 
 Route::get('/riwayatbayar', [PembayaranSppController::class, 'riwayatBayar'])->name('RiwayatBayar');
+Route::get('/ShowSiswaAbsensi/{id}', [AbsensiController::class, 'ShowSiswaAbsensi'])->name('ShowSiswaAbsensi');
 // Route::get('/DaftarKelas', [NilaiSiswaController::class, 'DaftarKelas'])->name('DaftarKelas');
 // Route::get('/riwayatBayarById', [PembayaranSppController::class, 'riwayatBayarById'])->name('riwayatBayarByIds');
 // In web.php (routes file)

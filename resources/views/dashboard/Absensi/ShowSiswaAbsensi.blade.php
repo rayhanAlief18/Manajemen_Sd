@@ -33,6 +33,7 @@
               </button>
             </div>  
             @endif
+
         {{-- table --}}
         <div class="card">
           <div class="card-header">
@@ -44,33 +45,24 @@
               <thead>
               <tr>
                 <th>No</th>
+                <th>Nama Siswa</th>
                 <th>Kelas</th>
-                <th>Murid</th>
                 <th>Action</th>
               </tr>
               </thead>
               <tbody>
-                @foreach ($kelas as $class)
+                @foreach ($DataSiswa as $class)
                 <tr>
                     <td>{{$loop->iteration}}</td>
                     <td>
-                    @if($class->angka_kelas <= 6)
-                      {{ $class->angka_kelas}}
-                    @elseif($class->angka_kelas == 7)
-                      Lulus
-                    @elseif($class->angka_kelas == 8)
-                      Tanpa Kelas 
-                    @endif
+                        {{$class->nama_siswa}}
                     </td>
-                    @if($class->angka_kelas <= 6)
                     <td>
-                      <a href="" class="btn btn-info"><i class="fas fa-person"></i>Murid</a>
+                      {{$class->angka_kelas}}
                     </td>
-                    @else
                     <td>
                       -
                     </td>
-                    @endif
                     <td>
                       <a href="{{route('kelas.edit',$class->id)}}" class="btn btn-warning"><i class="fas fa-edit"></i></a>
                       <a href="" class="btn btn-danger"><i class="fas fa-trash"></i></a>
