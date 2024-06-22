@@ -24,14 +24,14 @@
     <!-- Main content -->
     <section class="content">
       <div class="container-fluid">
-
+        
             @if (session('Success'))
             <div class="alert alert-success alert-dismissible fade show" role="alert">
               {{session('Success')}}
               <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
-            </div>
+            </div>  
             @endif
         {{-- table --}}
         <div class="card">
@@ -45,6 +45,7 @@
               <tr>
                 <th>No</th>
                 <th>Kelas</th>
+                <th>Wali Kelas</th>
                 <th>Murid</th>
                 <th>Action</th>
               </tr>
@@ -53,27 +54,14 @@
                 @foreach ($kelas as $class)
                 <tr>
                     <td>{{$loop->iteration}}</td>
-                    <td>
-                    @if($class->angka_kelas <= 6)
-                      {{ $class->angka_kelas}}
-                    @elseif($class->angka_kelas == 7)
-                      Lulus
-                    @elseif($class->angka_kelas == 8)
-                      Tanpa Kelas 
-                    @endif
-                    </td>
-                    @if($class->angka_kelas <= 6)
+                    <td>{{ $class->angka_kelas}}</td>
+                    <td>{{ $class->nama_guru }}</td>
                     <td>
                       <a href="" class="btn btn-info"><i class="fas fa-person"></i>Murid</a>
                     </td>
-                    @else
                     <td>
-                      -
-                    </td>
-                    @endif
-                    <td>
-                      <a href="{{route('kelas.edit',$class->id)}}" class="btn btn-warning"><i class="fas fa-edit"></i></a>
-                      <a href="" class="btn btn-danger"><i class="fas fa-trash"></i></a>
+                      <a href="{{route('kelas.edit',$class->id)}}" class="btn btn-warning">Edit</a>
+                      <a href="" class="btn btn-danger">Hapus</a>
                     </td>
                 </tr>
                 @endforeach
@@ -82,6 +70,7 @@
               <tr>
                 <th>No</th>
                 <th>Kelas</th>
+                <th>Wali Kelas</th>
                 <th>Murid</th>
                 <th>Action</th>
               </tr>

@@ -45,15 +45,9 @@
             </div>
             @endforeach
         @endif
-        {{-- <a href="{{route('jadwal.create')}}" class="btn btn-primary mb-3"> Tambah Data Jadwal</a> --}}
-        <button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#exampleModal">
-          <i class="fas fa-plus mr-2"></i>
-          Tambah Data Jadwal
-      </button>
+        <a href="{{route('jadwal.create')}}" class="btn btn-primary mb-3"> Tambah Data Jadwal</a>
+        
         <div class="card">
-          <div class="card-header bg-success text-center" >
-            Jadwal hari ini
-          </div>
           <div class="card-body">
               
             <div class="row">
@@ -62,9 +56,9 @@
                   <!-- small box -->
                   <div class="small-box bg-info">
                     <div class="inner">
-                      <h3>{{$kelas->angka_kelas}} {{$kelas->abjad_kelas}}</h3>
+                      <h3>{{$kelas->angka_kelas}}</h3>
       
-                      <p>Wali kelas: {{$kelas->wali_kelas}}</p>
+                      <p>Wali kelas: {{$kelas->nama_guru}}</p>
                     </div>
                     <div class="icon">
                       <i class="ion ion-bag"></i>

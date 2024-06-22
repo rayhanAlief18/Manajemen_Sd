@@ -18,15 +18,13 @@ class KelasController extends Controller
     public function index()
     {
         $title = "Data Kelas";
-        $kelas = Kelas::all();
-        // $kelas = DB::table('kelas')
-        //         ->select('kelas.*', 'kelas.id as kelas_id')
-        //         ->get();
+        $kelas = DB::table('kelas')
+                ->select('kelas.*', 'kelas.id as kelas_id')
+                ->get();
 
-
-        return view('dashboard.Operational.Kelas.DataKelas', [
-            'title' => $title,
-            'kelas' => $kelas,
+        return view('dashboard.Operational.Kelas.DataKelas',[
+            'title'=>$title,
+            'kelas'=>$kelas,
         ]);
     }
 
@@ -38,9 +36,9 @@ class KelasController extends Controller
         $title = "Tambah Data Kelas";
         $guru = DB::table('guru')->select('guru.*', 'guru.id,guru.nama_guru')->get();
         $Kelas = "";
-        return view('dashboard.Operational.Kelas.TambahDataKelas', [
-            'title' => $title,
-            'DataGuru' => $guru,
+        return view('dashboard.Operational.Kelas.TambahDataKelas',[
+            'title'=>$title,
+            'DataGuru'=>$guru,
         ]);
     }
 
@@ -50,22 +48,20 @@ class KelasController extends Controller
     public function store(Request $request)
     {
         $messages = [
-            'required' => ':Attribute harus diisi.',
-            'email' => 'Isi :attribute dengan format yang benar',
-            'numeric' => 'Isi :attribute dengan angka'
+            'angka_kelas.required' => 'Kelas harus dipilih.',
+            'angka_kelas.unique' => 'Angka sudah dipilih... Tidak bisa duplikat',
         ];
 
         $validator = Validator::make($request->all(), [
-            'nama_kelas' => 'required',
-            'wali_kelas' => 'required',
-        ], $messages);
+            'angka_kelas' => 'required|unique:kelas,angka_kelas',
+        ],[ ]);
 
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
         // ELOQUENT
-        $kelas = new kelas;
+        $kelas = New kelas;
         $kelas->nama_kelas = $request->nama_kelas;
         $kelas->wali_kelas = $request->wali_kelas;
         $kelas->save();
@@ -78,7 +74,17 @@ class KelasController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $title = 'Data Siswa Kelas :';
+        $DataSiswa = DB::table('siswas')
+        ->join('kelas', 'siswa.kelas_id', '=', 'kelas.id')
+        ->select('siswa.*', 'kelas.angka_kelas')
+        ->where('kelas.id', $id)
+        ->first();
+
+        return view('dashboard.Operational.Kelas.TambahDataKelas',[
+            'title'=>$title,
+            // 'guru'=>$guru,
+        ]);
     }
 
     /**
@@ -86,7 +92,18 @@ class KelasController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $title = "Edit Data Kelas";
+        $guru = Guru::all();
+        // $kelas = Kelas::find($id);
+        $kelas = DB::table('kelas')
+            ->select('kelas.*')->where('kelas.id',$id)
+            ->first();
+
+        return view('dashboard.Operational.Kelas.EditDataKelas',[
+            'title'=>$title,
+            'guru'=>$guru,
+            'kelas'=>$kelas
+        ]);
     }
 
     /**
@@ -94,7 +111,25 @@ class KelasController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $messages = [
+            'angka_kelas.required' => 'Kelas harus dipilih.',
+            'angka_kelas.unique' => 'Angka sudah dipilih... Tidak bisa duplikat',
+        ];
+
+        $validator = Validator::make($request->all(), [
+            'angka_kelas' => 'required|unique:kelas,angka_kelas',
+        ],[ ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        // ELOQUENT
+        $kelas = Kelas::findOrFail($id);
+        $kelas->angka_kelas = $request->angka_kelas;
+        $kelas->save();
+
+        return redirect()->route('kelas.index')->with('Success','Data berhasil diubah');
     }
 
     /**

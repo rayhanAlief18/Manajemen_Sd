@@ -1,6 +1,6 @@
-@extends('layoutDash.main')
+@extends('layoutDash.main');
 
-  @section('content')
+  @section('content');
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -20,23 +20,24 @@
       </div><!-- /.container-fluid -->
     </div>
     <!-- /.content-header -->
-
+    
     <!-- Main content -->
     <section class="content">
       <div class="container-fluid">
+        
 
-            @if (session('Success'))
+        @if (session('Success'))
             <div class="alert alert-success alert-dismissible fade show" role="alert">
               {{session('Success')}}
               <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
-            </div>
+            </div>  
             @endif
         {{-- table --}}
         <div class="card">
           <div class="card-header">
-            <a href="{{ route('kelas.create') }}" class="btn btn-primary"><i class="mr-2 fas fa-user-plus"></i> Tambah Data</a>
+            <a href="{{route('matapelajaran.create')}}" class="btn btn-primary"><i class="mr-2 fas fa-user-plus"></i> Tambah Data</a>
           </div>
           <!-- /.card-header -->
           <div class="card-body">
@@ -44,36 +45,25 @@
               <thead>
               <tr>
                 <th>No</th>
-                <th>Kelas</th>
-                <th>Murid</th>
+                <th>Nama Mata pelajaran</th>
+                <th>Kode Mata Pelajaran</th>
                 <th>Action</th>
               </tr>
               </thead>
               <tbody>
-                @foreach ($kelas as $class)
+                @foreach ($mapel as $mapel)
                 <tr>
                     <td>{{$loop->iteration}}</td>
+                    <td>{{ $mapel->nama_pelajaran }}</td>
+                    <td>{{ $mapel->kd_pelajaran}}</td>
+                    
                     <td>
-                    @if($class->angka_kelas <= 6)
-                      {{ $class->angka_kelas}}
-                    @elseif($class->angka_kelas == 7)
-                      Lulus
-                    @elseif($class->angka_kelas == 8)
-                      Tanpa Kelas 
-                    @endif
-                    </td>
-                    @if($class->angka_kelas <= 6)
-                    <td>
-                      <a href="" class="btn btn-info"><i class="fas fa-person"></i>Murid</a>
-                    </td>
-                    @else
-                    <td>
-                      -
-                    </td>
-                    @endif
-                    <td>
-                      <a href="{{route('kelas.edit',$class->id)}}" class="btn btn-warning"><i class="fas fa-edit"></i></a>
-                      <a href="" class="btn btn-danger"><i class="fas fa-trash"></i></a>
+                      <form action="{{route('matapelajaran.destroy',$mapel->id)}}" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <a href="{{route('matapelajaran.edit',$mapel->id)}}" class="btn btn-warning"><i class="fas fa-edit"></i></a>
+                        <button type="submit" class="btn btn-danger"><i class="fas fa-trash"></i></button>
+                      </form>
                     </td>
                 </tr>
                 @endforeach
@@ -81,8 +71,8 @@
               <tfoot>
               <tr>
                 <th>No</th>
-                <th>Kelas</th>
-                <th>Murid</th>
+                <th>Nama Mata pelajaran</th>
+                <th>Kode Mata Pelajaran</th>
                 <th>Action</th>
               </tr>
               </tfoot>

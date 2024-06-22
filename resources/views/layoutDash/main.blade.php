@@ -182,7 +182,16 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="{{url('/jadwal')}}" class="nav-link">
+            <a href="{{route('matapelajaran.index')}}" class="nav-link">
+              <i class="nav-icon fas fa-book"></i>
+              <p>
+                Mata Pelajaran
+              </p>
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a href="{{route('jadwal.index')}}" class="nav-link">
               <i class="nav-icon fas fa-list"></i>
               <p>
                 Pengelolaan Jadwal
@@ -264,16 +273,15 @@
               <i class="nav-icon fas fa-user-tie"></i>
               <p>
                 Guru
-                <span class="badge badge-info right">2</span>
               </p>
             </a>
           </li>
-          <li class="nav-item">
+          {{-- <li class="nav-item">
             <a href="{{url('/staff')}}" class="nav-link">
               <i class="nav-icon fas fa-users"></i>
               <p>
                 Staff
-                {{-- <span class="badge badge-info right">2</span> --}}
+                <span class="badge badge-info right">2</span>
               </p>
             </a>
           </li>
@@ -284,7 +292,7 @@
                 Alumni
               </p>
             </a>
-          </li>
+          </li> --}}
 
           {{-- <li class="nav-item">
             <a href="#" class="nav-link">

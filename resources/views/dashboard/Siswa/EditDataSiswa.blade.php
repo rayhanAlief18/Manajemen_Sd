@@ -115,10 +115,16 @@
                                     value="{{ $siswa->wali_siswa }}" placeholder="Masukkan Wali Siswa...">
                             </div>
                             <div class="form-group col-sm-4">
-                                <label for="agama">Agama</label>
-                                <input type="text" name="agama" class="form-control" id="agama"
-                                    value="{{ $siswa->agama }}" placeholder="Masukkan Wali Siswa...">
-                            </div>
+                                <label for="exampleSelectBorder">Agama</label>
+                                <select name="agama" class="custom-select form-control" id="exampleSelectBorder">
+                                  <option readonly selected>Masukkan Data Agama...</option>
+                                  <option value="islam" {{ $siswa->agama == 'islam' ? 'selected' : '' }}>Islam</option>
+                                  <option value="kristen" {{ $siswa->agama == 'kristen' ? 'selected' : '' }} >Kristen</option>
+                                  <option value="hindu" {{ $siswa->agama == 'hindu' ? 'selected' : '' }}>hindu</option>
+                                  <option value="budha" {{ $siswa->agama == 'budha' ? 'selected' : '' }}>Budha</option>
+                                  <option value="khongucu" {{ $siswa->agama == 'khongucu' ? 'selected' : '' }} >Khongucu</option>
+                                </select>
+                              </div>
                             <div class="form-group col-sm-4">
                                 <label for="tempat">Tempat</label>
                                 <input type="text" name="tempat" class="form-control" id="tempat"
@@ -137,7 +143,7 @@
                                     @foreach ($kelas as $class)
                                         <option value="{{ $class->id }}"
                                             {{ $siswa->kelas_id == $class->id ? 'selected' : '' }}>
-                                            {{ $class->nama_kelas }}
+                                            {{ $class->angka_kelas }}
                                         </option>
                                     @endforeach
                                 </select>
