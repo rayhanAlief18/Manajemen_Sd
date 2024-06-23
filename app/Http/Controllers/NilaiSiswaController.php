@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Guru;
 use Illuminate\Http\Request;
 use App\Models\PembayaranSpp;
 use App\Models\Siswa;
@@ -15,17 +16,16 @@ class NilaiSiswaController extends Controller
     {
         $title = "Data Nilai";
         $title2 = "Daftar kelas";
-        $siswa = Siswa::all();
-        $kelas = Kelas::all();
-        $data = NilaiSiswa::all();
+        $kelas = Kelas::withCount('siswa')->where('angka_kelas', '<=', 6)->get();
+        $guru = Guru::with('kelas')->get();
         return view('dashboard.NilaiSiswa.IndexNilai', [
             'title' => $title,
             'title2' => $title2,
             'kelas' => $kelas,
-            // 'siswa' => $siswa,
-            // 'data' => $data
+            'guru' => $guru
         ]);
     }
+
 
 
     public function DaftarKelas(Request $request, $id)
@@ -211,7 +211,7 @@ class NilaiSiswaController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy( $id)
+    public function destroy($id)
     {
         $nilai_siswa = NilaiSiswa::findOrFail($id);
         $nilai_siswa->delete();

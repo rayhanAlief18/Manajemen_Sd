@@ -42,7 +42,7 @@ class AbsensiController extends Controller
         $tanggalSekarang = Carbon::now()->startOfDay()->toDateString();
         $haridantanggal = $hariIni." ".$tanggalSekarang;
 
-        $title = "Data Murid Kelas :";    
+        $title = "Data Murid Kelas :";
         $DataSiswa = DB::table('siswas')
         ->join('kelas', 'siswas.kelas_id', '=', 'kelas.id')->join('gurus','gurus.kelas_id','=','siswas.kelas_id')
         ->select('siswas.*', 'kelas.angka_kelas', 'kelas.id as id_kelas','gurus.nama_guru')
@@ -72,7 +72,7 @@ class AbsensiController extends Controller
         // $image = $request->file('image');
         // $filename = date('Y-m-d') . $image->getClientOriginalName();
         // $path = 'absensi/' . $filename;
-        
+
         // // Menggunakan putFile() untuk menyimpan file langsung
         // Storage::disk('public')->put($path, file_get_contents($image));
         // // Buat post baru setelah file disimpan
@@ -185,7 +185,7 @@ class AbsensiController extends Controller
                 'status'=>$request->status,
                 'nama_guru'=>$request->nama_guru,
             ]);
-            return redirect()->route('ShowSiswaAbsensi',$id)->with(['Success' => 'Data Berhasil Disimpan!']);
+            return redirect()->route('ShowSiswaAbsensi', $request->id)->with(['Success' => 'Data Berhasil Disimpan!']);
         }
 
         if($request->status == "izin"){
@@ -196,7 +196,7 @@ class AbsensiController extends Controller
                 'status'=>$request->status,
                 'nama_guru'=>$request->nama_guru,
             ]);
-            return redirect()->route('ShowSiswaAbsensi',$id)->with(['Success' => 'Data Berhasil Disimpan!']);
+            return redirect()->route('ShowSiswaAbsensi', $request->id)->with(['Success' => 'Data Berhasil Disimpan!']);
         }
 
         if($request->status == "sakit"){
@@ -207,7 +207,7 @@ class AbsensiController extends Controller
                 'status'=>$request->status,
                 'nama_guru'=>$request->nama_guru,
             ]);
-            return redirect()->route('ShowSiswaAbsensi',$id)->with(['Success' => 'Data Berhasil Disimpan!']);
+            return redirect()->route('ShowSiswaAbsensi', $request->id)->with(['Success' => 'Data Berhasil Disimpan!']);
         }
 
         if($request->status == "tidak hadir"){
@@ -218,7 +218,7 @@ class AbsensiController extends Controller
                 'status'=>$request->status,
                 'nama_guru'=>$request->nama_guru,
             ]);
-            return redirect()->route('ShowSiswaAbsensi',$id)->with(['Success' => 'Data Berhasil Disimpan!']);
+            return redirect()->route('ShowSiswaAbsensi', $request->id)->with(['Success' => 'Data Berhasil Disimpan!']);
         }
     }
 
@@ -275,13 +275,13 @@ class AbsensiController extends Controller
         ->where('absensi.id', $id)
         ->first();
 
-        
+
         $image = $request->file('image');
         //if you upload image
         if($image){
             $filename = $DataAbsensiNow->nama_siswa. date('Y-m-d') . $image->getClientOriginalName();
             $path = 'absensi/' . $filename;
-            
+
             // Menggunakan putFile() untuk menyimpan file langsung
             Storage::disk('public')->put($path, file_get_contents($image));
 
@@ -290,14 +290,14 @@ class AbsensiController extends Controller
                 'foto_surat_izin' => $filename,
                 'catatan' => $request->catatan,
             ]);
-            
+
             return redirect()->route('ShowSiswaAbsensi',$DataAbsensiNow->id_kelas)->with(['Success' => 'Data Berhasil Disimpan!']);
 
         }else{
             Absensi::Where('id',$id)->update([
                 'catatan' => $request->catatan,
             ]);
-            
+
             return redirect()->route('ShowSiswaAbsensi',$DataAbsensiNow->id_kelas)->with(['Success' => 'Data Berhasil Disimpan!']);
 
         }

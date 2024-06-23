@@ -36,10 +36,6 @@
                 @endif
                 {{-- table --}}
                 <div class="card">
-                    <div class="card-header">
-                        <a href="{{ route('RiwayatBayar') }}" class="btn btn-primary"><i class="mr-2 fas fa-eye"></i>
-                            Semua Rekap Pembayaran</a>
-                    </div>
                     <!-- /.card-header -->
                     <div class="card-body">
                         <table id="example1" class="table table-striped">

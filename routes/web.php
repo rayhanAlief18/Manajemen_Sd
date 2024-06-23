@@ -14,6 +14,7 @@ use App\Http\Controllers\JadwalController;
 //operational
 use App\Http\Controllers\KelasController;
 use App\Http\Controllers\AbsensiController;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\NilaiSiswaController;
 use App\Http\Controllers\PrestasiController;
 use App\Http\Controllers\RuanganController;
@@ -30,23 +31,31 @@ use App\Http\Controllers\SiswaController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+// Route::get('/', function () {
+//     return view('welcome');
+// });
+
+Route::middleware('guest')->group(function() {
+    Route::get('/',[AuthController::class,'index']);
+    Route::post('/',[AuthController::class,'login']);
 });
 
-Route::get('/dashboard',[HomeController::class,'dashboard']);
+Route::get('/logout', [AuthController::class, 'logout']);
+
+Route::get('/dashboard',[HomeController::class,'dashboard'])->name('dashboard');
 
 //warga
-Route::resource('/guru', GuruController::class);
-Route::resource('/staff', StaffController::class);
-Route::resource('/siswa', SiswaController::class);
-Route::resource('/BayarSpp', PembayaranSppController::class);
-Route::resource('/nilai', NilaiSiswaController::class);
-Route::resource('/matapelajaran', MataPelajaranController::class);
-Route::resource('jadwal', JadwalController::class);
-Route::resource('/prestasi', PrestasiController::class);
-Route::resource('/barang', BarangController::class);
-Route::resource('/ruangan', RuanganController::class);
+Route::resource('/guru', GuruController::class)->middleware('protect');;
+Route::resource('/staff', StaffController::class)->middleware('protect');;
+Route::resource('/siswa', SiswaController::class)->middleware('protect');;
+Route::resource('/BayarSpp', PembayaranSppController::class)->middleware('protect');;
+Route::resource('/nilai', NilaiSiswaController::class)->middleware('protect');;
+Route::resource('/matapelajaran', MataPelajaranController::class)->middleware('protect');;
+Route::resource('jadwal', JadwalController::class)->middleware('protect');;
+Route::resource('/prestasi', PrestasiController::class)->middleware('protect');;
+Route::resource('/barang', BarangController::class)->middleware('protect');;
+Route::resource('/ruangan', RuanganController::class)->middleware('protect');;
+Route::resource('/absensi', AbsensiController::class)->middleware('protect');;
 // Route::get('/BayarSpp/{siswa_id}', [PembayaranSppController::class, 'create'])->name('pembayaran.create');
 // Route::get('/BayarSpp/create/{id}', [App\Http\Controllers\PembayaranSppController::class, 'create']);
 

@@ -24,19 +24,19 @@
     <!-- Main content -->
     <section class="content">
       <div class="container-fluid">
-        
+
             @if (session('Success'))
             <div class="alert alert-success alert-dismissible fade show" role="alert">
               {{session('Success')}}
               <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
-            </div>  
+            </div>
             @endif
         {{-- table --}}
         <div class="card">
           <div class="card-header">
-            <a href="{{ route('kelas.create') }}" class="btn btn-primary"><i class="mr-2 fas fa-user-plus"></i> Tambah Data</a>
+            {{-- <a href="{{ route('kelas.create') }}" class="btn btn-primary"><i class="mr-2 fas fa-user-plus"></i> Tambah Data</a> --}}
           </div>
           <!-- /.card-header -->
           <div class="card-body">
@@ -77,9 +77,9 @@
                         @endif
                       </td>
                       <td>
-                        {{$class->nama_guru}} 
+                        {{$class->nama_guru}}
                       </td>
-                      
+
                       <td class="d-flex flex-row">
                         <a href="{{route('absensi.edit',$class->id)}}" class="btn btn-primary mr-2"><i class="fas fa-plus-circle"></i></a>
                         <button type="button" class="btn btn-info" data-toggle="modal"
@@ -102,7 +102,7 @@
                                                           <span aria-hidden="true">&times;</span>
                                                       </button>
                                                   </div>
-  
+
                                                       <div class="modal-body p-0">
                                                           <div class="card-body row p-4">
                                                               <div class="form-group col-md-6">
