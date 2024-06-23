@@ -19,8 +19,5 @@ class Absensi extends Model
         'foto_surat_izin',   
     ];
 
-    public function student()
-    {
-        return $this->belongsTo(Student::class, 'student_id');
-    }
+    
 }
