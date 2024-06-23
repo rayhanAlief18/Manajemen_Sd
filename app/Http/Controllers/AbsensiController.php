@@ -49,7 +49,8 @@ class AbsensiController extends Controller
 
         $title = "Data Murid Kelas :";
         $DataSiswa = DB::table('siswas')
-            ->join('kelas', 'siswas.kelas_id', '=', 'kelas.id')->join('gurus', 'gurus.kelas_id', '=', 'siswas.kelas_id')
+            ->join('kelas', 'siswas.kelas_id', '=', 'kelas.id')
+            ->join('gurus', 'gurus.kelas_id', '=', 'siswas.kelas_id')
             ->select('siswas.*', 'kelas.angka_kelas', 'kelas.id as id_kelas', 'gurus.nama_guru')
             ->where('kelas.id', $id)
             ->get();
@@ -61,6 +62,7 @@ class AbsensiController extends Controller
             ->where('absensi.id_kelas', $id)
             ->whereDate('absensi.date', $haridantanggal) // Hanya ambil data absensi hari ini
             ->get();
+        
 
 
         return view('dashboard.Absensi.ShowSiswaAbsensi', [
@@ -308,12 +310,22 @@ class AbsensiController extends Controller
          ->count();
 
         // presentase hadir
-        $PresentaseHadir =  $TotalPertemuanHadir / $TotalPertemuan  * 100;
-        $PresentaseTidakHadir = $TotalPertemuanTidakHadir/ $TotalPertemuan * 100;
-        $PresentaseIzin = $TotalPertemuanIzin/ $TotalPertemuan * 100;
-        $PresentaseSakit = $TotalPertemuanSakit/ $TotalPertemuan * 100;
+
+           
+
+            if($TotalPertemuan > 0){
+                $PresentaseHadir =  $TotalPertemuanHadir / $TotalPertemuan  * 100;
+                $PresentaseTidakHadir = $TotalPertemuanTidakHadir/ $TotalPertemuan * 100;
+                $PresentaseIzin = $TotalPertemuanIzin/ $TotalPertemuan * 100;
+                $PresentaseSakit = $TotalPertemuanSakit/ $TotalPertemuan * 100;
+            }else{
+                $PresentaseHadir =  0;
+                $PresentaseTidakHadir = 0;
+                $PresentaseIzin = 0;
+                $PresentaseSakit = 0;
+            }
         
-        $title = "Data Rekap Absensi Seluruh Siswa";
+        $title = "Rekap Absensi";
         $DataAbsensiNow = DB::table('absensi')
             ->join('siswas', 'siswas.id', '=', 'absensi.id_siswa')
             ->join('kelas', 'absensi.id_kelas', '=', 'kelas.id')
@@ -321,22 +333,22 @@ class AbsensiController extends Controller
             ->where('absensi.id_kelas', $id_kelas)
             ->where('absensi.id_siswa', $id_siswa)
             ->get();
-
-        return view('dashboard.Absensi.ShowAbsensiPerSiswa', [
-            'title' => $title,
-            'DataAbsensiNow' => $DataAbsensiNow,
-            'TotalPertemuan' => $TotalPertemuan,
-            'TotalPertemuanHadir' => $TotalPertemuanHadir,
-            'PresentaseHadir' => $PresentaseHadir,
-            'TotalPertemuanTidakHadir' => $TotalPertemuanTidakHadir,
-            'PresentaseTidakHadir' => $PresentaseTidakHadir,
-            'TotalPertemuanIzin' => $TotalPertemuanIzin,
-            'PresentaseIzin' => $PresentaseIzin,
-            'TotalPertemuanSakit' => $TotalPertemuanSakit,
-            'PresentaseSakit' => $PresentaseSakit,
-
-            
-        ]);
+        
+        
+            return view('dashboard.Absensi.ShowAbsensiPerSiswa', [
+                'title' => $title,
+                'DataAbsensiNow' => $DataAbsensiNow,
+                'TotalPertemuan' => $TotalPertemuan,
+                'TotalPertemuanHadir' => $TotalPertemuanHadir,
+                'PresentaseHadir' => $PresentaseHadir,
+                'TotalPertemuanTidakHadir' => $TotalPertemuanTidakHadir,
+                'PresentaseTidakHadir' => $PresentaseTidakHadir,
+                'TotalPertemuanIzin' => $TotalPertemuanIzin,
+                'PresentaseIzin' => $PresentaseIzin,
+                'TotalPertemuanSakit' => $TotalPertemuanSakit,
+                'PresentaseSakit' => $PresentaseSakit,    
+            ]);
+        
     }
 
     /**

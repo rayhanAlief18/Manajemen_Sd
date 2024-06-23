@@ -48,7 +48,7 @@
                 <th>Nama</th>
                 <th>Jabatan</th>
                 <th>Kelas</th>
-                <th>Data Siswa</th>
+                {{-- <th>Data Siswa</th> --}}
                 <th>Action</th>
               </tr>
               </thead>
@@ -65,13 +65,13 @@
                       -
                       @endif
                     </td>
-                    <td >
+                    {{-- <td >
                       @if($guru->jabatan == 'guru wali kelas')
-                        <a href="" class="btn btn-info"><i class="fas fa-person"></i>Data Murid</a>
+                        <a href="{{route('siswa')$guru->id_kelas}}" class="btn btn-info"><i class="fas fa-person"></i>Data Murid</a>
                       @else
                         -
                       @endif
-                    </td>
+                    </td> --}}
                     <td>
                       <form action="{{route('guru.destroy',$guru->id)}}" method="POST">
                         @csrf
@@ -231,13 +231,14 @@
                 @endforeach
               </tbody>
               <tfoot>
-              <tr>
-                <th>No</th>
-                <th>NIP</th>
-                <th>Nama</th>
-                <th>Kelas</th>
-                <th>Action</th>
-              </tr>
+                <tr>
+                  <th>No</th>
+                  <th>Nama</th>
+                  <th>Jabatan</th>
+                  <th>Kelas</th>
+                  {{-- <th>Data Siswa</th> --}}
+                  <th>Action</th>
+                </tr>
               </tfoot>
             </table>
           </div>

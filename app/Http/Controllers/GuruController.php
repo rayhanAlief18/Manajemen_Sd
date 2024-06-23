@@ -50,7 +50,7 @@ class GuruController extends Controller
     public function store(Request $request)
     { 
         $messages = [
-            'kelas_id.unique' => 'Kelas sudah ditempati guru lain',
+            // 'kelas_id.unique' => 'Kelas sudah ditempati guru lain',
             'tempat_lahir.required' => 'Tempat lahir wajib diisi.',
             'tanggal_lahir.required' => 'Tanggal lahir wajib diisi.',
             'tanggal_lahir.date' => 'Tanggal lahir harus berupa tanggal yang valid.',
@@ -83,7 +83,7 @@ class GuruController extends Controller
             'image'     => 'required|mimes:jpeg,jpg,png|max:2048',
             'nama_guru' => 'required|min:5',
             'jabatan' => 'required',
-            'kelas_id'     => 'required|unique:gurus,kelas_id',
+            'kelas_id'     => 'required',
             'tempat_lahir' => 'required|string|max:255',
             'tanggal_lahir' => 'required|date',
             'nik' => 'required|string|max:16',

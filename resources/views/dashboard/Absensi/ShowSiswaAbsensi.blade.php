@@ -57,7 +57,7 @@
           </div>
           <!-- /.card-header -->
           <div class="card-body">
-            <table id="example1" class="table table-bordered table-striped">
+            <table id="example1 " class="text-center table table-bordered table-striped">
               <thead>
               <tr>
                 <th>No</th>
@@ -67,6 +67,15 @@
               </tr>
               </thead>
               <tbody>
+                @if($hariIni == "minggu")
+                <tr>
+                  <td>Tidak ada pelajaran...</td>
+                  <td>Tidak ada pelajaran...</td>
+                  <td>Tidak ada pelajaran...</td>
+                  <td>Tidak ada pelajaran...</td>
+                </tr>
+                
+            @else
                 @foreach ($DataSiswa as $class)
                 <tr>
                     <td>{{$loop->iteration}}</td>
@@ -77,7 +86,8 @@
                       {{$class->angka_kelas}}
                     </td>
                     
-                    <td class="d-flex flex-row ">
+                    <td class="" style="display: flex; flex-direction:column;align-items:center; gap:10px">
+                      {{-- @if($class->date == $haridantanggal) --}}
                       <form action="{{route('tambahAbsensiSiswa',$class->id_kelas)}}" method="POST" class="ml-2 ">
                         @csrf
                         <div class="d-flex flex-col d-none">
@@ -102,7 +112,7 @@
                             <input name="nama_guru" type="text" value="{{$class->nama_guru}}">
                           </div>
                         </div>
-                        <button type="submit" class="btn btn-success">Masuk</i></button>
+                        <button type="submit" class="btn btn-success btn-sm">Masuk</i></button>
                       </form>
 
                       <form action="{{route('tambahAbsensiSiswa',$class->id_kelas)}}" method="POST" class="ml-2 ">
@@ -129,7 +139,7 @@
                             <input name="nama_guru" type="text" value="{{$class->nama_guru}}">
                           </div>
                         </div>
-                        <button type="submit" class="btn btn-warning"> Izin</i></button>
+                        <button type="submit" class="btn btn-warning btn-sm"> Izin</i></button>
                       </form>
 
                       <form action="{{route('tambahAbsensiSiswa',$class->id_kelas)}}" method="POST" class="ml-2 ">
@@ -156,12 +166,12 @@
                             <input name="nama_guru" type="text" value="{{$class->nama_guru}}">
                           </div>
                         </div>
-                        <button type="submit" class="btn btn-info">Sakit</i></button>
+                        <button type="submit" class="btn btn-info btn-sm">Sakit</i></button>
                       </form>
 
                       <form action="{{route('tambahAbsensiSiswa',$class->id_kelas)}}" method="POST" class="ml-2 ">
                         @csrf
-                        <div class="d-flex flex-col d-none">
+                        <div class="d-flex flex-col ">
                           <div class="d-none">
                             <label for="">id_siswa</label>
                             <input name="id_siswa" type="text" value="{{$class->id}}" >
@@ -183,19 +193,19 @@
                             <input name="nama_guru" type="text" value="{{$class->nama_guru}}">
                           </div>
                         </div>
-                        <button type="submit" class="btn btn-danger">Tidak Hadir</i></button>
+                        <button type="submit" class="btn btn-danger btn-sm">Tidak Hadir</i></button>
                       </form>
-
-                      
+                      {{-- @endif --}}
                     </td>
                 </tr>
                 @endforeach
+                @endif
               </tbody>
               <tfoot>
               <tr>
                 <th>No</th>
+                <th>Nama Siswa</th>
                 <th>Kelas</th>
-                <th>Murid</th>
                 <th>Action</th>
               </tr>
               </tfoot>
@@ -318,4 +328,6 @@
 </section>
 <!-- /.content -->
 </div>
+
+
 @endsection

@@ -48,7 +48,7 @@
                 <th>Murid</th>
               </tr>
               </thead>
-              <tbody>
+              <tbody>               
                 @foreach ($kelas as $class)
                 <tr>
                     <td>{{$loop->iteration}}</td>

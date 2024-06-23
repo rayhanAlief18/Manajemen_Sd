@@ -30,7 +30,6 @@
           Ini judul
         </div>
           <div class="card-body row justify-content-between">
-            
             <div class="col-md-2">
               <p>Total Kehadiran </p>
               <p>{{$TotalPertemuanHadir}} / {{$TotalPertemuan}} ({{$PresentaseHadir}}%)</p>
