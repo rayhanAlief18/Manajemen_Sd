@@ -169,7 +169,7 @@
             <a href="{{url('/nilai')}}" class="nav-link">
               <i class="nav-icon fas fa-file-invoice-dollar  "></i>
               <p>
-                Niali Siswa
+                Nilai Siswa
               </p>
             </a>
           </li>
@@ -195,6 +195,14 @@
               <i class="nav-icon fas fa-list"></i>
               <p>
                 Pengelolaan Jadwal
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{{route('absensi.index')}}" class="nav-link">
+              <i class="nav-icon fas fa-list"></i>
+              <p>
+                History Absensi
               </p>
             </a>
           </li>

@@ -13,9 +13,10 @@ class Absensi extends Model
         'id_siswa',
         'id_kelas',
         'date',
-        'status',
-        'catatan',
-        'id_guru',
+        'status',   
+        'catatan',   
+        'nama_guru',
+        'foto_surat_izin',   
     ];
 
     public function student()

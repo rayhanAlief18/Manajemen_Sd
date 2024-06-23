@@ -15,16 +15,17 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('id_siswa');
             $table->unsignedBigInteger('id_kelas');
-            $table->date('date');
+            $table->string('date');
             $table->enum('status', ['hadir', 'tidak hadir', 'izin', 'sakit']);
             $table->string('catatan')->nullable();
-            $table->unsignedBigInteger('id_guru');
+            $table->string('foto_surat_izin')->nullable();
+            $table->string('nama_guru');
             $table->timestamps();
 
             // Menambahkan foreign key constraint
             $table->foreign('id_siswa')->references('id')->on('siswas')->onDelete('cascade');
             $table->foreign('id_kelas')->references('id')->on('kelas')->onDelete('cascade');
-            $table->foreign('id_guru')->references('id')->on('gurus')->onDelete('cascade');
+            // $table->foreign('id_guru')->references('id')->on('gurus')->onDelete('cascade');
         });
     }
 

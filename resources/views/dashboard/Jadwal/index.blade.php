@@ -52,6 +52,7 @@
               
             <div class="row">
                 @foreach($kelas as $kelas)
+                @if($kelas->angka_kelas <= 6)
                 <div class="col-lg-3 col-6">
                   <!-- small box -->
                   <div class="small-box bg-info">
@@ -66,6 +67,7 @@
                     <a href="{{route('jadwal.show',$kelas->id)}}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                   </div>
                 </div>
+                @endif
                 @endforeach
           </div>
         </div>
