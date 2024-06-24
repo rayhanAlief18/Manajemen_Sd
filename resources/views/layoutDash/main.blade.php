@@ -95,76 +95,7 @@
                         data-accordion="false">
                         <!-- Add icons to the links using the .nav-icon class
           with font-awesome or any other icon font library -->
-<<<<<<< HEAD
                         <li class="nav-header">Operasional</li>
-=======
-          <li class="nav-header">Operasional</li>
-          <li class="nav-item">
-            <a href="{{url('/siswa')}}" class="nav-link">
-              <i class="nav-icon fas fa-user-graduate"></i>
-              <p> Siswa & Wali
-                {{-- <span class="badge badge-info right">2</span> --}}
-              </p>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="{{url('/BayarSpp')}}" class="nav-link">
-              <i class="nav-icon fas fa-file-invoice-dollar  "></i>
-              <p>
-                Pembayaran SPP
-              </p>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="{{url('/nilai')}}" class="nav-link">
-              <i class="nav-icon fas fa-file-invoice-dollar  "></i>
-              <p>
-                Nilai Siswa
-              </p>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="{{url('/')}}" class="nav-link">
-              <i class="nav-icon fas fa-address-book"></i>
-              <p>
-                Prestasi Siswa
-                {{-- <span class="right badge badge-danger">New</span> --}}
-              </p>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="{{route('matapelajaran.index')}}" class="nav-link">
-              <i class="nav-icon fas fa-book"></i>
-              <p>
-                Mata Pelajaran
-              </p>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="{{route('jadwal.index')}}" class="nav-link">
-              <i class="nav-icon fas fa-list"></i>
-              <p>
-                Pengelolaan Jadwal
-              </p>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="{{route('absensi.index')}}" class="nav-link">
-              <i class="nav-icon fas fa-list"></i>
-              <p>
-                History Absensi
-              </p>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="{{url('kelas')}}" class="nav-link">
-              <i class="nav-icon fas fa-layer-group"></i>
-              <p>
-                Kelas
-              </p>
-            </a>
-          </li>
->>>>>>> a8054d546f0a4716776de86684ff9fa7ba034d6c
 
                         {{-- <li class="nav-item">
                             <a href="{{ url('/siswa') }}" class="nav-link">
@@ -265,7 +196,7 @@
                         <li class="nav-header">Keluar</li>
                         <li class="nav-item">
                             <a href="{{ url('/logout') }}" class="nav-link">
-                                <i class="nav-icon fas fa-dolly"></i>
+                                {{-- <i class="nav-icon fas "></i> --}}
                                 <p>
                                     Logout
                                     {{-- <span class="badge badge-info right">2</span> --}}

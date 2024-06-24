@@ -18,10 +18,7 @@ class KelasController extends Controller
     public function index()
     {
         $title = "Data Kelas";
-        $kelas = DB::table('kelas')
-                ->select('kelas.*', 'kelas.id as kelas_id')
-                ->get();
-
+        $kelas = Kelas::all();
         return view('dashboard.Operational.Kelas.DataKelas',[
             'title'=>$title,
             'kelas'=>$kelas,
@@ -34,11 +31,10 @@ class KelasController extends Controller
     public function create()
     {
         $title = "Tambah Data Kelas";
-        $guru = DB::table('guru')->select('guru.*', 'guru.id,guru.nama_guru')->get();
-        $Kelas = "";
+        $guru = Guru::all();
         return view('dashboard.Operational.Kelas.TambahDataKelas',[
             'title'=>$title,
-            'DataGuru'=>$guru,
+            'guru'=>$guru,
         ]);
     }
 
@@ -62,11 +58,11 @@ class KelasController extends Controller
 
         // ELOQUENT
         $kelas = New kelas;
-        $kelas->nama_kelas = $request->nama_kelas;
-        $kelas->wali_kelas = $request->wali_kelas;
+        $kelas->angka_kelas = $request->angka_kelas;
         $kelas->save();
 
-        return redirect()->route('kelas.index')->with('Success', 'Data berhasil ditambahkan');
+        return redirect()->route('kelas.index')->with('Success','Data berhasil ditambahkan');
+
     }
 
     /**
@@ -74,7 +70,7 @@ class KelasController extends Controller
      */
     public function show(string $id)
     {
-        $title = 'Data Siswa Kelas :';
+        $Title = 'Data Siswa Kelas :';
         $DataSiswa = DB::table('siswas')
         ->join('kelas', 'siswa.kelas_id', '=', 'kelas.id')
         ->select('siswa.*', 'kelas.angka_kelas')
@@ -82,8 +78,8 @@ class KelasController extends Controller
         ->first();
 
         return view('dashboard.Operational.Kelas.TambahDataKelas',[
-            'title'=>$title,
-            // 'guru'=>$guru,
+            'title'=>$Title,
+            'guru'=>$DataSiswa,
         ]);
     }
 

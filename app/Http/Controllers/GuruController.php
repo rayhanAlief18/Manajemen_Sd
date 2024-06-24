@@ -223,6 +223,8 @@ class GuruController extends Controller
             'nik' => 'required|string|max:16',
             'no_kk' => 'required|string|max:16',
             'agama' => 'required|string|max:255',
+            'email' => 'required|string|max:255',
+            'password' => 'required|string|max:255',
             'jenis_kelamin' => 'required|string|max:255',
             'nomor_npwp' => 'required|string|max:255',
             'gelar_depan' => 'required|string|max:255',
@@ -271,7 +273,6 @@ class GuruController extends Controller
                 'nik' => $request->nik,
                 'no_kk' => $request->no_kk,
                 'agama' => $request->agama,
-
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
                 'jenis_kelamin' => $request->jenis_kelamin,
