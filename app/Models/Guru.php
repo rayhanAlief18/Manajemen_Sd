@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 
-class Guru extends Model
+class Guru extends Authenticatable
 {
     use HasFactory;
 
@@ -31,4 +31,8 @@ class Guru extends Model
         'role',
         'status'
     ];
+    public function kelas()
+    {
+        return $this->belongsTo(Kelas::class, 'kelas_id');
+    }
 }

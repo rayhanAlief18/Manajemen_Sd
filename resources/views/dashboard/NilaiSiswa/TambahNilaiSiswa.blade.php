@@ -65,8 +65,9 @@
                             <div class="form-group col-sm-4">
                                 <label for="exampleSelectBorder">Mata Pelajaran</label>
                                 <select name="pelajaran_id" class="form-control" id="exampleSelectBorder">
+                                    <option value="" selected disabled>Pilih Pelajaran</option>
                                     @foreach ($mapel as $class)
-                                        <option name="pelajaran_id" value="{{ $class->id }}" selected>
+                                        <option name="pelajaran_id" value="{{ $class->id }}">
                                             {{ $class->nama_pelajaran }}
                                         </option>
                                     @endforeach

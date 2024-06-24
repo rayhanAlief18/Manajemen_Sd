@@ -65,4 +65,11 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
     ];
+
+    protected $routeMiddleware = [
+        // Middleware lain
+        'ceklogin' => \App\Http\Middleware\CekLogin::class,
+        'protect' => \App\Http\Middleware\ProtectMiddleware::class,
+    ];
+
 }

@@ -18,7 +18,7 @@ class KelasController extends Controller
     public function index()
     {
         $title = "Data Kelas";
-        $kelas = Kelas::all(); 
+        $kelas = Kelas::all();
         return view('dashboard.Operational.Kelas.DataKelas',[
             'title'=>$title,
             'kelas'=>$kelas,
@@ -45,9 +45,9 @@ class KelasController extends Controller
     {
         $messages = [
             'angka_kelas.required' => 'Kelas harus dipilih.',
-            'angka_kelas.unique' => 'Angka sudah dipilih... Tidak bisa duplikat', 
+            'angka_kelas.unique' => 'Angka sudah dipilih... Tidak bisa duplikat',
         ];
-        
+
         $validator = Validator::make($request->all(), [
             'angka_kelas' => 'required|unique:kelas,angka_kelas',
         ],[ ]);
@@ -78,8 +78,8 @@ class KelasController extends Controller
         ->first();
 
         return view('dashboard.Operational.Kelas.TambahDataKelas',[
-            'title'=>$title,
-            'guru'=>$guru,
+            'title'=>$Title,
+            'guru'=>$DataSiswa,
         ]);
     }
 
@@ -94,7 +94,7 @@ class KelasController extends Controller
         $kelas = DB::table('kelas')
             ->select('kelas.*')->where('kelas.id',$id)
             ->first();
-        
+
         return view('dashboard.Operational.Kelas.EditDataKelas',[
             'title'=>$title,
             'guru'=>$guru,
@@ -109,9 +109,9 @@ class KelasController extends Controller
     {
         $messages = [
             'angka_kelas.required' => 'Kelas harus dipilih.',
-            'angka_kelas.unique' => 'Angka sudah dipilih... Tidak bisa duplikat', 
+            'angka_kelas.unique' => 'Angka sudah dipilih... Tidak bisa duplikat',
         ];
-        
+
         $validator = Validator::make($request->all(), [
             'angka_kelas' => 'required|unique:kelas,angka_kelas',
         ],[ ]);
@@ -125,7 +125,7 @@ class KelasController extends Controller
         $kelas->angka_kelas = $request->angka_kelas;
         $kelas->save();
 
-        return redirect()->route('kelas.index')->with('Success','Data berhasil diubah');   
+        return redirect()->route('kelas.index')->with('Success','Data berhasil diubah');
     }
 
     /**

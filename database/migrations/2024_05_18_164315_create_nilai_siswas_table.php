@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('nilai_siswas', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('siswa_id')->constrained('siswas')->onDelete('cascade'); // Ensure 'siswas' table exists
-            $table->unsignedBigInteger('pelajaran_id')->constrained('mata_pelajarans')->onDelete('cascade');
+            $table->unsignedBigInteger('siswa_id')->constrained('siswas'); // Ensure 'siswas' table exists
+            $table->unsignedBigInteger('pelajaran_id')->constrained('mata_pelajarans');
             $table->string('semester');
             $table->string('tahun_ajaran');
             $table->integer('KI1_1')->default(0);

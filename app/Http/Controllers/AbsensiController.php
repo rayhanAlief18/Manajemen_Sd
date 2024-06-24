@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
 
@@ -62,7 +61,7 @@ class AbsensiController extends Controller
             ->where('absensi.id_kelas', $id)
             ->whereDate('absensi.date', $haridantanggal) // Hanya ambil data absensi hari ini
             ->get();
-        
+
 
 
         return view('dashboard.Absensi.ShowSiswaAbsensi', [
@@ -259,7 +258,7 @@ class AbsensiController extends Controller
 
 
     public function ShowAbsensiPerSiswa(string $id_kelas, string $id_siswa)
-    {   
+    {
         //ini isi presentase
         $TotalPertemuan = DB::table('absensi')
             ->join('siswas', 'siswas.id', '=', 'absensi.id_siswa')
@@ -311,7 +310,7 @@ class AbsensiController extends Controller
 
         // presentase hadir
 
-           
+
 
             if($TotalPertemuan > 0){
                 $PresentaseHadir =  $TotalPertemuanHadir / $TotalPertemuan  * 100;
@@ -324,7 +323,7 @@ class AbsensiController extends Controller
                 $PresentaseIzin = 0;
                 $PresentaseSakit = 0;
             }
-        
+
         $title = "Rekap Absensi";
         $DataAbsensiNow = DB::table('absensi')
             ->join('siswas', 'siswas.id', '=', 'absensi.id_siswa')
@@ -333,8 +332,8 @@ class AbsensiController extends Controller
             ->where('absensi.id_kelas', $id_kelas)
             ->where('absensi.id_siswa', $id_siswa)
             ->get();
-        
-        
+
+
             return view('dashboard.Absensi.ShowAbsensiPerSiswa', [
                 'title' => $title,
                 'DataAbsensiNow' => $DataAbsensiNow,
@@ -346,9 +345,9 @@ class AbsensiController extends Controller
                 'TotalPertemuanIzin' => $TotalPertemuanIzin,
                 'PresentaseIzin' => $PresentaseIzin,
                 'TotalPertemuanSakit' => $TotalPertemuanSakit,
-                'PresentaseSakit' => $PresentaseSakit,    
+                'PresentaseSakit' => $PresentaseSakit,
             ]);
-        
+
     }
 
     /**
