@@ -61,8 +61,9 @@
               @endforeach --}}
               {{-- <a href="" class="btn btn-primary btn-sm my-2">Absensi</a> --}}
             <div class="row">
+              @if($hariIni !== "minggu")
                 @foreach($jadwal as $jadwalNow)
-                  @if($jadwalNow->hari == $hariIni )
+                @if($jadwalNow->hari == $hariIni)
                     <div class="col-md-3">
                       <div class="card">
                         <div class="card-header bg-info">
@@ -83,12 +84,13 @@
                       </div>
                     </div>
                     
-                @endif
-                @endforeach
+                    @endif
+                    @endforeach
+                    <a href="{{route('ShowSiswaAbsensi',$kelasAbs)}}" class="btn btn-primary d-flex"><i class="fas fa-calendar-check mr-2"></i>
+                      <p class="">Absen</p>
+                    </a>
+                    @endif
               </div>
-              <a href="{{route('ShowSiswaAbsensi',$kelasAbs)}}" class="btn btn-primary d-flex"><i class="fas fa-calendar-check mr-2"></i>
-                <p class="">Absen</p>
-              </a>
           </div> 
         </div>
 

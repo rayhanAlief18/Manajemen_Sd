@@ -24,14 +24,14 @@
     <!-- Main content -->
     <section class="content">
       <div class="container-fluid">
-
+        
             @if (session('Success'))
             <div class="alert alert-success alert-dismissible fade show" role="alert">
               {{session('Success')}}
               <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
-            </div>
+            </div>  
             @endif
         {{-- table --}}
         <div class="card">
@@ -48,7 +48,7 @@
                 <th>Murid</th>
               </tr>
               </thead>
-              <tbody>
+              <tbody>               
                 @foreach ($kelas as $class)
                 <tr>
                     <td>{{$loop->iteration}}</td>
@@ -56,9 +56,7 @@
                     @if($class->angka_kelas <= 6)
                       {{ $class->angka_kelas}}
                     @elseif($class->angka_kelas == 7)
-                      Lulus
                     @elseif($class->angka_kelas == 8)
-                      Tanpa Kelas 
                     @endif
                     </td>
                     @if($class->angka_kelas <= 6)

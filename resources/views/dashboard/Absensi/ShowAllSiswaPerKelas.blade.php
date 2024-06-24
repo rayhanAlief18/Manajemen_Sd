@@ -24,64 +24,58 @@
     <!-- Main content -->
     <section class="content">
       <div class="container-fluid">
-
+        
             @if (session('Success'))
             <div class="alert alert-success alert-dismissible fade show" role="alert">
               {{session('Success')}}
               <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
-            </div>
+            </div>  
             @endif
         {{-- table --}}
         <div class="card">
-          <div class="card-header">
-            <a href="{{ route('kelas.create') }}" class="btn btn-primary"><i class="mr-2 fas fa-user-plus"></i> Tambah Data</a>
-          </div>
           <!-- /.card-header -->
           <div class="card-body">
             <table id="example1" class="table table-bordered table-striped">
-              <thead>
-              <tr>
-                <th>No</th>
-                <th>Kelas</th>
-                <th>Murid</th>
-              </tr>
-              </thead>
-              <tbody>
-                @foreach ($kelas as $class)
+                <thead>
                 <tr>
-                    <td>{{$loop->iteration}}</td>
-                    <td>
-                    @if($class->angka_kelas <= 6)
-                      {{ $class->angka_kelas}}
-                    @elseif($class->angka_kelas == 7)
-                      Lulus
-                    @elseif($class->angka_kelas == 8)
-                      Tanpa Kelas 
-                    @endif
-                    </td>
-                    @if($class->angka_kelas <= 6)
-                    <td>
-                      <a href="" class="btn btn-info"><i class="fas fa-person"></i>Murid</a>
-                    </td>
-                    @else
-                    <td>
-                      -
-                    </td>
-                    @endif
-                    
+                  <th>No</th>
+                  <th>Nama Siswa</th>
+                  <th>Kelas</th>
+                  <th>Guru</th>
+                  <th>Lihat Absensi</th>
                 </tr>
-                @endforeach
-              </tbody>
-              <tfoot>
-              <tr>
-                <th>No</th>
-                <th>Kelas</th>
-                <th>Murid</th>
-              </tr>
-              </tfoot>
-            </table>
+                </thead>
+                <tbody>
+                  @foreach ($DataSiswa as $class)
+                  <tr>
+                      <td>{{$loop->iteration}}</td>
+                      <td>
+                        {{$class->nama_siswa}}
+                      </td>
+                      <td>
+                        {{$class->angka_kelas}}
+                      </td>
+                      <td>
+                        {{$class->nama_guru}}
+                      </td>
+                      <td>
+                        <a href="{{route('ShowAllKelasTiapSiswa',$class->id)}}" class="btn btn-info"><i class="fas fa-calendar-check"></i></a>
+                      </td>
+                  </tr>
+                  @endforeach
+                </tbody>
+                <tfoot>
+                <tr>
+                    <th>No</th>
+                    <th>Nama Siswa</th>
+                    <th>Kelas</th>
+                    <th>Guru</th>
+                    <th>Lihat Absensi</th>
+                </tr>
+                </tfoot>
+              </table>
           </div>
           <!-- /.card-body -->
         </div>

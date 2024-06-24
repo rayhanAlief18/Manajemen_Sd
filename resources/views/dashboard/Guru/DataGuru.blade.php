@@ -21,6 +21,7 @@
         </div>
         <!-- /.content-header -->
 
+<<<<<<< HEAD
         <!-- Main content -->
         <section class="content">
             <div class="container-fluid">
@@ -83,6 +84,61 @@
                                                 <button type="submit" class="btn btn-danger btn-sm"><i
                                                         class="fas fa-trash"></i></button>
                                                 <button type="button" class="btn btn-info btn-sm" data-toggle="modal"
+=======
+        @if (session('Success'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+              {{session('Success')}}
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>  
+            @endif
+        {{-- table --}}
+        <div class="card">
+          <div class="card-header">
+            <a href="{{route('guru.create')}}" class="btn btn-primary"><i class="mr-2 fas fa-user-plus"></i> Tambah Data</a>
+          </div>
+          <!-- /.card-header -->
+          <div class="card-body">
+            <table id="example1" class="table table-bordered table-striped">
+              <thead>
+              <tr>
+                <th>No</th>
+                <th>Nama</th>
+                <th>Jabatan</th>
+                <th>Kelas</th>
+                {{-- <th>Data Siswa</th> --}}
+                <th>Action</th>
+              </tr>
+              </thead>
+              <tbody>
+                @foreach ($DataGuru as $guru)
+                <tr>
+                    <td>{{$loop->iteration}}</td>
+                    <td>{{ $guru->nama_guru }}</td>
+                    <td>{{ $guru->jabatan}}</td>
+                    <td>
+                      @if($guru->jabatan == 'guru wali kelas')
+                      {{ $guru->angka_kelas}}
+                      @else
+                      -
+                      @endif
+                    </td>
+                    {{-- <td >
+                      @if($guru->jabatan == 'guru wali kelas')
+                        <a href="{{route('siswa')$guru->id_kelas}}" class="btn btn-info"><i class="fas fa-person"></i>Data Murid</a>
+                      @else
+                        -
+                      @endif
+                    </td> --}}
+                    <td>
+                      <form action="{{route('guru.destroy',$guru->id)}}" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <a href="{{route('guru.edit',$guru->id)}}" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></a>
+                        <button type="submit" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
+                        <button type="button" class="btn btn-info btn-sm" data-toggle="modal"
+>>>>>>> a8054d546f0a4716776de86684ff9fa7ba034d6c
                                                     data-target="#showModal{{ $guru->id }}">
                                                     <i class="fas fa-user"></i>
                                                 </button>
@@ -241,6 +297,7 @@
                                             </div>
                                         </div>
                                     </div>
+<<<<<<< HEAD
                                 @endforeach
                             </tbody>
                             <tfoot>
@@ -256,6 +313,27 @@
                     </div>
                     <!-- /.card-body -->
                 </div>
+=======
+                @endforeach
+              </tbody>
+              <tfoot>
+                <tr>
+                  <th>No</th>
+                  <th>Nama</th>
+                  <th>Jabatan</th>
+                  <th>Kelas</th>
+                  {{-- <th>Data Siswa</th> --}}
+                  <th>Action</th>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+          <!-- /.card-body -->
+        </div>
+        
+        <!-- Button trigger modal -->
+       
+>>>>>>> a8054d546f0a4716776de86684ff9fa7ba034d6c
 
                 <!-- Button trigger modal -->
 

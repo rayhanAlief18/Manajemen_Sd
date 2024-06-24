@@ -60,7 +60,7 @@
                                         <td>{{ $datas->NISN }}</td>
                                         <td>{{ $datas->nama_siswa }}</td>
                                         <td>{{ $datas->jenis_kelamin }}</td>
-                                        <td>{{ $datas->kelas->nama_kelas }}</td>
+                                        <td>{{ $datas->kelas->angka_kelas }}</td>
                                         <td>
                                             <a class="btn btn-sm btn-primary" data-toggle="tooltip" data-placement="top" title="Tambah Pembayaran Siswa"  href="{{ route('BayarSpp.show', $datas->id) . '?id=' . $datas->id . '&nisn=' . $datas->nisn . '&nama_siswa=' . $datas->nama_siswa }}">+ Tambah</a>
                                             <a data-toggle="tooltip" data-placement="top" title="Riwayat Pembayaran Siswa" class="btn btn-sm btn-info"

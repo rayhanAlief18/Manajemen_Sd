@@ -140,6 +140,8 @@ class JadwalController extends Controller
             $jadwal = DB::table('jadwals')->join('gurus','gurus.id','=','jadwals.id_guru')->join('kelas','kelas.id','=','jadwals.id_kelas')->join('mata_pelajarans','mata_pelajarans.id','=','jadwals.id_mapel')
                 ->select('jadwals.*','jadwals.id as id_jadwal','gurus.nama_guru','kelas.angka_kelas','kelas.id as id_kelas', 'mata_pelajarans.nama_pelajaran')->where('kelas.id',$id)
                 ->get();
+            
+                
 
         return view('dashboard.Jadwal.DataJadwal',[
             'title'=>$title,
