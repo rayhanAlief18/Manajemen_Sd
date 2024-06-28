@@ -66,6 +66,7 @@ Route::resource('/inventaris', InventarisController::class);
 Route::resource('kelas', KelasController::class);
 
 Route::get('/riwayatbayar', [PembayaranSppController::class, 'riwayatBayar'])->name('RiwayatBayar');
+Route::get('/BuktiRiwayarBayar/{id}', [PembayaranSppController::class, 'BuktiRiwayatBayar'])->name('BuktiRiwayatBayar');
 Route::get('/ShowSiswaAbsensi/{id}', [AbsensiController::class, 'ShowSiswaAbsensi'])->name('ShowSiswaAbsensi');
 Route::post('/tambahAbsensiSiswa/{id}', [AbsensiController::class, 'tambahAbsensiSiswa'])->name('tambahAbsensiSiswa');
 Route::get('/ShowAllKelasTiapSiswa/{id}', [AbsensiController::class, 'ShowAllKelasTiapSiswa'])->name('ShowAllKelasTiapSiswa');

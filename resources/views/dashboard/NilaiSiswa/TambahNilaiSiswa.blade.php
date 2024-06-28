@@ -26,14 +26,14 @@
         <section class="content">
             <div class="container-fluid">
                 @if ($errors->any())
-                    @foreach ($errors->all() as $error)
+                    {{-- @foreach ($errors->all() as $error) --}}
                         <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                            <strong>{{ $error }}</strong> mohon periksa kembali
+                            <strong>Kesalahan!</strong> mohon periksa kembali
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
-                    @endforeach
+                    {{-- @endforeach --}}
                 @endif
                 <!-- general form elements -->
                 <div class="card card-info">
@@ -67,11 +67,13 @@
                                 <select name="pelajaran_id" class="form-control" id="exampleSelectBorder">
                                     <option value="" selected disabled>Pilih Pelajaran</option>
                                     @foreach ($mapel as $class)
-                                        <option name="pelajaran_id" value="{{ $class->id }}">
-                                            {{ $class->nama_pelajaran }}
-                                        </option>
+                                    <option value="{{ $class->id }}" {{ old('pelajaran_id') == $class->id ? 'selected' : '' }}>
+                                        {{ $class->nama_pelajaran }}
                                     @endforeach
                                 </select>
+                                @error('pelajaran_id')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
                             </div>
 
                             <div class="form-group col-sm-4">
@@ -85,10 +87,16 @@
                                 <select name="tahun_ajaran" class="form-control" id="tahun_ajaran">
                                     <option value="">Pilih tahun...</option>
                                     @for ($year = 2010; $year <= date('Y'); $year++)
-                                        <option value="{{ $year - 1 }} / {{ $year }}">{{ $year - 1 }} /
+                                    @php
+                                    $yearRange = ($year - 1) . ' / ' . $year;
+                                @endphp
+                                        <option value="{{ $year - 1 }} / {{ $year }}" {{ old('tahun_ajaran') == $yearRange ? 'selected' : '' }}>{{ $year - 1 }} /
                                             {{ $year }}</option>
                                     @endfor
                                 </select>
+                                @error('tahun_ajaran')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
                             </div>
 
                             {{-- <div class="form-group col-sm-6">
@@ -129,6 +137,7 @@
                             <thead>
                                 <tr>
                                     {{-- <th>No</th> --}}
+                                    <th>Mata Pelajaran</th>
                                     <th>Semester</th>
                                     <th>Tahun Ajaran</th>
                                     <th>KI 1</th>
@@ -142,6 +151,7 @@
                             <tbody>
                                 @foreach ($data as $datas)
                                     <tr>
+                                        <td>{{ $datas->mataPelajaran->  nama_pelajaran }}</td>
                                         <td>{{ $datas->semester }}</td>
                                         <td>{{ $datas->tahun_ajaran }}</td>
                                         <td>

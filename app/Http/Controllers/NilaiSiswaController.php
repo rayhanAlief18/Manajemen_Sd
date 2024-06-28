@@ -72,10 +72,18 @@ class NilaiSiswaController extends Controller
 
     public function store(Request $request)
     {
+
+    $customMessages = [
+        'pelajaran_id.required' => 'Mata pelajaran wajib dipilih.',
+        'pelajaran_id.exists' => 'Mata pelajaran yang dipilih tidak valid.',
+        'tahun_ajaran.required' => 'Tahun ajaran wajib diisi.',
+        'tahun_ajaran.string' => 'Tahun ajaran harus berupa teks.',
+    ];
+
         $request->validate([
             'pelajaran_id' => 'required|exists:mata_pelajarans,id',
             'tahun_ajaran' => 'required|string',
-        ]);
+        ],$customMessages);
 
         // Menggunakan siswa_id untuk menemukan siswa
         $student = Siswa::find($request->id_siswa);
@@ -130,16 +138,14 @@ class NilaiSiswaController extends Controller
         // Menggunakan model MataPelajaran untuk mendapatkan semua mata pelajaran
         $mapel = MataPelajaran::all();
 
-        // Filter NilaiSiswa berdasarkan siswa_id
-        $tagihan = NilaiSiswa::with('siswa')->where('siswa_id', $id)->get();
+        // Filter NilaiSiswa berdasarkan siswa_id dengan eager loading mataPelajaran
+        $tagihan = NilaiSiswa::with(['siswa', 'kelas', 'mataPelajaran'])->where('siswa_id', $id)->get();
 
-        // Mendefinisikan variabel untuk tampilan
         $title = "Data Nilai Siswa";
         $siswa = Siswa::findOrFail($id);
         $kelas = Kelas::all();
 
-        // Hanya mengambil nilai siswa yang sesuai dengan ID siswa
-        $data = NilaiSiswa::where('siswa_id', $id)->get();
+        $data = NilaiSiswa::with('mataPelajaran')->where('siswa_id', $id)->get();
 
         // Mengembalikan view dengan data yang diperlukan
         return view('dashboard.NilaiSiswa.TambahNilaiSiswa', compact('title', 'siswa', 'data', 'kelas', 'mapel'))->with('success', 'Data siswa berhasil diperbarui!');

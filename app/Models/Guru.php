@@ -17,6 +17,8 @@ class Guru extends Authenticatable
         'nik',
         'no_kk',
         'agama',
+        'email',
+        'password',
         'jenis_kelamin',
         'nomor_npwp',
         'gelar_depan',

@@ -26,14 +26,12 @@
         <section class="content">
             <div class="container-fluid">
                 @if ($errors->any())
-                    @foreach ($errors->all() as $error)
                         <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                            <strong>{{ $error }}</strong> mohon periksa kembali
+                            <strong>Kesalahan!</strong> Data yang dimasukkan tidak sesuai
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
-                    @endforeach
                 @endif
                 <!-- general form elements -->
                 <div class="card card-info">
@@ -50,6 +48,7 @@
                                 <label for="nisn">NISN</label>
                                 <input type="number" value="{{ $siswa->NISN }}" class="form-control" id="nisn"
                                     readonly>
+                                
                             </div>
                             <div class="form-group col-sm-6">
                                 <label for="nama_siswa">Nama Siswa</label>
@@ -59,16 +58,22 @@
                             <div class="form-group col-sm-6">
                                 <label for="kd_bayar">kd_bayar</label>
                                 <input type="number" name="kd_bayar" class="form-control" id="kd_bayar"
-                                    placeholder="Masukkan Kode Bayar...">
+                                    placeholder="Masukkan Kode Bayar..." value="{{old('kd_bayar')}}">
+                                    @error('kd_bayar')
+                                        <div class="text-danger">{{ $message }}</div>
+                                    @enderror
                             </div>
                             <div class="form-group col-sm-3">
                                 <label for="bulan">Bulan</label>
                                 <select name="bulan" class="form-control" id="bulan">
                                     <option value="">Pilih bulan...</option>
                                     @foreach (['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'] as $month => $months)
-                                        <option value="{{ $months }}">{{ $months }}</option>
-                                    @endforeach
+                                        <option value="{{ $months }}" {{ old('bulan') == $months ? 'selected' : '' }}>{{ $months }}</option>
+                                        @endforeach
                                 </select>
+                                @error('bulan')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
                             </div>
 
                             <div class="form-group col-sm-3">
@@ -76,21 +81,30 @@
                                 <select name="tahun" class="form-control" id="tahun">
                                     <option value="">Pilih tahun...</option>
                                     @for ($year = 2010; $year <= date('Y'); $year++)
-                                        <option value="{{ $year }}">{{ $year }}</option>
+                                        <option value="{{ $year }}" {{ old('tahun') == $year ? 'selected' : '' }}>{{ $year }}</option>
                                     @endfor
                                 </select>
+                                @error('tahun')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
                             </div>
 
                             <div class="form-group col-sm-6">
                                 <label for="jumlah_pembayaran">Nominal</label>
                                 <input type="text" name="jumlah_pembayaran" class="form-control" id="jumlah_pembayaran"
-                                    placeholder="Masukkan jumlah_pembayaran...">
+                                    placeholder="Masukkan jumlah_pembayaran..." value="{{old('jumlah_pembayaran')}}">
+                                    @error('jumlah_pembayaran')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
                             </div>
                             <div class="form-group col-sm-6">
                                 <label for="bukti_pembayaran">Bukti Bayar</label>
                                 <div class="input-group">
                                     <div class="custom-file">
                                         <input name="bukti_pembayaran" type="file" id="bukti_pembayaran" multiple>
+                                        @error('bukti_pembayaran')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
                                     </div>
                                 </div>
                             </div>

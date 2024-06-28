@@ -27,14 +27,14 @@
         <section class="content">
             <div class="container-fluid">
                 @if ($errors->any())
-                    @foreach ($errors->all() as $error)
+                    {{-- @foreach ($errors->all() as $error) --}}
                         <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                            <strong>{{ $error }}</strong> mohon periksa kembali...
+                            <strong>Kesalahan! </strong> mohon periksa kembali...
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
-                    @endforeach
+                    {{-- @endforeach --}}
                 @endif
 
                 <!-- General Form Input Start-->
@@ -58,6 +58,9 @@
                                     <img id="preview_thumbnail" src="#" alt="Preview Gambar" style="max-width: 50%; height: auto; display: none;">
                                 @endif
                                 <br>
+                                @error('gambar_thumbnail')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
                                 <span class="note" style="color: red; font-size: 13px; font-style: italic;">note: jpeg, png, jpg, svg | max:2mb</span>
                             </div>
                             <div class="form-group col-sm-6">
@@ -73,29 +76,44 @@
                             </div>
                             <div class="form-group col-sm-6">
                                 <label for="nama_prestasi">Nama Prestasi:</label>
-                                <input type="text" name="nama_prestasi" class="form-control" id="nama_prestasi" required value="{{$prestasi->nama_prestasi}}">
+                                <input type="text" name="nama_prestasi" class="form-control" id="nama_prestasi"  value="{{$prestasi->nama_prestasi}}">
+                                @error('nama_prestasi')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
                             </div>
                             <div class="form-group col-sm-6">
                                 <label for="anggota">Anggota:</label>
-                                <input type="text" name="anggota" class="form-control" id="anggota" placeholder="Budi, Andi, Tono" required value="{{$prestasi->anggota}}">
+                                <input type="text" name="anggota" class="form-control" id="anggota" placeholder="Budi, Andi, Tono"  value="{{$prestasi->anggota}}">
                                 <span class="note" style="color: red; font-size: 13px; font-style: italic;">note: gunakan koma untuk pemisah jika anggota banyak</span>
+                                @error('anggota')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
                             </div>
                             <div class="form-group col-sm-6">
                                 <label for="tingkat">Tingkat:</label>
-                                <select id="tingkat" name="tingkat" class="form-control" required>
+                                <select id="tingkat" name="tingkat" class="form-control" >
                                     <option value="Kabupaten/Kota" {{ $prestasi->tingkat == 'Kabupaten/Kota' ? 'selected' : '' }}>Kabupaten/Kota</option>
                                     <option value="Provinsi" {{ $prestasi->tingkat == 'Provinsi' ? 'selected' : '' }}>Provinsi</option>
                                     <option value="Nasional" {{ $prestasi->tingkat == 'Nasional' ? 'selected' : '' }}>Nasional</option>
                                     <option value="Internasional" {{ $prestasi->tingkat == 'Internasional' ? 'selected' : '' }}>Internasional</option>
                                 </select>
+                                @error('tingkat')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
                             </div>
                             <div class="form-group col-sm-6">
                                 <label for="tgl_prestasi">Tanggal Prestasi:</label>
-                                <input type="date" name="tgl_prestasi" class="form-control" id="tgl_prestasi" required value="{{$prestasi->tgl_prestasi}}">
+                                <input type="date" name="tgl_prestasi" class="form-control" id="tgl_prestasi"  value="{{$prestasi->tgl_prestasi}}">
+                                @error('tgl_prestasi')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
                             </div>
                             <div class="form-group col-sm-12">
                                 <label for="deskripsi">Deskripsi:</label>
                                 <textarea name="deskripsi" class="form-control" id="deskripsi" placeholder="Masukkan Deskripsi...">{{ $prestasi->deskripsi }}</textarea>
+                                @error('deskripsi')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
                             </div>
                             <div class="form-group col-sm-12">
                                 <label for="dokumentasi">Dokumentasi:</label>
@@ -105,6 +123,9 @@
                                         <img src="{{ asset('storage/dokumentasi/' . $file) }}" alt="Image Dokumentasi" class="dokumentasi-preview-img" style="max-width: 100%; height: auto">
                                     @endforeach
                                 </div>
+                                @error('dokumentasi[]')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
                                 <br>
                                 <span class="note" style="color: red; font-size: 13px; font-style: italic;">note: gunakan ctrl tahan untuk memilih banyak file</span>
                             </div>

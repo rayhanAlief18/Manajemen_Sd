@@ -27,7 +27,7 @@ class MataPelajaranController extends Controller
      */
     public function create()
     {
-        $title = "Tambah Mata Pelajarans";
+        $title = "Tambah Mata Pelajaran";
 
         return view('dashboard.MataPelajaran.TambahDataMataPelajaran',[
             'title'=>$title,
@@ -97,8 +97,8 @@ class MataPelajaranController extends Controller
         ];
 
         $validator = Validator::make($request->all(), [
-            'nama_pelajaran' => 'required|unique:mata_pelajarans,nama_pelajaran,'.$id,
-            'kd_pelajaran' => 'required|unique:mata_pelajarans,kd_pelajaran,'.$id,
+            'nama_pelajaran' => 'required',
+            'kd_pelajaran' => 'required',
         ], $messages);
 
         if ($validator->fails()) {

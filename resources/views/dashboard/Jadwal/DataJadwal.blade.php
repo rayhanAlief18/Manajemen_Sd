@@ -8,7 +8,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">{{$title}}{{$kelasNow->angka_kelas}}</h1>
+            <h1 class="m-0">{{$title}}</h1>
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
@@ -86,7 +86,7 @@
                     
                     @endif
                     @endforeach
-                    <a href="{{route('ShowSiswaAbsensi',$kelasAbs)}}" class="btn btn-primary d-flex"><i class="fas fa-calendar-check mr-2"></i>
+                    <a href="{{route('ShowSiswaAbsensi',$kelasAbs)}}" class="btn btn-primary d-flex ml-2"><i class="fas fa-calendar-check mr-2 mt-1 "></i>
                       <p class="">Absen</p>
                     </a>
                     @endif

@@ -1,4 +1,4 @@
-@extends('layoutDash.main');
+@extends('layoutDash.main')
 
 @section('content')
 <!-- Content Wrapper. Contains page content -->
@@ -26,14 +26,14 @@
       <div class="container-fluid">
 
     @if ($errors->any())
-        @foreach ($errors->all() as $error)
-        <div class="alert alert-warning alert-dismissible fade show" role="alert">
-            <strong>{{ $error }}</strong> mohon periksa kembali
+        {{-- @foreach ($errors->all() as $error) --}}
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>Kesalahan! </strong> mohon periksa kembali
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
             </button>
         </div>
-        @endforeach
+        {{-- @endforeach --}}
     @endif
     
 <!-- Horizontal Form -->
@@ -70,14 +70,14 @@
       <div class="container-fluid">
 
     @if ($errors->any())
-        @foreach ($errors->all() as $error)
-        <div class="alert alert-warning alert-dismissible fade show" role="alert">
-            <strong>{{ $error }}</strong> mohon periksa kembali
+        {{-- @foreach ($errors->all() as $error) --}}
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>kesalahan! </strong> mohon periksa kembali
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
             </button>
         </div>
-        @endforeach
+        {{-- @endforeach --}}
     @endif
     
 <!-- Horizontal Form -->
@@ -97,12 +97,18 @@
           <div class="row justify-content-center">
             <div class="col-md-6">
               <label for="exampleSelectBorder">Nama Mata Pelajaran</label>
-                <input type="text" class="form-control" name="nama_mata_pelajaran" placeholder="Masukkan Nama Pelajaran..." value="{{$mapel->nama_pelajaran}}">
-            </div>
+                <input type="text" class="form-control" name="nama_pelajaran" placeholder="Masukkan Nama Pelajaran..." value="{{$mapel->nama_pelajaran}}">
+                @error('nama_pelajaran')
+                <div class="text-danger">{{ $message }}</div>
+              @enderror
+              </div>
             <div class="col-md-6">
                 <label for="exampleSelectBorder">Kode Mata Pelajaran</label>
-                <input type="text" class="form-control" name="kode_mata_pelajaran" placeholder="Masukkan Kode Mata Pelajaran..." value="{{$mapel->kd_pelajaran}}">
-            </div>
+                <input type="text" class="form-control" name="kd_pelajaran" placeholder="Masukkan Kode Mata Pelajaran..." value="{{$mapel->kd_pelajaran}}">
+                @error('kd_pelajaran')
+                <div class="text-danger">{{ $message }}</div>
+              @enderror
+              </div>
           </div>
        
       </div>

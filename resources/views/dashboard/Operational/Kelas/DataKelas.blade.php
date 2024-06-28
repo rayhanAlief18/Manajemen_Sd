@@ -35,9 +35,9 @@
             @endif
         {{-- table --}}
         <div class="card">
-          <div class="card-header">
+          {{-- <div class="card-header">
             <a href="{{ route('kelas.create') }}" class="btn btn-primary"><i class="mr-2 fas fa-user-plus"></i> Tambah Data</a>
-          </div>
+          </div> --}}
           <!-- /.card-header -->
           <div class="card-body">
             <table id="example1" class="table table-bordered table-striped">

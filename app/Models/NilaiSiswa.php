@@ -21,6 +21,6 @@ class NilaiSiswa extends Model
     // Definisikan relasi dengan MataPelajaran
     public function mataPelajaran()
     {
-        return $this->belongsTo(MataPelajaran::class);
+        return $this->belongsTo(MataPelajaran::class,'pelajaran_id');
     }
 }

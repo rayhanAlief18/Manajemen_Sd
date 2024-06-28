@@ -97,17 +97,52 @@
                                         <td>{{ $datas->tahun }}</td>
                                         <td>Rp {{ number_format($datas->jumlah_pembayaran, 0, ',', '.') }}</td>
                                         <td>{{ $datas->created_at->format('d F Y') }}</td>
+                                        
                                         <td>
-                                            <div class="form-group">
-                                                <img id="previewFoto"
-                                                    src="{{ asset('storage/BuktiBayar/' . $datas->bukti_pembayaran) }}"
-                                                    alt="Bukti Pembayaran" style="max-width: 100px; max-height: 100px;">
-                                            </div>
+                                            {{-- <a class="btn btn-sm btn-primary" href="{{ route('BayarSpp.show', $datas->id) . '?id=' . $datas->id . '&nisn=' . $datas->nisn . '&nama_siswa=' . $datas->nama_siswa }}">Tambah Pembayaran</a> --}}
+                                            <button type="button" class="btn btn-info" data-toggle="modal"
+                                            data-target="#showModal{{ $datas->id }}">
+                                            <i class="fas fa-user"></i>
+                                        </button>
                                         </td>
-                                        {{-- <td>
-                                            <a class="btn btn-sm btn-primary" href="{{ route('BayarSpp.show', $datas->id) . '?id=' . $datas->id . '&nisn=' . $datas->nisn . '&nama_siswa=' . $datas->nama_siswa }}">Tambah Pembayaran</a>
-                                        </td> --}}
                                     </tr>
+                                    <!-- Modal -->
+                                    <div class="modal fade m-0" data-keyboard="false" data-backdrop="static"
+                                        id="showModal{{ $datas->id }}" tabindex="-1" role="dialog"
+                                        aria-labelledby="showModalLabel{{ $datas->id }}" aria-hidden="true">
+                                        <div class="modal-dialog modal-xl" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="showModalLabel{{ $datas->id }}">Bukti Bayar</h5>
+                                                    <button type="button" class="close" data-dismiss="modal"
+                                                        aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+
+                                                <div class="modal-body p-0">
+                                                    <div class="card-body row p-4">
+                                                        <div class="form-group col-md-6 ">
+                                                            <img id="previewFoto{{ $datas->id }}"
+                                                                src="{{ asset('storage/BuktiBayar/' . $datas->bukti_pembayaran) }}"
+                                                                alt="Foto Siswa"
+                                                                style="max-width: 600px; max-height: 400px;">
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <div>
+                                                                <label for="">Nama </label>
+                                                                <p>{{$datas->siswa->nama_siswa}}</p>
+                                                            </div>
+                                                            <div>
+                                                                <label for="">Tanggal Bayar </label>
+                                                                <p>{{$datas->bulan. " " . $datas->tahun}}</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 @endforeach
                             </tbody>
                         </table>

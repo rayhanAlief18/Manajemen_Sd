@@ -34,6 +34,15 @@ class PembayaranSppController extends Controller
         return view('dashboard.PembayaranSpp.RiwayatBayar', compact('data', 'title'));
     }
 
+    public function BuktiRiwayatBayar(string $id)
+    {
+        // Logika untuk mengambil data riwayat pembayaran
+        $title = "Bukti Pembayaran";
+        $data = PembayaranSpp::findOrFail($id); // atau sesuai dengan kebutuhan
+
+        return view('dashboard.PembayaranSpp.RiwayatBayar', compact('data', 'title'));
+    }
+
     public function riwayatBayarById(Request $request, $id)
     {
         // Ambil data pembayaran berdasarkan ID siswa
@@ -67,13 +76,27 @@ class PembayaranSppController extends Controller
      */
     public function store(Request $request)
     {
+        $customMessages = [
+            'kd_bayar.required' => 'Kode bayar wajib diisi.',
+            'kd_bayar.numeric' => 'Kode bayar harus berupa angka.',
+            'bulan.required' => 'Bulan wajib dipilih.',
+            'bulan.string' => 'Bulan harus berupa string.',
+            'tahun.required' => 'Tahun wajib diisi.',
+            'tahun.numeric' => 'Tahun harus berupa angka.',
+            'jumlah_pembayaran.required' => 'Jumlah pembayaran wajib diisi.',
+            'jumlah_pembayaran.numeric' => 'Jumlah pembayaran harus berupa angka.',
+            'bukti_pembayaran.image' => 'Bukti pembayaran harus berupa gambar.',
+            'bukti_pembayaran.mimes' => 'Bukti pembayaran harus berupa file dengan format: jpeg, png, jpg, gif.',
+            'bukti_pembayaran.max' => 'Bukti pembayaran tidak boleh lebih dari 2048 kilobyte.',
+        ];
+
         $request->validate([
             'kd_bayar' => 'required|numeric',
             'bulan' => 'required|string',
             'tahun' => 'required|numeric',
             'jumlah_pembayaran' => 'required|numeric',
             'bukti_pembayaran' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-        ]);
+        ],$customMessages);
 
         // Cek apakah sudah ada entri untuk bulan dan tahun yang sama
         $existingEntry = PembayaranSpp::where('siswa_id', $request->id_siswa)

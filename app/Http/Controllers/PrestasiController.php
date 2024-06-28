@@ -217,7 +217,7 @@ class PrestasiController extends Controller
         $prestasi->save();
 
         // Redirect
-        return redirect()->route('prestasi.index')->with('success', 'Prestasi berhasil diperbarui.');
+        return redirect()->route('prestasi.index')->with('Success', 'Prestasi berhasil diperbarui.');
     }
 
     /**

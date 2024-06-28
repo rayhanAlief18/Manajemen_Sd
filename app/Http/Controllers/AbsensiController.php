@@ -59,10 +59,10 @@ class AbsensiController extends Controller
             ->join('kelas', 'absensi.id_kelas', '=', 'kelas.id')
             ->select('absensi.*', 'kelas.angka_kelas', 'kelas.id as id_kelas', 'siswas.nama_siswa')
             ->where('absensi.id_kelas', $id)
-            ->whereDate('absensi.date', $haridantanggal) // Hanya ambil data absensi hari ini
+            ->where('absensi.date', $haridantanggal)
             ->get();
 
-
+            // dd($haridantanggal);
 
         return view('dashboard.Absensi.ShowSiswaAbsensi', [
             'title' => $title,

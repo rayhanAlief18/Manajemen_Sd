@@ -90,7 +90,7 @@
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label for="exampleInputEmail1">Kata Sandi</label>
-                                    <input type="text" name="password" class="form-control" id="exampleInputEmail1"
+                                    <input type="text" name="password" disabled class="form-control" id="exampleInputEmail1"
                                         value="{{ $DataGuru->password }}" placeholder="Masukkan Data Tempat Lahir...">
                                 </div>
                                 <div class="form-group col-md-5">
