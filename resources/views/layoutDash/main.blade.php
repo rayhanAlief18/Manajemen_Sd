@@ -96,15 +96,13 @@
                         <!-- Add icons to the links using the .nav-icon class
           with font-awesome or any other icon font library -->
                         <li class="nav-header">Operasional</li>
-
-                        {{-- <li class="nav-item">
+                        <li class="nav-item">
                             <a href="{{ url('/siswa') }}" class="nav-link">
                                 <i class="nav-icon fas fa-user-graduate"></i>
                                 <p> Siswa & Wali
-                                    {{-- <span class="badge badge-info right">2</span> --}}
-                        {{-- </p>
+                         </p>
                         </a>
-                        </li> --}}
+                        </li>
                         @auth('guru')
                             @if (Auth::guard('guru')->user()->level == 'tata usaha')
                                 <li class="nav-item">

@@ -16,4 +16,8 @@ class Siswa extends Model
     {
         return $this->hasMany(PembayaranSPP::class);
     }
+    public function absensi()
+    {
+        return $this->hasMany(Absensi::class);
+    }
 }

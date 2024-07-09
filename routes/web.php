@@ -35,6 +35,9 @@ use App\Http\Controllers\SiswaController;
 //     return view('welcome');
 // });
 
+// Route::get('ex', function () { return view('dashboard.NilaiSiswa.export_PdfAll'); });
+Route::get('ex', [NilaiSiswaController::class, 'exportPdfFiltered']);
+
 Route::middleware('guest')->group(function() {
     Route::get('/',[AuthController::class,'index']);
     Route::post('/',[AuthController::class,'login']);
@@ -43,6 +46,9 @@ Route::middleware('guest')->group(function() {
 Route::get('/logout', [AuthController::class, 'logout']);
 
 Route::get('/dashboard',[HomeController::class,'dashboard'])->name('dashboard');
+
+//EXPORT NILAI ALL BY KELAS
+Route::get('/nilai-siswa/export/pdf/{kelas_id}', [NilaiSiswaController::class, 'exportPdfFiltered'])->name('ExPdfAll');
 
 //warga
 Route::resource('/guru', GuruController::class)->middleware('protect');;
@@ -56,8 +62,6 @@ Route::resource('/prestasi', PrestasiController::class)->middleware('protect');;
 Route::resource('/barang', BarangController::class)->middleware('protect');;
 Route::resource('/ruangan', RuanganController::class)->middleware('protect');;
 Route::resource('/absensi', AbsensiController::class)->middleware('protect');;
-// Route::get('/BayarSpp/{siswa_id}', [PembayaranSppController::class, 'create'])->name('pembayaran.create');
-// Route::get('/BayarSpp/create/{id}', [App\Http\Controllers\PembayaranSppController::class, 'create']);
 
 
 Route::resource('/alumni', AlumniController::class);
@@ -70,9 +74,6 @@ Route::get('/ShowSiswaAbsensi/{id}', [AbsensiController::class, 'ShowSiswaAbsens
 Route::post('/tambahAbsensiSiswa/{id}', [AbsensiController::class, 'tambahAbsensiSiswa'])->name('tambahAbsensiSiswa');
 Route::get('/ShowAllKelasTiapSiswa/{id}', [AbsensiController::class, 'ShowAllKelasTiapSiswa'])->name('ShowAllKelasTiapSiswa');
 Route::get('/ShowAbsensiPerSiswa/{id_kelas}/{id_siswa}', [AbsensiController::class, 'ShowAbsensiPerSiswa'])->name('ShowAbsensiPerSiswa');
-// Route::get('/DaftarKelas', [NilaiSiswaController::class, 'DaftarKelas'])->name('DaftarKelas');
-// Route::get('/riwayatBayarById', [PembayaranSppController::class, 'riwayatBayarById'])->name('riwayatBayarByIds');
-// In web.php (routes file)
 
 Route::get('/riwayatBayarById/{id}/', [PembayaranSppController::class, 'riwayatBayarById'])->name('riwayatBayarById');
 Route::get('/DaftarKelas/{id}/', [NilaiSiswaController::class, 'DaftarKelas'])->name('DaftarKelas');
@@ -80,3 +81,9 @@ Route::get('/DaftarKelas/{id}/', [NilaiSiswaController::class, 'DaftarKelas'])->
 Route::post('/update-semester', [SiswaController::class, 'updateSemester'])->name('siswa.update-semester');
 
 Route::get('/ruangan/lantai/{lantai}', [RuanganController::class, 'showLantai'])->name('showLantai');
+
+//EXPORT NILAI BY SISWA
+Route::get('/nilai/export-pdf/{id}', [NilaiSiswaController::class, 'exportPdf'])->name('nilai.exportPdf');
+Route::get('/nilai/form/{id}', [NilaiSiswaController::class, 'showForm'])->name('nilai.form');
+
+
