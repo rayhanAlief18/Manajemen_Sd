@@ -44,7 +44,7 @@
 
                         </div>
                         <div class="col-md-2">
-                            <p>Total Sakit </p>
+                            <p>Total Tidak Hadir </p>
                             <p>{{ $TotalPertemuanTidakHadir }} / {{ $TotalPertemuan }} ({{ $PresentaseTidakHadir }}%)</p>
                         </div>
                     </div>
@@ -116,6 +116,11 @@
                                                     data-target="#showModal{{ $class->id }}">
                                                     <i class="fas fa-user"></i>
                                                 </button>
+                                                @if (Auth::guard('guru')->user()->level == 'tata usaha')
+                                                    
+                                                    <a href="{{ route('editAbsensi', [$class->id,'id_kelas' => $id_kelas, 'id_siswa' => $id_siswa]) }}"
+                                                        class="btn btn-warning ml-2"><i class="fas fa-edit"></i></a>
+                                                @endif
                                             @endif
                                         </td>
                                     </tr>

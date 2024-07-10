@@ -52,20 +52,44 @@
                         <div class="row">
                             @foreach ($kelas as $kelas)
                                 @if ($kelas->angka_kelas <= 6)
-                                    <div class="col-lg-3 col-6">
-                                        <!-- small box -->
-                                        <div class="small-box bg-info">
-                                            <div class="inner">
-                                                <h3>Kelas : {{ $kelas->angka_kelas }}</h3>
-                                                <p>Wali kelas: {{ $kelas->nama_guru }}</p>
+                                    @auth('guru')
+                                        @if (Auth::guard('guru')->user()->level == 'wali kelas')
+                                            @if (Auth::guard('guru')->user()->kelas_id == $kelas->id)
+                                                <div class="col-lg-3 col-6">
+                                                    <!-- small box -->
+                                                    <div class="small-box bg-info">
+                                                        <div class="inner">
+                                                            <h3>Kelas : {{ $kelas->angka_kelas }}</h3>
+                                                            <p>Wali kelas: {{ $kelas->nama_guru }}</p>
+                                                        </div>
+                                                        <div class="icon">
+                                                            <i class="ion ion-bag"></i>
+                                                        </div>
+                                                        <a href="{{ route('absensi.show', $kelas->id) }}"
+                                                            class="small-box-footer">More
+                                                            info <i class="fas fa-arrow-circle-right"></i></a>
+                                                    </div>
+                                                </div>
+                                            @endif
+                                        @endif
+                                        @if (Auth::guard('guru')->user()->level == 'tata usaha')
+                                            <div class="col-lg-3 col-6">
+                                                <!-- small box -->
+                                                <div class="small-box bg-info">
+                                                    <div class="inner">
+                                                        <h3>Kelas : {{ $kelas->angka_kelas }}</h3>
+                                                        <p>Wali kelas: {{ $kelas->nama_guru }}</p>
+                                                    </div>
+                                                    <div class="icon">
+                                                        <i class="ion ion-bag"></i>
+                                                    </div>
+                                                    <a href="{{ route('absensi.show', $kelas->id) }}"
+                                                        class="small-box-footer">More
+                                                        info <i class="fas fa-arrow-circle-right"></i></a>
+                                                </div>
                                             </div>
-                                            <div class="icon">
-                                                <i class="ion ion-bag"></i>
-                                            </div>
-                                            <a href="{{ route('absensi.show', $kelas->id) }}" class="small-box-footer">More
-                                                info <i class="fas fa-arrow-circle-right"></i></a>
-                                        </div>
-                                    </div>
+                                        @endif
+                                    @endauth
                                 @endif
                             @endforeach
                         </div>

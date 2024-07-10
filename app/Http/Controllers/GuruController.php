@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Models\Guru;
 use App\Models\Kelas;
 
-
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 
@@ -21,13 +21,18 @@ class GuruController extends Controller
      */
     public function index()
     {
-        $title = "Guru";
-        $DataGuru = Guru::select('gurus.*', 'gurus.id', 'gurus.nama_guru', 'kelas.angka_kelas', 'kelas.id as id_kelas')->join('kelas', 'kelas.id', '=', 'gurus.kelas_id')
-            ->get();
-        return view('dashboard.Guru.DataGuru', [
-            'title' => $title,
-            'DataGuru' => $DataGuru,
-        ]);
+        if (Auth::guard('guru')->user()->level == 'tata usaha') {
+
+            $title = "Guru";
+            $DataGuru = Guru::select('gurus.*', 'gurus.id', 'gurus.nama_guru', 'kelas.angka_kelas', 'kelas.id as id_kelas')->join('kelas', 'kelas.id', '=', 'gurus.kelas_id')
+                ->get();
+            return view('dashboard.Guru.DataGuru', [
+                'title' => $title,
+                'DataGuru' => $DataGuru,
+            ]);
+        } else {
+            return back();
+        }
     }
 
     /**
@@ -35,13 +40,17 @@ class GuruController extends Controller
      */
     public function create()
     {
-        $title = "Tambah Data Guru";
-        $kelas = DB::table('kelas')->select('kelas.*', 'kelas.id as kelas_id')->get();
+        if (Auth::guard('guru')->user()->level == 'tata usaha') {
+            $title = "Tambah Data Guru";
+            $kelas = DB::table('kelas')->select('kelas.*', 'kelas.id as kelas_id')->get();
 
-        return view('dashboard.Guru.TambahDataGuru', [
-            'title' => $title,
-            'kelas' => $kelas,
-        ]);
+            return view('dashboard.Guru.TambahDataGuru', [
+                'title' => $title,
+                'kelas' => $kelas,
+            ]);
+        } else {
+            return back();
+        }
     }
 
     /**
@@ -49,101 +58,126 @@ class GuruController extends Controller
      */
     public function store(Request $request)
     {
-        $messages = [
-            // 'kelas_id.unique' => 'Kelas sudah ditempati guru lain',
-            'tempat_lahir.required' => 'Tempat lahir wajib diisi.',
-            'tanggal_lahir.required' => 'Tanggal lahir wajib diisi.',
-            'tanggal_lahir.date' => 'Tanggal lahir harus berupa tanggal yang valid.',
-            'nik.required' => 'NIK wajib diisi.',
-            'nik.max' => 'NIK tidak boleh lebih dari 16 karakter.',
-            'no_kk.required' => 'Nomor KK wajib diisi.',
-            'no_kk.max' => 'Nomor KK tidak boleh lebih dari 16 karakter.',
-            'agama.required' => 'Agama wajib diisi.',
-            'jenis_kelamin.required' => 'Jenis kelamin wajib diisi.',
-            'nomor_npwp.required' => 'Nomor NPWP wajib diisi.',
-            'gelar_depan.required' => 'Gelar depan wajib diisi.',
-            'gelar_belakang.required' => 'Gelar belakang wajib diisi.',
-            'nomor_telepon.required' => 'Nomor telepon wajib diisi.',
-            'nomor_hp.required' => 'Nomor HP wajib diisi.',
-            'jenjang.required' => 'Jenjang wajib diisi.',
-            'tahun_lulus.required' => 'Tahun lulus wajib diisi.',
-            'tahun_lulus.digits' => 'Tahun lulus harus berupa 4 digit.',
-            'tahun_lulus.integer' => 'Tahun lulus harus berupa angka.',
-            'tahun_lulus.min' => 'Tahun lulus minimal adalah 1900.',
-            'tahun_lulus.max' => 'Tahun lulus maksimal adalah tahun ini.',
-            'jurusan.required' => 'Jurusan wajib diisi.',
-            'jabatan.required' => 'Jabatan wajib diisi.',
-            'kelas_id.required' => 'Kelas wajib diisi.',
-            'role.required' => 'Role wajib diisi.',
-            'status.required' => 'Status wajib diisi.',
-        ];
+        if (Auth::guard('guru')->user()->level == 'tata usaha') {
+            $messages = [
+                'image.required' => 'Foto harus diunggah.',
+                'image.foto' => 'File foto harus berupa gambar.',
+                'image.mimes' => 'Foto harus memiliki format: jpeg, png, jpg, gif, svg.',
+                'image.max' => 'Ukuran foto maksimal adalah 2MB.',
+                'nama_guru.required' => 'Nama guru harus diisi.',
+                'tempat_lahir.required' => 'Tempat lahir harus diisi.',
+                'tanggal_lahir.required' => 'Tanggal lahir harus diisi.',
+                'nik.required' => 'NIK harus diisi.',
+                'nik.numeric' => 'NIK harus berupa angka.',
+                'nik.digits' => 'NIK harus terdiri dari 16 digit.',
+                'no_kk.required' => 'Nomor KK harus diisi.',
+                'no_kk.numeric' => 'Nomor KK harus berupa angka.',
+                'no_kk.digits' => 'Nomor KK harus terdiri dari 16 digit.',
+                'agama.required' => 'Agama harus dipilih.',
+                'agama.in' => 'Agama yang dipilih tidak valid.',
+                'email.required' => 'Email harus diisi.',
+                'email.email' => 'Email harus valid.',
+                'password.required' => 'Password harus diisi.',
+                'password.min' => 'Password minimal 8 karakter.',
+                // 'password.confirmed' => 'Konfirmasi password tidak cocok.',
+                'jenis_kelamin.required' => 'Jenis kelamin harus dipilih.',
+                'jenis_kelamin.in' => 'Jenis kelamin yang dipilih tidak valid.',
+                'nomor_npwp.required' => 'Nomor NPWP harus diisi.',
+                'nomor_npwp.numeric' => 'Nomor NPWP harus berupa angka.',
+                'nomor_npwp.digits' => 'Nomor NPWP harus terdiri dari 16 digit.',
+                'gelar_depan.string' => 'Gelar depan harus berupa teks.',
+                'gelar_belakang.string' => 'Gelar belakang harus berupa teks.',
+                'nomor_telepon.required' => 'Nomor Telepon harus diisi.',
+                'nomor_telepon.numeric' => 'Nomor telepon harus berupa angka.',
+                'nomor_hp.required' => 'Nomor Hp harus diisi.',
+                'nomor_hp.numeric' => 'Nomor HP harus berupa angka.',
+                'nomor_hp.digits_between' => 'Nomor HP harus terdiri dari 10 hingga 15 digit.',
+                'jenjang.required' => 'Jenjang harus diisi.',
+                'tahun_lulus.required' => 'Tahun lulus harus diisi.',
+                'tahun_lulus.numeric' => 'Tahun lulus harus berupa angka.',
+                'tahun_lulus.digits' => 'Tahun lulus harus terdiri dari 4 digit.',
+                'jurusan.required' => 'Jurusan harus diisi.',
+                // 'jabatan.required' => 'Jabatan harus diisi.',
+                'kelas_id.required' => 'Kelas harus dipilih.',
+                'kelas_id.exists' => 'Kelas yang dipilih tidak valid.',
+                // 'role.required' => 'Role harus dipilih.',
+                // 'role.in' => 'Role yang dipilih tidak valid.',
+                'level.required' => 'Level harus dipilih.',
+                'level.in' => 'Level yang dipilih tidak valid.',
+                'status.required' => 'Status harus dipilih.',
+                'status.in' => 'Status yang dipilih tidak valid.',
+            ];
 
 
-        $validator = Validator::make($request->all(), [
-            'image'     => 'required|mimes:jpeg,jpg,png|max:2048',
-            'nama_guru' => 'required|min:5',
-            'jabatan' => 'required',
-            'kelas_id'     => 'required',
-            'tempat_lahir' => 'required|string|max:255',
-            'tanggal_lahir' => 'required|date',
-            'nik' => 'required|string|max:16',
-            'no_kk' => 'required|string|max:16',
-            'agama' => 'required|string|max:255',
-            'jenis_kelamin' => 'required|string|max:255',
-            'nomor_npwp' => 'required|string|max:255',
-            'gelar_depan' => 'required|string|max:255',
-            'gelar_belakang' => 'required|string|max:255',
-            'nomor_telepon' => 'required|string|max:255',
-            'nomor_hp' => 'required|string|max:255',
-            'jenjang' => 'required|string|max:255',
-            'tahun_lulus' => 'required|digits:4|integer|min:1900|max:' . date('Y'),
-            'jurusan' => 'required|string|max:255',
-            'jabatan' => 'required|string|max:255',
-            'role' => 'required|string|max:255',
-            'password' => 'required|string|max:255',
-            'status' => 'required|string|max:255',
-        ], $messages);
+            $validator = Validator::make($request->all(), [
+                'image' => 'required|mimes:jpeg,jpg,png|max:2048',
+                'nama_guru' => 'required|string|max:255',
+                'tempat_lahir' => 'required|string|max:255',
+                'tanggal_lahir' => 'required|date',
+                'nik' => 'required|numeric|digits:16',
+                'no_kk' => 'required|numeric|digits:16',
+                'agama' => 'required|string|in:islam,kristen,hindu,budha,khongucu',
+                'email' => 'required|string|email|max:255|unique:gurus,email',
+                'password' => 'required|string|min:8',
+                'jenis_kelamin' => 'required|string|in:laki laki,perempuan',
+                'nomor_npwp' => 'required|numeric|digits:16',
+                'gelar_depan' => 'nullable|string|max:50',
+                'gelar_belakang' => 'nullable|string|max:50',
+                'nomor_telepon' => 'required|numeric',
+                'nomor_hp' => 'required|',
+                'jenjang' => 'required|string|max:100',
+                'tahun_lulus' => 'required|numeric|digits:4',
+                'jurusan' => 'required|string|max:100',
+                // 'jabatan' => 'required|string|max:100',
+                'kelas_id' => 'required|integer|exists:kelas,id',
+                // 'role' => 'required|string|in:admin,guru,staff',
+                'level' => 'required|string|in:kepala sekolah,tata usaha,wali kelas,guru mapel',
+                'status' => 'required|string|in:aktif,nonaktif',
+            ], $messages);
 
 
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
+            if ($validator->fails()) {
+                return redirect()->back()->withErrors($validator)->withInput();
+            }
+
+            $image = $request->file('image');
+            $filename = date('Y-m-d') . $image->getClientOriginalName();
+            $path = 'guru/' . $filename;
+
+            // Menggunakan putFile() untuk menyimpan file langsung
+            Storage::disk('public')->put($path, file_get_contents($image));
+            // Buat post baru setelah file disimpan
+            Guru::create([
+                'foto' => $filename,
+                'nama_guru' => $request->nama_guru,
+                'tempat_lahir' => $request->tempat_lahir,
+                'tanggal_lahir' => $request->tanggal_lahir,
+                'nik' => $request->nik,
+                'no_kk' => $request->no_kk,
+                'agama' => $request->agama,
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+                'jenis_kelamin' => $request->jenis_kelamin,
+                'nomor_npwp' => $request->nomor_npwp,
+                'gelar_depan' => $request->gelar_depan,
+                'gelar_belakang' => $request->gelar_belakang,
+                'nomor_telepon' => $request->nomor_telepon,
+                'nomor_hp' => $request->nomor_hp,
+                'jenjang' => $request->jenjang,
+                'tahun_lulus' => $request->tahun_lulus,
+                'jurusan' => $request->jurusan,
+                //Jabatan & Tugas
+                // 'jabatan' => $request->jabatan,
+                'kelas_id' => $request->kelas_id,
+                // 'role' => $request->role,
+                'level' => $request->level,
+                'status' => $request->status,
+            ]);
+
+            return redirect()->route('guru.index')->with(['Success' => 'Data Berhasil Disimpan!']);
+        } else {
+            return back();
         }
-
-        $image = $request->file('image');
-        $filename = date('Y-m-d') . $image->getClientOriginalName();
-        $path = 'guru/' . $filename;
-
-        // Menggunakan putFile() untuk menyimpan file langsung
-        Storage::disk('public')->put($path, file_get_contents($image));
-        // Buat post baru setelah file disimpan
-        Guru::create([
-            'foto'      => $filename,
-            'nama_guru' => $request->nama_guru,
-            'tempat_lahir' => $request->tempat_lahir,
-            'tanggal_lahir' => $request->tanggal_lahir,
-            'nik' => $request->nik,
-            'no_kk' => $request->no_kk,
-            'agama' => $request->agama,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'jenis_kelamin' => $request->jenis_kelamin,
-            'nomor_npwp' => $request->nomor_npwp,
-            'gelar_depan' => $request->gelar_depan,
-            'gelar_belakang' => $request->gelar_belakang,
-            'nomor_telepon' => $request->nomor_telepon,
-            'nomor_hp' => $request->nomor_hp,
-            'jenjang' => $request->jenjang,
-            'tahun_lulus' => $request->tahun_lulus,
-            'jurusan' => $request->jurusan,
-            //Jabatan & Tugas
-            'jabatan' => $request->jabatan,
-            'kelas_id' => $request->kelas_id,
-            'role' => $request->role,
-            'level' => $request->level,
-            'status' => $request->status,
-        ]);
-
-        return redirect()->route('guru.index')->with(['Success' => 'Data Berhasil Disimpan!']);
     }
 
     /**
@@ -159,22 +193,26 @@ class GuruController extends Controller
      */
     public function edit(string $id)
     {
-        $title = 'Edit Data Gurus';
-        $guru = Guru::all();
-        $DataGuru = DB::table('gurus')
-            ->join('kelas', 'gurus.kelas_id', '=', 'kelas.id')
-            ->select('gurus.*', 'kelas.angka_kelas', 'kelas.id as id_kelas')
-            ->where('gurus.id', $id)
-            ->first();
-        $kelas = DB::table('kelas')->select('kelas.*', 'kelas.id as kelas_id')->get();
+        if (Auth::guard('guru')->user()->level == 'tata usaha') {
+            $title = 'Edit Data Gurus';
+            $guru = Guru::all();
+            $DataGuru = DB::table('gurus')
+                ->join('kelas', 'gurus.kelas_id', '=', 'kelas.id')
+                ->select('gurus.*', 'kelas.angka_kelas', 'kelas.id as id_kelas')
+                ->where('gurus.id', $id)
+                ->first();
+            $kelas = DB::table('kelas')->select('kelas.*', 'kelas.id as kelas_id')->get();
 
 
-        return view('dashboard.Guru.EditDataGuru', [
-            'title' => $title,
-            'kelas' => $kelas,
-            'DataGuru' => $DataGuru,
-            'guru' => $guru,
-        ]);
+            return view('dashboard.Guru.EditDataGuru', [
+                'title' => $title,
+                'kelas' => $kelas,
+                'DataGuru' => $DataGuru,
+                'guru' => $guru,
+            ]);
+        } else {
+            return back();
+        }
     }
 
     /**
@@ -182,99 +220,146 @@ class GuruController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        if (Auth::guard('guru')->user()->level == 'tata usaha') {
+            $messages = [
+                'foto.required' => 'Foto harus diunggah.',
+                'foto.image' => 'File foto harus berupa gambar.',
+                'foto.mimes' => 'Foto harus memiliki format: jpeg, png, jpg, gif, svg.',
+                'foto.max' => 'Ukuran foto maksimal adalah 2MB.',
+                'nama_guru.required' => 'Nama guru harus diisi.',
+                'tempat_lahir.required' => 'Tempat lahir harus diisi.',
+                'tanggal_lahir.required' => 'Tanggal lahir harus diisi.',
+                'nik.required' => 'NIK harus diisi.',
+                'nik.numeric' => 'NIK harus berupa angka.',
+                'nik.digits' => 'NIK harus terdiri dari 16 digit.',
+                'no_kk.required' => 'Nomor KK harus diisi.',
+                'no_kk.numeric' => 'Nomor KK harus berupa angka.',
+                'no_kk.digits' => 'Nomor KK harus terdiri dari 16 digit.',
+                'agama.required' => 'Agama harus dipilih.',
+                'agama.in' => 'Agama yang dipilih tidak valid.',
+                'email.required' => 'Email harus diisi.',
+                'email.email' => 'Email harus valid.',
+                'password.required' => 'Password harus diisi.',
+                'password.min' => 'Password minimal 8 karakter.',
+                // 'password.confirmed' => 'Konfirmasi password tidak cocok.',
+                'jenis_kelamin.required' => 'Jenis kelamin harus dipilih.',
+                'jenis_kelamin.in' => 'Jenis kelamin yang dipilih tidak valid.',
+                'nomor_npwp.numeric' => 'Nomor NPWP harus berupa angka.',
+                'nomor_npwp.digits' => 'Nomor NPWP harus terdiri dari 15 digit.',
+                'gelar_depan.string' => 'Gelar depan harus berupa teks.',
+                'gelar_belakang.string' => 'Gelar belakang harus berupa teks.',
+                'nomor_telepon.numeric' => 'Nomor telepon harus berupa angka.',
+                'nomor_telepon.digits_between' => 'Nomor telepon harus terdiri dari 10 hingga 15 digit.',
+                'nomor_hp.numeric' => 'Nomor HP harus berupa angka.',
+                'nomor_hp.digits_between' => 'Nomor HP harus terdiri dari 10 hingga 15 digit.',
+                'jenjang.required' => 'Jenjang harus diisi.',
+                'tahun_lulus.required' => 'Tahun lulus harus diisi.',
+                'tahun_lulus.numeric' => 'Tahun lulus harus berupa angka.',
+                'tahun_lulus.digits' => 'Tahun lulus harus terdiri dari 4 digit.',
+                'jurusan.required' => 'Jurusan harus diisi.',
+                'jabatan.required' => 'Jabatan harus diisi.',
+                'kelas_id.required' => 'Kelas harus dipilih.',
+                'kelas_id.exists' => 'Kelas yang dipilih tidak valid.',
+                'role.required' => 'Role harus dipilih.',
+                'role.in' => 'Role yang dipilih tidak valid.',
+                'level.required' => 'Level harus dipilih.',
+                'level.in' => 'Level yang dipilih tidak valid.',
+                'status.required' => 'Status harus dipilih.',
+                'status.in' => 'Status yang dipilih tidak valid.',
+            ];
 
-        $messages = [
-            'kelas_id.unique' => 'Kelas sudah ditempati guru lain',
-            'tempat_lahir.required' => 'Tempat lahir wajib diisi.',
-            'tanggal_lahir.required' => 'Tanggal lahir wajib diisi.',
-            'tanggal_lahir.date' => 'Tanggal lahir harus berupa tanggal yang valid.',
-            'nik.required' => 'NIK wajib diisi.',
-            'nik.max' => 'NIK tidak boleh lebih dari 16 karakter.',
-            'no_kk.required' => 'Nomor KK wajib diisi.',
-            'no_kk.max' => 'Nomor KK tidak boleh lebih dari 16 karakter.',
-            'agama.required' => 'Agama wajib diisi.',
-            'jenis_kelamin.required' => 'Jenis kelamin wajib diisi.',
-            'nomor_npwp.required' => 'Nomor NPWP wajib diisi.',
-            'gelar_depan.required' => 'Gelar depan wajib diisi.',
-            'gelar_belakang.required' => 'Gelar belakang wajib diisi.',
-            'nomor_telepon.required' => 'Nomor telepon wajib diisi.',
-            'nomor_hp.required' => 'Nomor HP wajib diisi.',
-            'jenjang.required' => 'Jenjang wajib diisi.',
-            'tahun_lulus.required' => 'Tahun lulus wajib diisi.',
-            'tahun_lulus.digits' => 'Tahun lulus harus berupa 4 digit.',
-            'tahun_lulus.integer' => 'Tahun lulus harus berupa angka.',
-            'tahun_lulus.min' => 'Tahun lulus minimal adalah 1900.',
-            'tahun_lulus.max' => 'Tahun lulus maksimal adalah tahun ini.',
-            'jurusan.required' => 'Jurusan wajib diisi.',
-            'jabatan.required' => 'Jabatan wajib diisi.',
-            'kelas_id.required' => 'Kelas wajib diisi.',
-            'role.required' => 'Role wajib diisi.',
-            'status.required' => 'Status wajib diisi.',
-        ];
 
+            $validator = Validator::make($request->all(), [
+                //  'image'     => 'required|mimes:jpeg,jpg,png|max:2048',
+                'nama_guru' => 'required|string|max:255',
+                'tempat_lahir' => 'required|string|max:255',
+                'tanggal_lahir' => 'required|date',
+                'nik' => 'required|numeric|digits:16',
+                'no_kk' => 'required|numeric|digits:16',
+                'agama' => 'required|string|in:islam,kristen,hindu,budha,khongucu',
+                'password' => 'required|string|min:8',
+                'jenis_kelamin' => 'required|string|in:laki laki,perempuan',
+                'nomor_npwp' => 'nullable|numeric|digits:16 ',
+                'gelar_depan' => 'nullable|string|max:50',
+                'gelar_belakang' => 'nullable|string|max:50',
+                'nomor_telepon' => 'nullable|numeric|digits_between:10,15',
+                'nomor_hp' => 'nullable|numeric|digits_between:10,15',
+                'jenjang' => 'required|string|max:100',
+                'email' => 'required|string|email|max:255',
+                'tahun_lulus' => 'required|numeric|digits:4',
+                'jurusan' => 'required|string|max:100',
+                'kelas_id' => 'required|integer|exists:kelas,id',
+                'level' => 'required|string',
+                'status' => 'required|string|in:aktif,non aktif',
+            ], $messages);
 
-        $validator = Validator::make($request->all(), [
-            //  'image'     => 'required|mimes:jpeg,jpg,png|max:2048',
-            'nama_guru' => 'required|min:5',
-            'jabatan' => 'required',
-            'kelas_id'     => 'required',
-            'tempat_lahir' => 'required|string|max:255',
-            'tanggal_lahir' => 'required|date',
-            'nik' => 'required|string|max:16',
-            'no_kk' => 'required|string|max:16',
-            'agama' => 'required|string|max:255',
-            'email' => 'required|string|max:255',
-            // 'password' => 'required|string|max:255',
-            'jenis_kelamin' => 'required|string|max:255',
-            'nomor_npwp' => 'required|string|max:255',
-            'gelar_depan' => 'required|string|max:255',
-            'gelar_belakang' => 'required|string|max:255',
-            'nomor_telepon' => 'required|string|max:255',
-            'nomor_hp' => 'required|string|max:255',
-            'jenjang' => 'required|string|max:255',
-            'tahun_lulus' => 'required|digits:4|integer|min:1900|max:' . date('Y'),
-            'jurusan' => 'required|string|max:255',
-            'jabatan' => 'required|string|max:255',
-            'role' => 'required|string|max:255',
-            'status' => 'required|string|max:255',
-        ], $messages);
-
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
-        }
-        //find data by id
-        $guru = Guru::find($id);
-
-        // //request from input
-        // $guru['nama_guru'] = $request->nama_guru;
-        // $guru['kelas_id'] = $request->kelas;
-        // $guru['jabatan'] = $request->jabatan;
-
-        $image = $request->file('image');
-        //if you upload image
-        if ($image) {
-            $filename = date('Y-m-d') . $image->getClientOriginalName();
-            $path = 'guru/' . $filename;
-
-            //delete from storage
-            if ($guru->foto) {
-                // Hapus foto dari penyimpanan
-                Storage::disk('public')->delete('guru/' . $guru->foto);
+            if ($validator->fails()) {
+                return redirect()->back()->withErrors($validator)->withInput();
             }
-            // Menggunakan putFile() untuk menyimpan file langsung
-            Storage::disk('public')->put($path, file_get_contents($image));
+            //find data by id
+            $guru = Guru::find($id);
 
-            //action image
+            // //request from input
+            // $guru['nama_guru'] = $request->nama_guru;
+            // $guru['kelas_id'] = $request->kelas;
+            // $guru['jabatan'] = $request->jabatan;
+
+            $image = $request->file('image');
+            //if you upload image
+            if ($image) {
+                $filename = date('Y-m-d') . $image->getClientOriginalName();
+                $path = 'guru/' . $filename;
+
+                //delete from storage
+                if ($guru->foto) {
+                    // Hapus foto dari penyimpanan
+                    Storage::disk('public')->delete('guru/' . $guru->foto);
+                }
+                // Menggunakan putFile() untuk menyimpan file langsung
+                Storage::disk('public')->put($path, file_get_contents($image));
+
+                //action image
+                Guru::Where('id', $id)->update([
+                    'foto' => $filename,
+                    'nama_guru' => $request->nama_guru,
+                    'tempat_lahir' => $request->tempat_lahir,
+                    'tanggal_lahir' => $request->tanggal_lahir,
+                    'nik' => $request->nik,
+                    'no_kk' => $request->no_kk,
+                    'agama' => $request->agama,
+                    'email' => $request->email,
+                    // 'password' => Hash::make($request->password),
+                    'jenis_kelamin' => $request->jenis_kelamin,
+                    'nomor_npwp' => $request->nomor_npwp,
+                    'gelar_depan' => $request->gelar_depan,
+                    'gelar_belakang' => $request->gelar_belakang,
+                    'nomor_telepon' => $request->nomor_telepon,
+                    'nomor_hp' => $request->nomor_hp,
+                    'jenjang' => $request->jenjang,
+                    'tahun_lulus' => $request->tahun_lulus,
+                    'jurusan' => $request->jurusan,
+                    //Jabatan & Tugas
+                    'jabatan' => $request->jabatan,
+                    'kelas_id' => $request->kelas_id,
+                    'role' => $request->role,
+                    'level' => $request->level,
+                    'status' => $request->status,
+                ]);
+
+                return redirect()->route('guru.index')->with(['Success' => 'Data Berhasil Diubah !']);
+
+            }
+
             Guru::Where('id', $id)->update([
-                'foto'      => $filename,
                 'nama_guru' => $request->nama_guru,
                 'tempat_lahir' => $request->tempat_lahir,
                 'tanggal_lahir' => $request->tanggal_lahir,
                 'nik' => $request->nik,
                 'no_kk' => $request->no_kk,
                 'agama' => $request->agama,
+
                 'email' => $request->email,
-                // 'password' => Hash::make($request->password),
+                'password' => Hash::make($request->password),
                 'jenis_kelamin' => $request->jenis_kelamin,
                 'nomor_npwp' => $request->nomor_npwp,
                 'gelar_depan' => $request->gelar_depan,
@@ -285,44 +370,15 @@ class GuruController extends Controller
                 'tahun_lulus' => $request->tahun_lulus,
                 'jurusan' => $request->jurusan,
                 //Jabatan & Tugas
-                'jabatan' => $request->jabatan,
                 'kelas_id' => $request->kelas_id,
-                'role' => $request->role,
                 'level' => $request->level,
                 'status' => $request->status,
             ]);
 
-            return redirect()->route('guru.index')->with(['Success' => 'Data Berhasil Diubah !']);
+            return redirect()->route('guru.index')->with(['Success' => 'Data Berhasil Diubah!']);
+        } else {
+            return back();
         }
-
-        Guru::Where('id', $id)->update([
-            'nama_guru' => $request->nama_guru,
-            'tempat_lahir' => $request->tempat_lahir,
-            'tanggal_lahir' => $request->tanggal_lahir,
-            'nik' => $request->nik,
-            'no_kk' => $request->no_kk,
-            'agama' => $request->agama,
-
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'jenis_kelamin' => $request->jenis_kelamin,
-            'nomor_npwp' => $request->nomor_npwp,
-            'gelar_depan' => $request->gelar_depan,
-            'gelar_belakang' => $request->gelar_belakang,
-            'nomor_telepon' => $request->nomor_telepon,
-            'nomor_hp' => $request->nomor_hp,
-            'jenjang' => $request->jenjang,
-            'tahun_lulus' => $request->tahun_lulus,
-            'jurusan' => $request->jurusan,
-            //Jabatan & Tugas
-            'jabatan' => $request->jabatan,
-            'kelas_id' => $request->kelas_id,
-            'role' => $request->role,
-            'level' => $request->level,
-            'status' => $request->status,
-        ]);
-
-        return redirect()->route('guru.index')->with(['Success' => 'Data Berhasil Diubah!']);
     }
 
     /**
@@ -330,14 +386,18 @@ class GuruController extends Controller
      */
     public function destroy(string $id)
     {
-        $guru = Guru::findOrFail($id);
+        if (Auth::guard('guru')->user()->level == 'tata usaha') {
+            $guru = Guru::findOrFail($id);
 
-        // Hapus foto dari penyimpanan
-        Storage::disk('public')->delete('guru/' . $guru->foto);
+            // Hapus foto dari penyimpanan
+            Storage::disk('public')->delete('guru/' . $guru->foto);
 
-        // Hapus data guru dari database
-        $guru->delete();
+            // Hapus data guru dari database
+            $guru->delete();
 
-        return redirect()->route('guru.index')->with('Success', 'Data berhasil dihapus.');
+            return redirect()->route('guru.index')->with('Success', 'Data berhasil dihapus.');
+        } else {
+            return back();
+        }
     }
 }

@@ -46,22 +46,46 @@
                     @endforeach
                 @endif
                 @auth('guru')
-                    @if (Auth::guard('guru')->user()->level == 'tata usaha')
+                    @if (Auth::guard('guru')->user()->level == 'tata usaha' || Auth::guard('guru')->user()->level == 'wali kelas')
                         <a href="{{ route('jadwal.create') }}" class="btn btn-primary mb-3"> Tambah Data Jadwal</a>
                     @endif
                 @endauth
 
-                        <div class="card">
-                            <div class="card-body">
+                <div class="card">
+                    <div class="card-body">
 
-                                <div class="row">
-                                    @foreach ($kelas as $kelass)
-                                        @if ($kelass->angka_kelas <= 6)
+                        <div class="row">
+                            @foreach ($kelas as $kelass)
+                                @if ($kelass->angka_kelas <= 6)
+                                    @auth('guru')
+                                        @if (Auth::guard('guru')->user()->level == 'wali kelas')
+                                            @if (Auth::guard('guru')->user()->kelas_id == $kelass->id)
+                                                <div class="col-lg-3 col-6">
+                                                    <!-- small box -->
+                                                    <div class="small-box bg-info">
+                                                        <div class="inner">
+
+                                                            <h3>Kelas: {{ $kelass->angka_kelas }}</h3>
+
+                                                            <p>Wali kelas: {{ $kelass->nama_guru }}</p>
+                                                        </div>
+                                                        <div class="icon">
+                                                            <i class="ion ion-bag"></i>
+                                                        </div>
+                                                        <a href="{{ route('jadwal.show', $kelass->id) }}"
+                                                            class="small-box-footer">More info <i
+                                                                class="fas fa-arrow-circle-right"></i></a>
+                                                    </div>
+                                                </div>
+                                            @endif
+                                        @endif
+                                        @if (Auth::guard('guru')->user()->level == 'tata usaha')
                                             <div class="col-lg-3 col-6">
                                                 <!-- small box -->
                                                 <div class="small-box bg-info">
                                                     <div class="inner">
-                                                        <h3>{{ $kelass->angka_kelas }}</h3>
+
+                                                        <h3>Kelas: {{ $kelass->angka_kelas }}</h3>
 
                                                         <p>Wali kelas: {{ $kelass->nama_guru }}</p>
                                                     </div>
@@ -74,12 +98,16 @@
                                                 </div>
                                             </div>
                                         @endif
-                                    @endforeach
-                                </div>
-                            </div>
-                            <!-- /.content-header -->
-
-
-                            <!-- /.content -->
+                                    @endauth
+                                @endif
+                            @endforeach
                         </div>
-                    @endsection
+                    </div>
+                    <!-- /.content-header -->
+
+
+                </div>
+        </section>
+        <!-- /.content -->
+    </div>
+@endsection

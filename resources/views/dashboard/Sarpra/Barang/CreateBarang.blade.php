@@ -27,14 +27,14 @@
         <section class="content">
             <div class="container-fluid">
                 @if ($errors->any())
-                    @foreach ($errors->all() as $error)
+                    {{-- @foreach ($errors->all() as $error) --}}
                         <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                            <strong>{{ $error }}</strong> mohon periksa kembali
+                            <strong>Kesalahan! </strong> mohon periksa kembali...
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
-                    @endforeach
+                    {{-- @endforeach --}}
                 @endif
 
                 <!-- General Form Input Start -->
@@ -50,27 +50,42 @@
                             <!-- Input Start -->
                             <div class="form-group col-sm-6">
                                 <label for="nama">Nama Barang</label>
-                                <input type="text" name="nama" class="form-control" id="nama" placeholder="Masukkan Nama Barang..." value="{{ old('nama') }}" required>
+                                <input type="text" name="nama" class="form-control" id="nama" placeholder="Masukkan Nama Barang..." value="{{ old('nama') }}">
+                                @error('nama')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
                             </div>
                             <div class="form-group col-sm-6">
                                 <label for="ruangan_id">Ruangan</label>
-                                <select name="ruangan_id" class="form-control" id="ruangan_id" required>
+                                <select name="ruangan_id" class="form-control" id="ruangan_id">
                                     @foreach($ruangan as $ruangans)
                                         <option value="{{ $ruangans->id }}" {{ old('ruangan_id') == $ruangans->id ? 'selected' : '' }}>{{ $ruangans->nama }}</option>
                                     @endforeach
                                 </select>
+                                @error('ruangan_id')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
                             </div>
                             <div class="form-group col-sm-6">
                                 <label for="barang_baik">Jumlah Barang Baik</label>
-                                <input type="number" name="barang_baik" class="form-control" id="barang_baik" placeholder="Masukkan Jumlah Barang Normal..." value="{{ old('barang_baik') }}" required>
+                                <input type="number" name="barang_baik" class="form-control" id="barang_baik" placeholder="Masukkan Jumlah Barang Normal..." value="{{ old('barang_baik') }}">
+                                @error('barang_baik')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
                             </div>
                             <div class="form-group col-sm-6">
                                 <label for="barang_rusak">Jumlah Barang Rusak</label>
-                                <input type="number" name="barang_rusak" class="form-control" id="barang_rusak" placeholder="Masukkan Jumlah Barang Rusak..." value="{{ old('barang_rusak') }}" required>
+                                <input type="number" name="barang_rusak" class="form-control" id="barang_rusak" placeholder="Masukkan Jumlah Barang Rusak..." value="{{ old('barang_rusak') }}">
+                                @error('barang_rusak')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
                             </div>
                             <div class="form-group col-sm-12">
                                 <label for="deskripsi">Deskripsi</label>
                                 <textarea name="deskripsi" class="form-control" id="deskripsi" placeholder="Masukkan Deskripsi...">{{ old('deskripsi') }}</textarea>
+                                @error('deskripsi')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
                             </div>
                         </div>
                         <!-- Input End -->

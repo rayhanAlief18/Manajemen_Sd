@@ -25,6 +25,6 @@ class ProtectMiddleware
         }
 
         // If not authenticated or not authorized, redirect to login page
-        return redirect('/');
+        return redirect('/')->with('error', 'Silahkan login terlebih dahulu');;
     }
 }

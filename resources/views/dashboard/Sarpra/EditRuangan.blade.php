@@ -27,14 +27,14 @@
         <section class="content">
             <div class="container-fluid">
                 @if ($errors->any())
-                    @foreach ($errors->all() as $error)
+                    {{-- @foreach ($errors->all() as $error) --}}
                         <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                            <strong>{{ $error }}</strong> Mohon periksa kembali...
+                            <strong>Kesalahan! </strong> mohon periksa kembali...
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
-                    @endforeach
+                    {{-- @endforeach --}}
                 @endif
 
                 <!-- General Form Input Start-->
@@ -51,19 +51,28 @@
                             <!-- Input Start -->
                             <div class="form-group col-sm-6">
                                 <label for="nama">Nama Ruangan:</label>
-                                <input type="text" name="nama" class="form-control" id="nama" value="{{ old('nama', $ruangan->nama) }}" required>
+                                <input type="text" name="nama" class="form-control" id="nama" value="{{ old('nama', $ruangan->nama) }}" >
+                                @error('nama')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
                             </div>
                             <div class="form-group col-sm-6">
                                 <label for="lantai">Lantai:</label>
-                                <select id="lantai" name="lantai" class="form-control" required>
+                                <select id="lantai" name="lantai" class="form-control" >
                                     <option value="Lantai 1" {{ old('lantai', $ruangan->lantai) == 'Lantai 1' ? 'selected' : '' }}>Lantai 1</option>
                                     <option value="Lantai 2" {{ old('lantai', $ruangan->lantai) == 'Lantai 2' ? 'selected' : '' }}>Lantai 2</option>
                                     <option value="Lantai 3" {{ old('lantai', $ruangan->lantai) == 'Lantai 3' ? 'selected' : '' }}>Lantai 3</option>
                                 </select>
+                                @error('lantai')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
                             </div>
                             <div class="form-group col-sm-12">
                                 <label for="deskripsi">Deskripsi:</label>
                                 <textarea name="deskripsi" class="form-control" id="deskripsi" placeholder="Masukkan Deskripsi...">{{ old('deskripsi', $ruangan->deskripsi) }}</textarea>
+                                @error('deskripsi')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
                             </div>
                         </div> <!-- Input End -->
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
 
 use App\Models\MataPelajaran;
 
@@ -14,12 +15,16 @@ class MataPelajaranController extends Controller
      */
     public function index()
     {
-        $title = "Mata Pelajaran";
-        $mapel = MataPelajaran::all();
-        return view('dashboard.MataPelajaran.DataMataPelajaran',[
-            'title'=>$title,
-            'mapel'=>$mapel,
-        ]);
+        if (Auth::guard('guru')->user()->level == 'tata usaha' || Auth::guard('guru')->user()->level == 'wali kelas') {
+            $title = "Mata Pelajaran";
+            $mapel = MataPelajaran::all();
+            return view('dashboard.MataPelajaran.DataMataPelajaran', [
+                'title' => $title,
+                'mapel' => $mapel,
+            ]);
+        } else {
+            return back();
+        }
     }
 
     /**
@@ -27,11 +32,15 @@ class MataPelajaranController extends Controller
      */
     public function create()
     {
-        $title = "Tambah Mata Pelajaran";
+        if (Auth::guard('guru')->user()->level == 'tata usaha') {
+            $title = "Tambah Mata Pelajaran";
 
-        return view('dashboard.MataPelajaran.TambahDataMataPelajaran',[
-            'title'=>$title,
-        ]);
+            return view('dashboard.MataPelajaran.TambahDataMataPelajaran', [
+                'title' => $title,
+            ]);
+        } else {
+            return back();
+        }
     }
 
     /**
@@ -39,29 +48,35 @@ class MataPelajaranController extends Controller
      */
     public function store(Request $request)
     {
-        $messages = [
-            'required' => ':Attribute harus diisi.',
-            'nama_pelajaran.unique' => 'Mata Pelajaran sudah terdaftar...',
-            'kd_pelajaran.unique' => 'Kode mata pelajaran sudah terdaftar...'
-        ];
-        
-        $validator = Validator::make($request->all(), [
-            'nama_pelajaran' => 'required|unique:mata_pelajarans,nama_pelajaran',
-            'kd_pelajaran' => 'required|unique:mata_pelajarans,kd_pelajaran',
-        ], $messages);
+        if (Auth::guard('guru')->user()->level == 'tata usaha') {
 
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
+            $messages = [
+                'required' => ':Attribute harus diisi.',
+                'nama_pelajaran.unique' => 'Mata Pelajaran sudah terdaftar...',
+                'kd_pelajaran.unique' => 'Kode mata pelajaran sudah terdaftar...'
+            ];
+
+            $validator = Validator::make($request->all(), [
+                'nama_pelajaran' => 'required|unique:mata_pelajarans,nama_pelajaran',
+                'kd_pelajaran' => 'required|unique:mata_pelajarans,kd_pelajaran',
+            ], $messages);
+
+            if ($validator->fails()) {
+                return redirect()->back()->withErrors($validator)->withInput();
+            }
+
+
+
+            // ELOQUENT
+            $mata_pelajaran = new MataPelajaran;
+            $mata_pelajaran->nama_pelajaran = $request->nama_pelajaran;
+            $mata_pelajaran->kd_pelajaran = $request->kd_pelajaran;
+            $mata_pelajaran->save();
+            return redirect()->route('matapelajaran.index')->with('Success', 'Data berhasil ditambahkan');
+
+        } else {
+            return back();
         }
-
-
-
-        // ELOQUENT
-        $mata_pelajaran = new MataPelajaran;
-        $mata_pelajaran->nama_pelajaran = $request->nama_pelajaran;
-        $mata_pelajaran->kd_pelajaran = $request->kd_pelajaran;
-        $mata_pelajaran->save();
-        return redirect()->route('matapelajaran.index')->with('Success','Data berhasil ditambahkan');
     }
 
     /**
@@ -77,12 +92,17 @@ class MataPelajaranController extends Controller
      */
     public function edit(string $id)
     {
-        $title = "Edit Data Mata Pelajaran";
-        $mapel = MataPelajaran::find($id);
-        return view('dashboard.MataPelajaran.EditDataMataPelajaran',[
-            'title'=>$title,
-            'mapel'=>$mapel,
-        ]);
+        if (Auth::guard('guru')->user()->level == 'tata usaha') {
+
+            $title = "Edit Data Mata Pelajaran";
+            $mapel = MataPelajaran::find($id);
+            return view('dashboard.MataPelajaran.EditDataMataPelajaran', [
+                'title' => $title,
+                'mapel' => $mapel,
+            ]);
+        } else {
+            return back();
+        }
     }
 
     /**
@@ -90,27 +110,32 @@ class MataPelajaranController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $messages = [
-            'required' => ':Attribute harus diisi.',
-            'email' => 'Isi :attribute dengan format yang benar',
-            'numeric' => 'Isi attribute dengan angka'
-        ];
+        if (Auth::guard('guru')->user()->level == 'tata usaha') {
 
-        $validator = Validator::make($request->all(), [
-            'nama_pelajaran' => 'required',
-            'kd_pelajaran' => 'required',
-        ], $messages);
+            $messages = [
+                'required' => ':Attribute harus diisi.',
+                'email' => 'Isi :attribute dengan format yang benar',
+                'numeric' => 'Isi attribute dengan angka'
+            ];
 
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
+            $validator = Validator::make($request->all(), [
+                'nama_pelajaran' => 'required',
+                'kd_pelajaran' => 'required',
+            ], $messages);
+
+            if ($validator->fails()) {
+                return redirect()->back()->withErrors($validator)->withInput();
+            }
+
+            $mata_pelajaran = MataPelajaran::findOrFail($id);
+            $mata_pelajaran->nama_pelajaran = $request->nama_pelajaran;
+            $mata_pelajaran->kd_pelajaran = $request->kd_pelajaran;
+            $mata_pelajaran->save();
+
+            return redirect()->route('matapelajaran.index')->with('Success', 'Data berhasil diupdate');
+        } else {
+            return back();
         }
-
-        $mata_pelajaran = MataPelajaran::findOrFail($id);
-        $mata_pelajaran->nama_pelajaran = $request->nama_pelajaran;
-        $mata_pelajaran->kd_pelajaran = $request->kd_pelajaran;
-        $mata_pelajaran->save();
-
-        return redirect()->route('matapelajaran.index')->with('Success','Data berhasil diupdate');
     }
 
     /**
@@ -118,9 +143,14 @@ class MataPelajaranController extends Controller
      */
     public function destroy(string $id)
     {
-        $mapel = MataPelajaran::findOrFail($id);
-        $mapel->delete();
-        
-        return redirect()->route('matapelajaran.index')->with('Success', 'Data berhasil dihapus.');
+        if (Auth::guard('guru')->user()->level == 'tata usaha') {
+
+            $mapel = MataPelajaran::findOrFail($id);
+            $mapel->delete();
+
+            return redirect()->route('matapelajaran.index')->with('Success', 'Data berhasil dihapus.');
+        } else {
+            return back();
+        }
     }
 }

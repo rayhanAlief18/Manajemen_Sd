@@ -13,9 +13,9 @@
                 <div class="card">
                     <div class="card-header">Login</div>
                     <div class="card-body">
-                        {{-- @if (Session::has('error'))
+                        @if (Session::has('error'))
                             <div class="alert alert-danger">{{ Session::get('error') }}</div>
-                        @endif --}}
+                        @endif
                         @if ($errors->any())
                         <div class="alert alert-danger">
                             <ul>
@@ -25,6 +25,7 @@
                             </ul>
                         </div>
                         @endif
+                        
                         <form action="" method="POST">
                             @csrf
                             <div class="form-group">

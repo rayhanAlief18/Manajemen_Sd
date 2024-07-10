@@ -42,7 +42,7 @@ Route::middleware('guest')->group(function() {
 
 Route::get('/logout', [AuthController::class, 'logout']);
 
-Route::get('/dashboard',[HomeController::class,'dashboard'])->name('dashboard');
+Route::get('/dashboard',[HomeController::class,'dashboard'])->name('dashboard')->middleware('protect');
 
 //warga
 Route::resource('/guru', GuruController::class)->middleware('protect');;
@@ -60,24 +60,27 @@ Route::resource('/absensi', AbsensiController::class)->middleware('protect');;
 // Route::get('/BayarSpp/create/{id}', [App\Http\Controllers\PembayaranSppController::class, 'create']);
 
 
-Route::resource('/alumni', AlumniController::class);
-Route::resource('/inventaris', InventarisController::class);
+Route::resource('/alumni', AlumniController::class)->middleware('protect');
+Route::resource('/inventaris', InventarisController::class)->middleware('protect');
 //operasional
-Route::resource('kelas', KelasController::class);
+Route::resource('kelas', KelasController::class)->middleware('protect');
 
-Route::get('/riwayatbayar', [PembayaranSppController::class, 'riwayatBayar'])->name('RiwayatBayar');
-Route::get('/BuktiRiwayarBayar/{id}', [PembayaranSppController::class, 'BuktiRiwayatBayar'])->name('BuktiRiwayatBayar');
-Route::get('/ShowSiswaAbsensi/{id}', [AbsensiController::class, 'ShowSiswaAbsensi'])->name('ShowSiswaAbsensi');
-Route::post('/tambahAbsensiSiswa/{id}', [AbsensiController::class, 'tambahAbsensiSiswa'])->name('tambahAbsensiSiswa');
-Route::get('/ShowAllKelasTiapSiswa/{id}', [AbsensiController::class, 'ShowAllKelasTiapSiswa'])->name('ShowAllKelasTiapSiswa');
-Route::get('/ShowAbsensiPerSiswa/{id_kelas}/{id_siswa}', [AbsensiController::class, 'ShowAbsensiPerSiswa'])->name('ShowAbsensiPerSiswa');
-// Route::get('/DaftarKelas', [NilaiSiswaController::class, 'DaftarKelas'])->name('DaftarKelas');
-// Route::get('/riwayatBayarById', [PembayaranSppController::class, 'riwayatBayarById'])->name('riwayatBayarByIds');
+Route::get('/riwayatbayar', [PembayaranSppController::class, 'riwayatBayar'])->name('RiwayatBayar')->middleware('protect');
+Route::get('/BuktiRiwayarBayar/{id}', [PembayaranSppController::class, 'BuktiRiwayatBayar'])->name('BuktiRiwayatBayar')->middleware('protect');
+Route::get('/ShowSiswaAbsensi/{id}', [AbsensiController::class, 'ShowSiswaAbsensi'])->name('ShowSiswaAbsensi')->middleware('protect');
+Route::post('/tambahAbsensiSiswa/{id}', [AbsensiController::class, 'tambahAbsensiSiswa'])->name('tambahAbsensiSiswa')->middleware('protect');
+Route::get('/ShowAllKelasTiapSiswa/{id}', [AbsensiController::class, 'ShowAllKelasTiapSiswa'])->name('ShowAllKelasTiapSiswa')->middleware('protect');
+Route::get('/ShowAbsensiPerSiswa/{id_kelas}/{id_siswa}', [AbsensiController::class, 'ShowAbsensiPerSiswa'])->name('ShowAbsensiPerSiswa')->middleware('protect');
+Route::get('/editAbsensi/{id}/{id_kelas}/{id_siswa}', [AbsensiController::class, 'editAbsensi'])->name('editAbsensi')->middleware('protect');
+Route::put('/updateAbsensi/{id}/{id_kelas}/{id_siswa}', [AbsensiController::class,'updateAbsensi'])->name('updateAbsensi')->middleware('protect');
+// Route::get('/DaftarKelas', [NilaiSiswaController::class, 'DaftarKelas'])->name('DaftarKelas')->middleware('protect');
+// Route::get('/riwayatBayarById', [PembayaranSppController::class, 'riwayatBayarById'])->name('riwayatBayarByIds')->middleware('protect');
 // In web.php (routes file)
 
-Route::get('/riwayatBayarById/{id}/', [PembayaranSppController::class, 'riwayatBayarById'])->name('riwayatBayarById');
-Route::get('/DaftarKelas/{id}/', [NilaiSiswaController::class, 'DaftarKelas'])->name('DaftarKelas');
+Route::get('/riwayatBayarById/{id}/', [PembayaranSppController::class, 'riwayatBayarById'])->name('riwayatBayarById')->middleware('protect');
+Route::get('/DaftarKelas/{id}/', [NilaiSiswaController::class, 'DaftarKelas'])->name('DaftarKelas')->middleware('protect');
 
-Route::post('/update-semester', [SiswaController::class, 'updateSemester'])->name('siswa.update-semester');
+Route::post('/update-semester', [SiswaController::class, 'updateSemester'])->name('siswa.update-semester')->middleware('protect');
 
-Route::get('/ruangan/lantai/{lantai}', [RuanganController::class, 'showLantai'])->name('showLantai');
+Route::get('/ruangan/lantai/{lantai}', [RuanganController::class, 'showLantai'])->name('showLantai')->middleware('protect');
+

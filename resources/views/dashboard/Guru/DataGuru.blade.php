@@ -53,9 +53,9 @@
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $guru->nama_guru }}</td>
-                                <td>{{ $guru->jabatan }}</td>
+                                <td>{{ $guru->level }}</td>
                                 <td>
-                                    @if ($guru->jabatan == 'guru wali kelas')
+                                    @if ($guru->level == 'wali kelas')
                                         {{ $guru->angka_kelas }}
                                     @else
                                         -
@@ -103,7 +103,7 @@
                                             <div class="card-body row p-4">
                                                 <div class="form-group col-sm-3">
                                                     <img id="previewFoto{{ $guru->id }}"
-                                                        src="{{ asset('storage/guru/' . $guru->foto) }}" alt="Foto Siswa"
+                                                        src="{{ asset('storage/guru/' . $guru->foto) }}" alt="Foto Guru"
                                                         style="max-width: 200px; max-height: 200px;">
                                                 </div>
                                                 <div class="form-group col-sm-3">

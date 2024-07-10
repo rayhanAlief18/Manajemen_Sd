@@ -64,6 +64,7 @@
                                         <td>{{ $mapel->kd_pelajaran }}</td>
 
                                         <td>
+                                            @if (Auth::guard('guru')->user()->level == 'tata usaha')
                                             <form action="{{ route('matapelajaran.destroy', $mapel->id) }}" method="POST">
                                                 @csrf
                                                 @method('DELETE')
@@ -72,6 +73,9 @@
                                                 <button type="submit" class="btn btn-danger"><i
                                                         class="fas fa-trash"></i></button>
                                             </form>
+                                            @else
+                                            -
+                                            @endif
                                         </td>
                                     </tr>
                                 @endforeach

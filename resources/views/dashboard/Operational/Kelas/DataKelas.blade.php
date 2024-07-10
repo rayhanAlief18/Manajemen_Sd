@@ -53,13 +53,7 @@
                 <tr>
                     <td>{{$loop->iteration}}</td>
                     <td>
-                    @if($class->angka_kelas <= 6)
-                      {{ $class->angka_kelas}}
-                    @elseif($class->angka_kelas == 7)
-                      Lulus
-                    @elseif($class->angka_kelas == 8)
-                      Tanpa Kelas 
-                    @endif
+                      {{$class->nama_kelas}}
                     </td>
                     @if($class->angka_kelas <= 6)
                     <td>

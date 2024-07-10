@@ -196,7 +196,7 @@
                         <li class="nav-header">Keluar</li>
                         <li class="nav-item">
                             <a href="{{ url('/logout') }}" class="nav-link">
-                                {{-- <i class="nav-icon fas "></i> --}}
+                                <i class="nav-icon fas fa-door-open "></i>
                                 <p>
                                     Logout
                                     {{-- <span class="badge badge-info right">2</span> --}}

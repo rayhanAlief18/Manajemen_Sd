@@ -1,7 +1,9 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 use Illuminate\Http\Request;
@@ -19,63 +21,72 @@ class AbsensiController extends Controller
      */
     public function index()
     {
-        //
-        $title = "Data Absensi Tiap Kelas";
-        $kelas = DB::table('kelas')
-            ->join('gurus', 'gurus.kelas_id', '=', 'kelas.id')
-            ->select('kelas.*', 'gurus.nama_guru')
-            ->get();
+        if (Auth::guard('guru')->user()->level == 'tata usaha' || Auth::guard('guru')->user()->level == 'wali kelas') {
+
+            $title = "Data Absensi Tiap Kelas";
+            $kelas = DB::table('kelas')
+                ->join('gurus', 'gurus.kelas_id', '=', 'kelas.id')
+                ->select('kelas.*', 'gurus.nama_guru')
+                ->orderBy('angka_kelas','asc')
+                ->get();
 
 
-        return view('dashboard.Absensi.ShowAllKelas', [
-            'title' => $title,
-            'kelas' => $kelas
-        ]);
-
-
-
+            return view('dashboard.Absensi.ShowAllKelas', [
+                'title' => $title,
+                'kelas' => $kelas
+            ]);
+        } else {
+            return back();
+        }
     }
 
     public function ShowSiswaAbsensi($id)
     {
-        // Mengatur locale Carbon ke bahasa Indonesia
-        Carbon::setLocale('id');
-        // Mengambil hari saat ini dalam bahasa Indonesia
-        $currentDay = Carbon::now()->translatedFormat('l');
-        $hariIni = strtolower($currentDay);
-        $tanggalSekarang = Carbon::now()->startOfDay()->toDateString();
-        $haridantanggal = $hariIni . " " . $tanggalSekarang;
+        if (Auth::guard('guru')->user()->level == 'wali kelas') {
 
-        $title = "Data Murid Kelas :";
-        $DataSiswa = DB::table('siswas')
-            ->join('kelas', 'siswas.kelas_id', '=', 'kelas.id')
-            ->join('gurus', 'gurus.kelas_id', '=', 'siswas.kelas_id')
-            ->select('siswas.*', 'kelas.angka_kelas', 'kelas.id as id_kelas', 'gurus.nama_guru')
-            ->where('kelas.id', $id)
-            ->get();
+            // Mengatur locale Carbon ke bahasa Indonesia
+            Carbon::setLocale('id');
+            // Mengambil hari saat ini dalam bahasa Indonesia
+            $currentDay = Carbon::now()->translatedFormat('l');
+            $hariIni = strtolower($currentDay);
+            $tanggalSekarang = Carbon::now()->startOfDay()->toDateString();
+            $haridantanggal = $hariIni . " " . $tanggalSekarang;
 
-        $DataAbsensiNow = DB::table('absensi')
-            ->join('siswas', 'siswas.id', '=', 'absensi.id_siswa')
-            ->join('kelas', 'absensi.id_kelas', '=', 'kelas.id')
-            ->select('absensi.*', 'kelas.angka_kelas', 'kelas.id as id_kelas', 'siswas.nama_siswa')
-            ->where('absensi.id_kelas', $id)
-            ->where('absensi.date', $haridantanggal)
-            ->get();
+            $title = "Data Murid Kelas :";
+            $DataSiswa = DB::table('siswas')
+                ->join('kelas', 'siswas.kelas_id', '=', 'kelas.id')
+                ->join('gurus', 'gurus.kelas_id', '=', 'siswas.kelas_id')
+                ->select('siswas.*', 'kelas.angka_kelas', 'kelas.id as id_kelas', 'gurus.nama_guru')
+                ->where('kelas.id', $id)
+                ->get();
+
+            $DataAbsensiNow = DB::table('absensi')
+                ->join('siswas', 'siswas.id', '=', 'absensi.id_siswa')
+                ->join('kelas', 'absensi.id_kelas', '=', 'kelas.id')
+                ->select('absensi.*', 'kelas.angka_kelas', 'kelas.id as id_kelas', 'siswas.nama_siswa')
+                ->where('absensi.id_kelas', $id)
+                ->where('absensi.date', $haridantanggal)
+                ->get();
 
             // dd($haridantanggal);
 
-        return view('dashboard.Absensi.ShowSiswaAbsensi', [
-            'title' => $title,
-            'DataSiswa' => $DataSiswa,
-            'DataAbsensiNow' => $DataAbsensiNow,
-            'hariIni' => $hariIni,
-            'tanggalSekarang' => $tanggalSekarang,
-            'haridantanggal' => $haridantanggal,
-        ]);
+            return view('dashboard.Absensi.ShowSiswaAbsensi', [
+                'title' => $title,
+                'DataSiswa' => $DataSiswa,
+                'DataAbsensiNow' => $DataAbsensiNow,
+                'hariIni' => $hariIni,
+                'tanggalSekarang' => $tanggalSekarang,
+                'haridantanggal' => $haridantanggal,
+            ]);
+        } else {
+            return back();
+        }
     }
 
     public function tambahAbsensiSiswa($id, Request $request)
     {
+        if (Auth::guard('guru')->user()->level == 'wali kelas') {
+
         // Validasi input
         $validatedData = $request->validate([
             'id_siswa' => 'required|integer|exists:siswas,id',
@@ -160,6 +171,9 @@ class AbsensiController extends Controller
             ]);
             return redirect()->route('ShowSiswaAbsensi', $id)->with(['Success' => 'Data Berhasil Disimpan!']);
         }
+    } else {
+        return back();
+    }
     }
 
     /**
@@ -222,116 +236,155 @@ class AbsensiController extends Controller
      */
     public function show(string $id)
     {
-        $title = "Data Rekap Absensi Seluruh Siswa";
-        // $DataAbsensiNow = DB::table('absensi')
-        // ->join('siswas', 'siswas.id','=','absensi.id_siswa')
-        // ->join('kelas', 'absensi.id_kelas', '=', 'kelas.id')
-        // ->select('absensi.*', 'kelas.angka_kelas', 'kelas.id as id_kelas','siswas.nama_siswa')
-        // ->where('absensi.id_kelas',$id)
-        // ->get();
-        $DataSiswa = DB::table('siswas')
-            ->join('kelas', 'siswas.kelas_id', '=', 'kelas.id')->join('gurus', 'gurus.kelas_id', '=', 'siswas.kelas_id')
-            ->select('siswas.*', 'kelas.angka_kelas', 'kelas.id as id_kelas', 'gurus.nama_guru')
-            ->where('siswas.kelas_id', $id)
-            ->get();
+        if (Auth::guard('guru')->user()->level == 'tata usaha' || Auth::guard('guru')->user()->level == 'wali kelas') {
 
-        return view('dashboard.Absensi.ShowAllSiswaPerKelas', [
-            'title' => $title,
-            'DataSiswa' => $DataSiswa,
-        ]);
+            $title = "Rekap Absensi Siswa";
+            // $DataAbsensiNow = DB::table('absensi')
+            // ->join('siswas', 'siswas.id','=','absensi.id_siswa')
+            // ->join('kelas', 'absensi.id_kelas', '=', 'kelas.id')
+            // ->select('absensi.*', 'kelas.angka_kelas', 'kelas.id as id_kelas','siswas.nama_siswa')
+            // ->where('absensi.id_kelas',$id)
+            // ->get();
+            $DataSiswa = DB::table('siswas')
+                ->join('kelas', 'siswas.kelas_id', '=', 'kelas.id')->join('gurus', 'gurus.kelas_id', '=', 'siswas.kelas_id')
+                ->select('siswas.*', 'kelas.angka_kelas', 'kelas.id as id_kelas', 'gurus.nama_guru')
+                ->where('siswas.kelas_id', $id)
+                ->get();
+
+            return view('dashboard.Absensi.ShowAllSiswaPerKelas', [
+                'title' => $title,
+                'DataSiswa' => $DataSiswa,
+            ]);
+        } else {
+            return back();
+        }
     }
 
     public function ShowAllKelasTiapSiswa(string $id)
     {
-        $title = "Pilih Kelas Siswa";
-        $kelas = DB::table('kelas')
-            ->select('kelas.*')
-            ->take(6)
-            ->get();
-        $id_siswa = $id;
-        return view('dashboard.Absensi.ShowAllKelasTiapSiswa', [
-            'title' => $title,
-            'kelas' => $kelas,
-            'id_siswa'=>$id_siswa,
-        ]);
+        
+        if (Auth::guard('guru')->user()->level == 'tata usaha' || Auth::guard('guru')->user()->level == 'wali kelas') {
+
+            $title = "Pilih Kelas Siswa";
+            $kelas = DB::table('kelas')
+                ->select('kelas.*')
+                ->take(6)
+                ->get();
+            $id_siswa = $id;
+            return view('dashboard.Absensi.ShowAllKelasTiapSiswa', [
+                'title' => $title,
+                'kelas' => $kelas,
+                'id_siswa' => $id_siswa,
+            ]);
+        } else {
+            return back();
+        }
     }
 
-
-    public function ShowAbsensiPerSiswa(string $id_kelas, string $id_siswa)
-    {
-        //ini isi presentase
-        $TotalPertemuan = DB::table('absensi')
+    public function editAbsensi($id, $id_kelas,$id_siswa, Request $request){
+        $title = "Edit Absensi Siswa";
+        $DataAbsensiNow = DB::table('absensi')
             ->join('siswas', 'siswas.id', '=', 'absensi.id_siswa')
             ->join('kelas', 'absensi.id_kelas', '=', 'kelas.id')
             ->select('absensi.*', 'kelas.angka_kelas', 'kelas.id as id_kelas', 'siswas.nama_siswa')
-            ->where('absensi.id_kelas', $id_kelas)
-            ->where('absensi.id_siswa', $id_siswa)
-            ->count();
+            ->where('absensi.id', $id)
+            ->first();
 
-        // total kehadiran
-        $TotalPertemuanHadir = DB::table('absensi')
-        ->join('siswas', 'siswas.id', '=', 'absensi.id_siswa')
-        ->join('kelas', 'absensi.id_kelas', '=', 'kelas.id')
-        ->select('absensi.*', 'kelas.angka_kelas', 'kelas.id as id_kelas', 'siswas.nama_siswa')
-        ->where('absensi.id_kelas', $id_kelas)
-        ->where('absensi.id_siswa', $id_siswa)
-        ->where('absensi.status', 'hadir')
-        ->count();
+        return view('dashboard.Absensi.EditAbsensiAdm', [
+            'title' => $title,
+            'DataAbsensiNow' => $DataAbsensiNow,
+            'id_kelas'=> $id_kelas,
+            'id_siswa'=> $id_siswa,
+        ]);
+    }
 
-         // total tidak hadir
-         $TotalPertemuanTidakHadir = DB::table('absensi')
-         ->join('siswas', 'siswas.id', '=', 'absensi.id_siswa')
-         ->join('kelas', 'absensi.id_kelas', '=', 'kelas.id')
-         ->select('absensi.*', 'kelas.angka_kelas', 'kelas.id as id_kelas', 'siswas.nama_siswa')
-         ->where('absensi.id_kelas', $id_kelas)
-         ->where('absensi.id_siswa', $id_siswa)
-         ->where('absensi.status', 'tidak hadir')
-         ->count();
-
-         // total tidak izin
-         $TotalPertemuanIzin = DB::table('absensi')
-         ->join('siswas', 'siswas.id', '=', 'absensi.id_siswa')
-         ->join('kelas', 'absensi.id_kelas', '=', 'kelas.id')
-         ->select('absensi.*', 'kelas.angka_kelas', 'kelas.id as id_kelas', 'siswas.nama_siswa')
-         ->where('absensi.id_kelas', $id_kelas)
-         ->where('absensi.id_siswa', $id_siswa)
-         ->where('absensi.status', 'izin')
-         ->count();
-
-         // total tidak sakit
-         $TotalPertemuanSakit = DB::table('absensi')
-         ->join('siswas', 'siswas.id', '=', 'absensi.id_siswa')
-         ->join('kelas', 'absensi.id_kelas', '=', 'kelas.id')
-         ->select('absensi.*', 'kelas.angka_kelas', 'kelas.id as id_kelas', 'siswas.nama_siswa')
-         ->where('absensi.id_kelas', $id_kelas)
-         ->where('absensi.id_siswa', $id_siswa)
-         ->where('absensi.status', 'sakit')
-         ->count();
-
-        // presentase hadir
+    public function updateAbsensi($id, $id_kelas,$id_siswa, Request $request){
+        // dd($request,$id, $id_kelas, $id_siswa);
+        Absensi::Where('id', $id)->update([
+            'status' => $request->status,
+        ]);
 
 
+        return redirect()->route('ShowAbsensiPerSiswa', ['id_kelas'=>$id_kelas,'id_siswa'=>$id_siswa])->with(['Success' => 'Data Berhasil Disimpan!']);
+    }
 
-            if($TotalPertemuan > 0){
-                $PresentaseHadir =  $TotalPertemuanHadir / $TotalPertemuan  * 100;
-                $PresentaseTidakHadir = $TotalPertemuanTidakHadir/ $TotalPertemuan * 100;
-                $PresentaseIzin = $TotalPertemuanIzin/ $TotalPertemuan * 100;
-                $PresentaseSakit = $TotalPertemuanSakit/ $TotalPertemuan * 100;
-            }else{
-                $PresentaseHadir =  0;
+    public function ShowAbsensiPerSiswa(string $id_kelas, string $id_siswa)
+    {
+        if (Auth::guard('guru')->user()->level == 'tata usaha' || Auth::guard('guru')->user()->level == 'wali kelas') {
+
+            //ini isi presentase
+            $TotalPertemuan = DB::table('absensi')
+                ->join('siswas', 'siswas.id', '=', 'absensi.id_siswa')
+                ->join('kelas', 'absensi.id_kelas', '=', 'kelas.id')
+                ->select('absensi.*', 'kelas.angka_kelas', 'kelas.id as id_kelas', 'siswas.nama_siswa')
+                ->where('absensi.id_kelas', $id_kelas)
+                ->where('absensi.id_siswa', $id_siswa)
+                ->count();
+
+            // total kehadiran
+            $TotalPertemuanHadir = DB::table('absensi')
+                ->join('siswas', 'siswas.id', '=', 'absensi.id_siswa')
+                ->join('kelas', 'absensi.id_kelas', '=', 'kelas.id')
+                ->select('absensi.*', 'kelas.angka_kelas', 'kelas.id as id_kelas', 'siswas.nama_siswa')
+                ->where('absensi.id_kelas', $id_kelas)
+                ->where('absensi.id_siswa', $id_siswa)
+                ->where('absensi.status', 'hadir')
+                ->count();
+
+            // total tidak hadir
+            $TotalPertemuanTidakHadir = DB::table('absensi')
+                ->join('siswas', 'siswas.id', '=', 'absensi.id_siswa')
+                ->join('kelas', 'absensi.id_kelas', '=', 'kelas.id')
+                ->select('absensi.*', 'kelas.angka_kelas', 'kelas.id as id_kelas', 'siswas.nama_siswa')
+                ->where('absensi.id_kelas', $id_kelas)
+                ->where('absensi.id_siswa', $id_siswa)
+                ->where('absensi.status', 'tidak hadir')
+                ->count();
+
+            // total tidak izin
+            $TotalPertemuanIzin = DB::table('absensi')
+                ->join('siswas', 'siswas.id', '=', 'absensi.id_siswa')
+                ->join('kelas', 'absensi.id_kelas', '=', 'kelas.id')
+                ->select('absensi.*', 'kelas.angka_kelas', 'kelas.id as id_kelas', 'siswas.nama_siswa')
+                ->where('absensi.id_kelas', $id_kelas)
+                ->where('absensi.id_siswa', $id_siswa)
+                ->where('absensi.status', 'izin')
+                ->count();
+
+            // total tidak sakit
+            $TotalPertemuanSakit = DB::table('absensi')
+                ->join('siswas', 'siswas.id', '=', 'absensi.id_siswa')
+                ->join('kelas', 'absensi.id_kelas', '=', 'kelas.id')
+                ->select('absensi.*', 'kelas.angka_kelas', 'kelas.id as id_kelas', 'siswas.nama_siswa')
+                ->where('absensi.id_kelas', $id_kelas)
+                ->where('absensi.id_siswa', $id_siswa)
+                ->where('absensi.status', 'sakit')
+                ->count();
+
+            // presentase hadir
+
+
+
+            if ($TotalPertemuan > 0) {
+                $PresentaseHadir = $TotalPertemuanHadir / $TotalPertemuan * 100;
+                $PresentaseTidakHadir = $TotalPertemuanTidakHadir / $TotalPertemuan * 100;
+                $PresentaseIzin = $TotalPertemuanIzin / $TotalPertemuan * 100;
+                $PresentaseSakit = $TotalPertemuanSakit / $TotalPertemuan * 100;
+            } else {
+                $PresentaseHadir = 0;
                 $PresentaseTidakHadir = 0;
                 $PresentaseIzin = 0;
                 $PresentaseSakit = 0;
             }
 
-        $title = "Rekap Absensi";
-        $DataAbsensiNow = DB::table('absensi')
-            ->join('siswas', 'siswas.id', '=', 'absensi.id_siswa')
-            ->join('kelas', 'absensi.id_kelas', '=', 'kelas.id')
-            ->select('absensi.*', 'kelas.angka_kelas', 'kelas.id as id_kelas', 'siswas.nama_siswa')
-            ->where('absensi.id_kelas', $id_kelas)
-            ->where('absensi.id_siswa', $id_siswa)
-            ->get();
+            $title = "Rekap Absensi";
+            $DataAbsensiNow = DB::table('absensi')
+                ->join('siswas', 'siswas.id', '=', 'absensi.id_siswa')
+                ->join('kelas', 'absensi.id_kelas', '=', 'kelas.id')
+                ->select('absensi.*', 'kelas.angka_kelas', 'kelas.id as id_kelas', 'siswas.nama_siswa')
+                ->where('absensi.id_kelas', $id_kelas)
+                ->where('absensi.id_siswa', $id_siswa)
+                ->get();
 
 
             return view('dashboard.Absensi.ShowAbsensiPerSiswa', [
@@ -346,8 +399,12 @@ class AbsensiController extends Controller
                 'PresentaseIzin' => $PresentaseIzin,
                 'TotalPertemuanSakit' => $TotalPertemuanSakit,
                 'PresentaseSakit' => $PresentaseSakit,
+                'id_kelas'=>$id_kelas,
+                'id_siswa'=> $id_siswa,
             ]);
-
+        } else {
+            return back();
+        }
     }
 
     /**
@@ -355,17 +412,22 @@ class AbsensiController extends Controller
      */
     public function edit(string $id)
     {
-        $title = "Tambah Catatan Dan Foto Surat Izin";
-        $DataAbsensiNow = DB::table('absensi')
-            ->join('siswas', 'siswas.id', '=', 'absensi.id_siswa')
-            ->join('kelas', 'absensi.id_kelas', '=', 'kelas.id')
-            ->select('absensi.*', 'kelas.angka_kelas', 'kelas.id as id_kelas', 'siswas.nama_siswa')
-            ->where('absensi.id', $id)
-            ->first();
-        return view('dashboard.Absensi.EditSiswaAbsensi', [
-            'title' => $title,
-            'DataAbsensiNow' => $DataAbsensiNow,
-        ]);
+        if (Auth::guard('guru')->user()->level == 'wali kelas') {
+
+            $title = "Tambah Catatan Dan Foto Surat Izin";
+            $DataAbsensiNow = DB::table('absensi')
+                ->join('siswas', 'siswas.id', '=', 'absensi.id_siswa')
+                ->join('kelas', 'absensi.id_kelas', '=', 'kelas.id')
+                ->select('absensi.*', 'kelas.angka_kelas', 'kelas.id as id_kelas', 'siswas.nama_siswa')
+                ->where('absensi.id', $id)
+                ->first();
+            return view('dashboard.Absensi.EditSiswaAbsensi', [
+                'title' => $title,
+                'DataAbsensiNow' => $DataAbsensiNow,
+            ]);
+        } else {
+            return back();
+        }
     }
 
     /**
@@ -373,61 +435,67 @@ class AbsensiController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $messages = [
-            'catatan.required' => 'Catatan wajib diisi.',
-            'catatan.string' => 'Catatan harus berupa teks.',
-            'catatan.max' => 'Catatan maksimal 255 karakter.',
-            'foto_surat_izin.required' => 'Foto surat izin wajib diunggah.',
-            'foto_surat_izin.image' => 'File harus berupa gambar.',
-            'foto_surat_izin.mimes' => 'Format gambar yang diizinkan: jpeg, png, jpg, gif, svg.',
-            // 'foto_surat_izin.max' => 'Ukuran gambar maksimal 2048 kilobytes.',
-        ];
+        if (Auth::guard('guru')->user()->level == 'tata usaha' || Auth::guard('guru')->user()->level == 'wali kelas') {
 
-        $validator = Validator::make($request->all(), [
-            'catatan' => 'required|string|max:255',
-            'foto_surat_izin' => 'required|image|mimes:jpeg,png,jpg,gif,svg',
-        ], $messages);
+            $messages = [
+                'catatan.required' => 'Catatan wajib diisi.',
+                'catatan.string' => 'Catatan harus berupa teks.',
+                'catatan.max' => 'Catatan maksimal 255 karakter.',
+                'foto_surat_izin.required' => 'Foto surat izin wajib diunggah.',
+                'foto_surat_izin.image' => 'File harus berupa gambar.',
+                'foto_surat_izin.mimes' => 'Format gambar yang diizinkan: jpeg, png, jpg, gif, svg.',
+                // 'foto_surat_izin.max' => 'Ukuran gambar maksimal 2048 kilobytes.',
+            ];
 
-        $DataAbsensiNow = DB::table('absensi')
-            ->join('siswas', 'siswas.id', '=', 'absensi.id_siswa')
-            ->join('kelas', 'absensi.id_kelas', '=', 'kelas.id')
-            ->select('absensi.*', 'kelas.angka_kelas', 'kelas.id as id_kelas', 'siswas.nama_siswa')
-            ->where('absensi.id', $id)
-            ->first();
+            $validator = Validator::make($request->all(), [
+                'catatan' => 'required|string|max:255',
+                'foto_surat_izin' => 'required|image|mimes:jpeg,png,jpg,gif,svg',
+            ], $messages);
+
+            $DataAbsensiNow = DB::table('absensi')
+                ->join('siswas', 'siswas.id', '=', 'absensi.id_siswa')
+                ->join('kelas', 'absensi.id_kelas', '=', 'kelas.id')
+                ->select('absensi.*', 'kelas.angka_kelas', 'kelas.id as id_kelas', 'siswas.nama_siswa')
+                ->where('absensi.id', $id)
+                ->first();
 
 
-        $image = $request->file('image');
-        //if you upload image
-        if ($image) {
-            $filename = $DataAbsensiNow->nama_siswa . date('Y-m-d') . $image->getClientOriginalName();
-            $path = 'absensi/' . $filename;
+            $image = $request->file('image');
+            //if you upload image
+            if ($image) {
+                $filename = $DataAbsensiNow->nama_siswa . date('Y-m-d') . $image->getClientOriginalName();
+                $path = 'absensi/' . $filename;
 
-            // Menggunakan putFile() untuk menyimpan file langsung
-            Storage::disk('public')->put($path, file_get_contents($image));
+                // Menggunakan putFile() untuk menyimpan file langsung
+                Storage::disk('public')->put($path, file_get_contents($image));
 
-            //action image
-            Absensi::Where('id', $id)->update([
-                'foto_surat_izin' => $filename,
-                'catatan' => $request->catatan,
-            ]);
+                //action image
+                Absensi::Where('id', $id)->update([
+                    'foto_surat_izin' => $filename,
+                    'catatan' => $request->catatan,
+                ]);
 
-            return redirect()->route('ShowSiswaAbsensi', $DataAbsensiNow->id_kelas)->with(['Success' => 'Data Berhasil Disimpan!']);
+                return redirect()->route('ShowSiswaAbsensi', $DataAbsensiNow->id_kelas)->with(['Success' => 'Data Berhasil Disimpan!']);
 
+            } else {
+                Absensi::Where('id', $id)->update([
+                    'catatan' => $request->catatan,
+                ]);
+
+                return redirect()->route('ShowSiswaAbsensi', $DataAbsensiNow->id_kelas)->with(['Success' => 'Data Berhasil Disimpan!']);
+
+            }
         } else {
-            Absensi::Where('id', $id)->update([
-                'catatan' => $request->catatan,
-            ]);
-
-            return redirect()->route('ShowSiswaAbsensi', $DataAbsensiNow->id_kelas)->with(['Success' => 'Data Berhasil Disimpan!']);
-
+            return back();
         }
     }
+
 
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(string $id)
     {
-        //
+        
     }
 }

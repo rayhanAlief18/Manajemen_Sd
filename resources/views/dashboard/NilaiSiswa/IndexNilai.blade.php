@@ -38,19 +38,38 @@
                 <div class="row">
                     @foreach ($kelas as $kelass)
                         @if ($kelass->angka_kelas <= 6)
-                        <div class="col-lg-3 col-6">
-                            <!-- small box -->
-                            {{-- <a class="link-kelas" href="{{ route('DaftarKelas') }}"> --}}
-                            <a href="{{ route('DaftarKelas', $kelass->id) }}">
-                                <div class="small-box py-3">
-                                    <div class="inner p-4">
-                                        <h4 class="mb-0">{{ $kelass->nama_kelas }}</h4>
-                                        {{-- <p class="nama-guru mb-2">Wali Kelas : {{$kelass->guru->nama_guru}}</p> --}}
-                                        <p class="mb-0">Jumlah Siswa : {{ $kelass->siswa_count }}</p>
-                                    </div>
+                            @if (Auth::guard('guru')->user()->level == 'wali kelas')
+                                @if (Auth::guard('guru')->user()->kelas_id == $kelass->id)
+                                <div class="col-lg-3 col-6">
+                                    <!-- small box -->
+                                    {{-- <a class="link-kelas" href="{{ route('DaftarKelas') }}"> --}}
+                                    <a href="{{ route('DaftarKelas', $kelass->id) }}">
+                                        <div class="small-box py-3">
+                                            <div class="inner p-4">
+                                                <h4 class="mb-0">{{ $kelass->nama_kelas }}</h4>
+                                                {{-- <p class="nama-guru mb-2">Wali Kelas : {{$kelass->guru->nama_guru}}</p> --}}
+                                                <p class="mb-0">Jumlah Siswa : {{ $kelass->siswa_count }}</p>
+                                            </div>
+                                        </div>
+                                    </a>
                                 </div>
-                            </a>
-                        </div>
+                                @endif
+                            @endif
+                            @if (Auth::guard('guru')->user()->level == 'tata usaha')
+                            <div class="col-lg-3 col-6">
+                                <!-- small box -->
+                                {{-- <a class="link-kelas" href="{{ route('DaftarKelas') }}"> --}}
+                                <a href="{{ route('DaftarKelas', $kelass->id) }}">
+                                    <div class="small-box py-3">
+                                        <div class="inner p-4">
+                                            <h4 class="mb-0">{{ $kelass->nama_kelas }}</h4>
+                                            {{-- <p class="nama-guru mb-2">Wali Kelas : {{$kelass->guru->nama_guru}}</p> --}}
+                                            <p class="mb-0">Jumlah Siswa : {{ $kelass->siswa_count }}</p>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                            @endif
                         @endif
                     @endforeach
                 </div>

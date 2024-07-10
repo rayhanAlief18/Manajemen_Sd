@@ -68,7 +68,7 @@
                                     <option value="" selected disabled>Pilih Pelajaran</option>
                                     @foreach ($mapel as $class)
                                     <option value="{{ $class->id }}" {{ old('pelajaran_id') == $class->id ? 'selected' : '' }}>
-                                        {{ $class->nama_pelajaran }}
+                                        {{ $class->nama_pelajaran }} </option>
                                     @endforeach
                                 </select>
                                 @error('pelajaran_id')

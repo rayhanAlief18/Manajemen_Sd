@@ -12,6 +12,8 @@ class HomeController extends Controller
 
     public function dashboard(){
         $title = "Dashboard";
-        return view('dashboard.index', compact('title'));
+        $session_nama= session('nama_guru');
+
+        return view('dashboard.index', compact('title','session_nama'));
     }
 }

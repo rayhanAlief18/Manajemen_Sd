@@ -8,12 +8,12 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">{{$title}}</h1>
+            <h1 class="m-0">{{$title}}: {{$jadwal->nama_kelas}}</h1>
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">{{$title}}</li>
+              <li class="breadcrumb-item active">{{$title}} </li>
             </ol>
           </div><!-- /.col -->
         </div><!-- /.row -->
@@ -26,20 +26,20 @@
       <div class="container-fluid">
 
     @if ($errors->any())
-        @foreach ($errors->all() as $error)
-        <div class="alert alert-warning alert-dismissible fade show" role="alert">
-            <strong>{{ $error }}</strong> mohon periksa kembali
+        {{-- @foreach ($errors->all() as $error) --}}
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>Kesalahan! </strong> mohon periksa kembali
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
             </button>
         </div>
-        @endforeach
+        {{-- @endforeach --}}
     @endif
     
 <!-- Horizontal Form -->
 <div class="card card-info">
     <div class="card-header">
-        <h3 class="card-title">{{$title}}</h3>
+        <h3 class="card-title">{{$title}} </h3>
     </div>
 
                 
@@ -60,10 +60,13 @@
                             @endif
                         @endforeach
                     </select>
+                    @error('id_mapel')
+                      <div class="text-danger">{{ $message }}</div>
+                    @enderror
                 </div>
             <div class="form-group col-md-6">
             <label for="exampleSelectBorder">Guru Pengampu</label>
-                <select class="custom-select form-control" id="exampleSelectBorder" name="id_guru">
+                <select readonly class="custom-select form-control" id="exampleSelectBorder" name="id_guru">
                     <option disabled selected>Pilih guru pengampu...</option> 
                     <option value="{{$jadwal->id_guru}}" selected >{{ $jadwal->nama_guru}}</option>
                         {{-- @foreach ($DataGuru as $guru)
@@ -72,29 +75,47 @@
                             @endif
                         @endforeach --}}
                 </select>
+                @error('id_guru')
+                  <div class="text-danger">{{ $message }}</div>
+                @enderror
             </div>
             
-            <div class="form-group col-md-6">
+            <div class="form-group col-md-6 d-none">
                 <label for="exampleSelectBorder">Kelas</label>
                 <input name="id_kelas" type="number" class="form-control" placeholder="Masukan jumlah sesi..." readonly value="{{$jadwal->id_kelas}}"></input> 
+              @error('id_kelas')
+                  <div class="text-danger">{{ $message }}</div>
+                @enderror  
             </div>
             <div class="form-group col-md-6">
               <label for="exampleSelectBorder">Hari</label>
               <input name="hari" type="text" class="form-control" placeholder="Masukan jumlah sesi..." readonly value="{{$jadwal->hari}}"></input> 
+              @error('hari')
+                  <div class="text-danger">{{ $message }}</div>
+                @enderror
           </div>
             <div class="form-group col-md-6">
               <label for="exampleSelectBorder">Jam Mulai</label>
               <input name="jam_mulai" type="time" class="form-control" placeholder="Masukan Jam Mulai..." value="{{$jadwal->jam_mulai}}">
+              @error('jam_mulai')
+                  <div class="text-danger">{{ $message }}</div>
+                @enderror
             </div>
             <div class="form-group col-md-6">
               <label for="exampleSelectBorder">Jam Selesai</label>
               <input name="jam_selesai" type="time" class="form-control" placeholder="Masukan Jam Selesai..." value="{{$jadwal->jam_selesai}}">
+              @error('jam_selesai')
+                  <div class="text-danger">{{ $message }}</div>
+                @enderror
             </div>
           </div>
 
           <div class="form-group col-md-6">
             <label for="exampleSelectBorder">Jumlah Sesi (25 menit = 1 sesi)</label>
             <input name="jumlah_sesi" type="number" class="form-control" placeholder="Masukan jumlah sesi..." value="{{$jadwal->jumlah_sesi}}">
+            @error('jumlah_sesi')
+                  <div class="text-danger">{{ $message }}</div>
+                @enderror
           </div>
         </div>
         </div>

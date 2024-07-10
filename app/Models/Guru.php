@@ -7,7 +7,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Guru extends Authenticatable
 {
+
     use HasFactory;
+
+    protected $table = 'gurus';
 
     protected $fillable = [
         'foto',
@@ -28,13 +31,14 @@ class Guru extends Authenticatable
         'jenjang',
         'tahun_lulus',
         'jurusan',
-        'jabatan',
         'kelas_id',
-        'role',
-        'status'
+        'level',
+        'status',
     ];
+
     public function kelas()
     {
         return $this->belongsTo(Kelas::class, 'kelas_id');
     }
+
 }

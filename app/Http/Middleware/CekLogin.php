@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 
 class CekLogin
 {
+    
     /**
      * Handle an incoming request.
      *
@@ -39,6 +40,8 @@ class CekLogin
             '/jadwal',   // Example: Guru can access JadwalController
             '/absensi',  // Example: Guru can access AbsensiController
             '/nilai',    // Example: Guru can access NilaiController
+            '/kelas',    // Example: Guru can access KelasController
+            '/matapelajaran',    // Example: Guru can access MataPelajaranController
             // Add more routes as needed
         ];
 
@@ -50,4 +53,6 @@ class CekLogin
         // Redirect or deny access if not allowed
         return redirect('/login')->with('error', 'Unauthorized access.');
     }
+
+    
 }

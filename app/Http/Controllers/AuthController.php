@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
@@ -28,6 +29,7 @@ class AuthController extends Controller
         ];
 
         if (Auth::guard('guru')->attempt($infoLogin)) {
+            
             return redirect()->route('dashboard');
         } else {
             return redirect()->back()->withErrors("Email dan Password Tidak Valid")->withInput();
@@ -38,6 +40,7 @@ class AuthController extends Controller
     public function logout()
     {
         Auth::logout();
-        return redirect('/');
+        return redirect('/')->with('error', 'Anda telah logout.');
     }
+
 }
