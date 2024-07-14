@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
+use RealRashid\SweetAlert\Facades\Alert;
 
 
 class PrestasiController extends Controller
@@ -16,6 +17,8 @@ class PrestasiController extends Controller
         if (Auth::guard('guru')->user()->level == 'tata usaha') {
             $title = "Prestasi";
             $DataPrestasi = Prestasi::all();
+
+            confirmDelete();
 
             // Redirect
             return view('dashboard.Prestasi.DataPrestasi', data: compact('title', 'DataPrestasi'));
@@ -61,6 +64,9 @@ class PrestasiController extends Controller
                 'gambar_thumbnail.max' => 'Ukuran gambar thumbnail maksimal 2MB.',
                 'gambar_prestasi.image' => 'Gambar prestasi harus berupa file gambar | jpeg, png, jpg, atau svg',
                 'gambar_prestasi.max' => 'Ukuran gambar prestasi maksimal 2MB.',
+                'nama_prestasi.required' => 'Nama prestasi wajib diisi',
+                'anggota.required' => 'Nama anggota wajib diisi',
+                'tgl_prestasi.required' => 'Tanggal wajib diisi',
                 'dokumentasi.*.image' => 'Setiap dokumentasi harus berupa file gambar.',
                 'dokumentasi.*.mimes' => 'Setiap dokumentasi harus berformat jpeg, png, jpg, atau gif.',
             ]);
@@ -109,8 +115,11 @@ class PrestasiController extends Controller
             // Simpan data prestasi
             $prestasi->save();
 
+            // Sweet alert
+            Alert::success('Berhasil ditambahkan', 'Prestasi berhasil ditambahkan.');
+
             // Redirect
-            return redirect()->route('prestasi.index')->with('success', 'Prestasi berhasil disimpan.');
+            return redirect()->route('prestasi.index');
         } else {
             return back();
         }
@@ -235,8 +244,11 @@ class PrestasiController extends Controller
             // Simpan perubahan
             $prestasi->save();
 
+            // Sweet alert
+            Alert::success('Perubahan Berhasil', 'Prestasi berhasil dirubah.');
+
             // Redirect
-            return redirect()->route('prestasi.index')->with('Success', 'Prestasi berhasil diperbarui.');
+            return redirect()->route('prestasi.index');
         } else {
             return back();
         }
@@ -274,8 +286,11 @@ class PrestasiController extends Controller
             // Hapus data di database
             $findPrestasi->delete();
 
+            // Sweet alert
+            Alert::success('Berhasil Dihapus', 'Prestasi berhasil dihapus.');
+
             // Redirect
-            return redirect()->route('prestasi.index')->with('success', 'Prestasi berhasil dihapus.');
+            return redirect()->route('prestasi.index');
         } else {
             return back();
         }
