@@ -152,7 +152,7 @@ class PembayaranSppController extends Controller
             }
 
             // Sweet alert
-            Alert::success('Berhasil ditambahkan', 'Pembayaran berhasil ditambahkan.');
+            Alert::success('Berhasil Ditambahkan', 'Pembayaran berhasil ditambahkan.');
 
             // Simpan data guru
             $bayar->save();

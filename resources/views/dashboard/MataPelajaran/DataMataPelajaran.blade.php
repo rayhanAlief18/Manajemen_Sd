@@ -1,7 +1,7 @@
 @extends('layoutDash.main')
 
 @section('content')
-    
+
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
@@ -26,7 +26,6 @@
         <section class="content">
             <div class="container-fluid">
 
-
                 @if (session('Success'))
                     <div class="alert alert-success alert-dismissible fade show" role="alert">
                         {{ session('Success') }}
@@ -47,7 +46,7 @@
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">
-                        <table id="example1" class="table table-bordered table-striped">
+                        <table id="example1" class="table table-bordered table-striped tablealert">
                             <thead>
                                 <tr>
                                     <th>No</th>
@@ -68,10 +67,8 @@
                                             <form action="{{ route('matapelajaran.destroy', $mapel->id) }}" method="POST">
                                                 @csrf
                                                 @method('DELETE')
-                                                <a href="{{ route('matapelajaran.edit', $mapel->id) }}"
-                                                    class="btn btn-warning"><i class="fas fa-edit"></i></a>
-                                                <button type="submit" class="btn btn-danger"><i
-                                                        class="fas fa-trash"></i></button>
+                                                <a href="{{ route('matapelajaran.edit', $mapel->id) }}" class="btn btn-warning"><i class="fas fa-edit"></i></a>
+                                                <button type="submit" class="btn btn-danger btn-delete" data-name="{{ $mapel->nama_pelajaran }}"><i class="fas fa-trash"></i></button>
                                             </form>
                                             @else
                                             -
@@ -97,4 +94,30 @@
         </section>
         <!-- /.content -->
     </div>
+
+    @push('scripts')
+        <script type="module">
+            $(document).ready(function() {
+                $(".tablealert").on("click", ".btn-delete", function(e) {
+                    e.preventDefault();
+
+                    var form = $(this).closest("form");
+                    var name = $(this).data("name");
+
+                    Swal.fire({
+                        title: "Hapus Data " + name + "?",
+                        text: "Anda tidak akan bisa kembalikan data ini lagi",
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonClass: "bg-primary",
+                        confirmButtonText: "Ya, Saya Yakin",
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            form.submit();
+                        }
+                    });
+                });
+            });
+        </script>
+    @endpush
 @endsection

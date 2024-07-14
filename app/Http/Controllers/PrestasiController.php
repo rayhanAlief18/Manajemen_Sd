@@ -116,7 +116,7 @@ class PrestasiController extends Controller
             $prestasi->save();
 
             // Sweet alert
-            Alert::success('Berhasil ditambahkan', 'Prestasi berhasil ditambahkan.');
+            Alert::success('Berhasil Ditambahkan', 'Prestasi berhasil ditambahkan.');
 
             // Redirect
             return redirect()->route('prestasi.index');
@@ -249,7 +249,7 @@ class PrestasiController extends Controller
             $prestasi->save();
 
             // Sweet alert
-            Alert::success('Perubahan Berhasil', 'Prestasi berhasil dirubah.');
+            Alert::success('Perubahan Berhasil', 'Prestasi berhasil diubah.');
 
             // Redirect
             return redirect()->route('prestasi.index');
