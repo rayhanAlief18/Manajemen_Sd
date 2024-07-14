@@ -7,6 +7,7 @@ use App\Models\PembayaranSpp;
 use App\Models\Siswa;
 use App\Models\Kelas;
 use Illuminate\Support\Facades\Auth;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class PembayaranSppController extends Controller
 {
@@ -19,6 +20,7 @@ class PembayaranSppController extends Controller
             $title = "Data Pembayaran";
             $siswa = Siswa::all();
             $data = PembayaranSpp::all();
+            confirmDelete();
             return view('dashboard.PembayaranSpp.DataBayarSpp', [
                 'title' => $title,
                 'siswa' => $siswa,
@@ -149,6 +151,8 @@ class PembayaranSppController extends Controller
                 $bayar->bukti_pembayaran = $imageName;
             }
 
+            // Sweet alert
+            Alert::success('Berhasil ditambahkan', 'Pembayaran berhasil ditambahkan.');
 
             // Simpan data guru
             $bayar->save();

@@ -40,7 +40,7 @@
                     </div>
 
                     <!-- form start -->
-                    <form action="{{ route('BayarSpp.store') }}" method="POST" enctype="multipart/form-data">
+                    <form id="sppForm" action="{{ route('BayarSpp.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <input type="hidden" name="id_siswa" value="{{ $siswa->id }}">
                         <div class="card-body row">
@@ -48,7 +48,7 @@
                                 <label for="nisn">NISN</label>
                                 <input type="number" value="{{ $siswa->NISN }}" class="form-control" id="nisn"
                                     readonly>
-                                
+
                             </div>
                             <div class="form-group col-sm-6">
                                 <label for="nama_siswa">Nama Siswa</label>
@@ -119,7 +119,7 @@
 
                         <div class="card-footer">
                             <button type="button" class="btn btn-outline-secondary" onclick="window.history.back();">Kembali</button>
-                            <button type="submit" class="btn btn-info float-right">Submit</button>
+                            <button type="button" class="btn btn-info float-right" onclick=confirmSubmit()>Submit</button>
                             {{-- <button type="reset" class="btn btn-danger float-right">reset</button> --}}
                         </div>
                     </form>
@@ -152,5 +152,19 @@
                 previewFoto.style.display = 'none'; // Sembunyikan gambar
             }
         });
+
+        function confirmSubmit() {
+            Swal.fire({
+                title: 'Tambah Data',
+                text: 'Apakah data sudah selesai diisi?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Ya, Sudah',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('sppForm').submit();
+                }
+            });
+        }
     </script>
 @endsection
