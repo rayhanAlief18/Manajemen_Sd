@@ -246,19 +246,6 @@
                     </tfoot>
                 </table>
             </div>
-            <!-- /.card-body -->
         </div>
-
-        <!-- Button trigger modal -->
-
-
-        <!-- Button trigger modal -->
-
-
-
-
-    </div><!-- /.container-fluid -->
-    </section>
-    <!-- /.content -->
     </div>
 @endsection
