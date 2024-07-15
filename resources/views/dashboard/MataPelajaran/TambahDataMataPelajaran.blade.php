@@ -144,7 +144,7 @@
                         <script>
                             function confirmSubmit() {
                                 Swal.fire({
-                                    title: 'Tambah Data',
+                                    title: 'Tambah Data Mata Pelajaran',
                                     text: 'Apakah data sudah selesai diisi?',
                                     icon: 'warning',
                                     showCancelButton: true,

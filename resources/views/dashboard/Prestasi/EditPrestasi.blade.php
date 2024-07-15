@@ -194,7 +194,7 @@
 
                 function confirmSubmit() {
                     Swal.fire({
-                        title: 'Edit Data',
+                        title: 'Ubah Data Prestasi',
                         text: 'Apakah data sudah selesai diubah?',
                         icon: 'warning',
                         showCancelButton: true,
