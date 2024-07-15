@@ -7,6 +7,7 @@ use App\Models\Ruangan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
+use RealRashid\SweetAlert\Facades\Alert;
 
 
 class BarangController extends Controller
@@ -71,8 +72,11 @@ class BarangController extends Controller
             $ruangan = Ruangan::findOrFail($request->input('ruangan_id'));
             $lantai = $ruangan->lantai;
 
+            // Sweet alert
+            Alert::success('Berhasil Ditambahkan', 'Barang berhasil ditambahkan.');
+
             // Redirect
-            return redirect()->route('showLantai', ['lantai' => $lantai])->with('success', 'Barang berhasil ditambahkan.');
+            return redirect()->route('showLantai', ['lantai' => $lantai]);
         } else {
             return back();
         }
@@ -138,8 +142,11 @@ class BarangController extends Controller
             $ruangan = Ruangan::findOrFail($barang->ruangan_id);
             $lantai = $ruangan->lantai;
 
+            // Sweet alert
+            Alert::success('Perubahan Berhasil', 'Barang berhasil diubah.');
+
             // Redirect
-            return redirect()->route('showLantai', $lantai)->with('success', 'Barang berhasil diperbarui.');
+            return redirect()->route('showLantai', $lantai);
         } else {
             return back();
         }
@@ -160,7 +167,10 @@ class BarangController extends Controller
             // Delete barang
             $findBarang->delete();
 
-            return redirect()->route('showLantai', $lantai)->with('success', 'Barang berhasil dihapus.');
+            // Sweet alert
+            Alert::success('Berhasil Dihapus', 'Barang berhasil dihapus.');
+
+            return redirect()->route('showLantai', $lantai);
         } else {
             return back();
         }

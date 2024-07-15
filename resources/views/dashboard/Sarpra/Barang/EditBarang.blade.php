@@ -94,46 +94,26 @@
                         <!-- Button Start -->
                         <div class="card-footer">
                             <a href="{{ route('showLantai', $lantai) }}" class="btn btn-secondary">Back</a>
-                            <button type="button" class="btn btn-info" onclick="validateForm()">Submit</button>
+                            <button type="button" class="btn btn-info" onclick="confirmSubmit()">Submit</button>
                         </div> <!-- Button End -->
                     </form> <!-- End Form -->
                 </div> <!-- General Form Input End -->
             </div> <!-- Container End -->
 
-            <!-- Confirm Modal -->
-            <div class="modal fade" id="confirmModal" data-keyboard="false" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="confirmModalLabel">Confirmation Edit</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            Apakah data <strong>BARANG</strong> sudah benar?
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
-                            <button type="button" class="btn btn-primary" onclick="submitForm()">Ya, Simpan</button>
-                        </div>
-                    </div>
-                </div>
-            </div> <!-- End Confirm Modal -->
-
             <!-- JS Code -->
             <script>
-                function validateForm() {
-                    var form = document.getElementById('barangForm');
-                    if (form.checkValidity()) {
-                        $('#confirmModal').modal('show');
-                    } else {
-                        form.reportValidity();
-                    }
-                }
-
-                function submitForm() {
-                    document.getElementById('barangForm').submit();
+                function confirmSubmit() {
+                    Swal.fire({
+                        title: 'Ubah Data Barang',
+                        text: 'Apakah data sudah selesai diubah?',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonText: 'Ya, Sudah',
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            document.getElementById('barangForm').submit();
+                        }
+                    });
                 }
             </script> <!-- End JS Code -->
         </section> <!-- /.content -->
