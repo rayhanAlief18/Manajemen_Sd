@@ -376,7 +376,7 @@
 
         function confirmSubmit() {
             Swal.fire({
-                title: 'Tambah Data',
+                title: 'Tambah Data Guru',
                 text: 'Apakah data sudah selesai diisi?',
                 icon: 'warning',
                 showCancelButton: true,

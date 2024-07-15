@@ -133,7 +133,7 @@
                         <script>
                             function confirmSubmit() {
                                 Swal.fire({
-                                    title: 'Edit Data',
+                                    title: 'Ubah Data Mata Pelajaran',
                                     text: 'Apakah data sudah selesai diubah?',
                                     icon: 'warning',
                                     showCancelButton: true,
