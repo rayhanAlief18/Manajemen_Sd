@@ -7,6 +7,7 @@ use App\Models\Ruangan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
+use RealRashid\SweetAlert\Facades\Alert;
 
 
 class RuanganController extends Controller
@@ -28,6 +29,8 @@ class RuanganController extends Controller
         if (Auth::guard('guru')->user()->level == 'tata usaha') {
             $title = "Ruangan";
             $dataRuangan = Ruangan::where('lantai', $lantai)->get();
+
+            confirmDelete();
 
             // Redirect
             return view('dashboard.Sarpra.DataRuangan', compact('dataRuangan', 'lantai', 'title'));
@@ -86,8 +89,11 @@ class RuanganController extends Controller
             $ruangan->lantai = $request->input('lantai');
             $ruangan->save();
 
+            // Sweet alert
+            Alert::success('Berhasil Ditambahkan', 'Ruangan berhasil ditambahkan.');
+
             // Redirect
-            return redirect()->route('showLantai', $ruangan->lantai)->with('success', 'Ruangan berhasil dibuat.');
+            return redirect()->route('showLantai', $ruangan->lantai);
         } else {
             return back();
         }
@@ -142,8 +148,11 @@ class RuanganController extends Controller
             $ruangan->fill($request->only(['nama', 'deskripsi', 'lantai']));
             $ruangan->save();
 
+            // Sweet alert
+            Alert::success('Perubahan Berhasil', 'Ruangan berhasil diubah.');
+
             // Redirect
-            return redirect()->route('showLantai', $ruangan->lantai)->with('success', 'Ruangan berhasil diperbarui.');
+            return redirect()->route('showLantai', $ruangan->lantai);
         } else {
             return back();
         }
@@ -163,8 +172,11 @@ class RuanganController extends Controller
             // Delete ruangan
             $findRuangan->delete();
 
+            // Sweet alert
+            Alert::success('Berhasil Dihapus', 'Ruangan berhasil dihapus.');
+
             // Redirect
-            return redirect()->route('showLantai', $lantai)->with('success', 'Ruangan berhasil dihapus.');
+            return redirect()->route('showLantai', $lantai);
         } else {
             return back();
         }
