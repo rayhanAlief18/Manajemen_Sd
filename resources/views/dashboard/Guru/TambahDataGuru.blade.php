@@ -43,7 +43,7 @@
 
                     <!-- /.card-header -->
                     <!-- form start -->
-                    <form action="{{ route('guru.store') }}" method="POST" enctype="multipart/form-data">
+                    <form id="guruForm" action="{{ route('guru.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="card-body row ">
                             <div class="col-md-12">
@@ -232,7 +232,7 @@
                                 </div>
                                 <div class="form-group col-md-6 ">
                                     <label for="exampleInputEmail1">Jenjang (contoh: Sarjana (S1))</label>
-                                    <input type="text " name="jenjang" class="form-control" id="exampleInputEmail1"
+                                    <input type="text" name="jenjang" class="form-control" id="exampleInputEmail1"
                                            placeholder="Masukkan Jenjang..." value="{{old('jenjang')}}">
                                     @error('jenjang')
                                     <div class="text-danger">{{ $message }}</div>
@@ -255,8 +255,6 @@
                                     <div class="text-danger">{{ $message }}</div>
                                     @enderror
                                 </div>
-
-
                             </div>
 
                             <div class="col-md-12">
@@ -343,15 +341,14 @@
                                 </div>
                             </div>
                         </div>
-
                         <div class="card-footer">
                             <a href="{{ route('guru.index') }}" class="btn btn-secondary">Back</a>
-                            <button type="submit" class="btn btn-info">Submit</button>
+                            <button type="button" class="btn btn-info" onclick="confirmSubmit()">Submit</button>
                             <button type="reset" class="btn btn-danger float-right">reset</button>
                         </div>
-
                     </form>
                 </div>
+                <br>
             </div>
         </section>
     </div>
@@ -376,5 +373,19 @@
                 previewFoto.style.display = 'none'; // Sembunyikan gambar
             }
         });
+
+        function confirmSubmit() {
+            Swal.fire({
+                title: 'Tambah Data',
+                text: 'Apakah data sudah selesai diisi?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Ya, Sudah',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('guruForm').submit();
+                }
+            });
+        }
     </script>
 @endsection
