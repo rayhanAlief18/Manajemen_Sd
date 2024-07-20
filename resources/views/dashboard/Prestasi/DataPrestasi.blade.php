@@ -41,7 +41,7 @@
                     </div>
                     <!-- Table Start -->
                     <div class="card-body">
-                        <table id="example1" class="table table-bordered table-striped">
+                        <table id="example1" class="table table-bordered table-striped tablealert">
                             <thead>
                             <tr>
                                 <th>No</th>
@@ -61,9 +61,13 @@
                                     <td>{{$item->tingkat}}</td>
                                     <td>{{$item->tgl_prestasi}}</td>
                                     <td class="text-center">
-                                        <a href="{{route('prestasi.edit', $item->id)}}" class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></a>
-                                        <button type="button" onclick="handleDelete({{ $item->id }})" class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
-                                        <button type="button" class="btn btn-sm btn-info show-modal" data-toggle="modal" data-target="#showModal{{ $item->id }}"><i class="fas fa-eye"></i></button>
+                                        <form action="{{route('prestasi.destroy',$item->id)}}" method="POST">
+                                            @csrf
+                                            @method('DELETE')
+                                            <a href="{{route('prestasi.edit',$item->id)}}" class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></a>
+                                            <button type="submit" class="btn btn-sm btn-danger btn-delete" data-name="{{$item->nama_prestasi}}"><i class="fas fa-trash"></i></button>
+                                            <button type="button" class="btn btn-sm btn-info show-modal" data-toggle="modal" data-target="#showModal{{ $item->id }}"><i class="fas fa-eye"></i></button>
+                                        </form>
                                     </td>
                                 </tr>
 
@@ -156,40 +160,32 @@
                     </div>
                 </div>
             </div>
-
-            <!-- Modal Delete Data -->
-            <div class="modal fade" id="confirmDeleteModal" data-keyboard="false" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="confirmDeleteModalLabel">Confirmation Delete</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            Apakah Anda yakin ingin menghapus data ini?
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
-                            <form id="deleteForm" action="#" method="POST">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger">Ya, Hapus</button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div> <!-- End Modal Delete Data -->
-
-            <!-- JS Code -->
-            <script>
-                function handleDelete(id) {
-                    var form = document.getElementById('deleteForm');
-                    form.action = '/prestasi/' + id;
-                    $('#confirmDeleteModal').modal('show');
-                }
-            </script> <!-- End JS Code -->
         </section>
     </div>
+
+    @push('scripts')
+        <script type="module">
+            $(document).ready(function() {
+                $(".tablealert").on("click", ".btn-delete", function(e) {
+                    e.preventDefault();
+
+                    var form = $(this).closest("form");
+                    var name = $(this).data("name");
+
+                    Swal.fire({
+                        title: "Hapus Data " + name + "?",
+                        text: "Anda tidak akan bisa kembalikan data ini lagi",
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonClass: "bg-primary",
+                        confirmButtonText: "Ya, Saya Yakin",
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            form.submit();
+                        }
+                    });
+                });
+            });
+        </script>
+    @endpush
 @endsection

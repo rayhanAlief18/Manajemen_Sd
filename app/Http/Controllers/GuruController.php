@@ -12,6 +12,7 @@ use App\Models\Kelas;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
+use RealRashid\SweetAlert\Facades\Alert;
 
 
 class GuruController extends Controller
@@ -32,6 +33,14 @@ class GuruController extends Controller
                     'DataGuru' => $DataGuru,
                 ]);
             }
+            $title = "Guru";
+            $DataGuru = Guru::select('gurus.*', 'gurus.id', 'gurus.nama_guru', 'kelas.angka_kelas', 'kelas.id as id_kelas')->join('kelas', 'kelas.id', '=', 'gurus.kelas_id')
+                ->get();
+            confirmDelete();
+            return view('dashboard.Guru.DataGuru', [
+                'title' => $title,
+                'DataGuru' => $DataGuru,
+            ]);
         } else {
             return back();
         }
@@ -176,7 +185,10 @@ class GuruController extends Controller
                 'status' => $request->status,
             ]);
 
-            return redirect()->route('guru.index')->with(['Success' => 'Data Berhasil Disimpan!']);
+            // Sweet alert
+            Alert::success('Berhasil Ditambahkan', 'Data Guru berhasil ditambahkan.');
+
+            return redirect()->route('guru.index');
         } else {
             return back();
         }
@@ -348,7 +360,7 @@ class GuruController extends Controller
                     'status' => $request->status,
                 ]);
 
-                return redirect()->route('guru.index')->with(['Success' => 'Data Berhasil Diubah !']);
+                return redirect()->route('guru.index');
 
             }
 
@@ -377,7 +389,10 @@ class GuruController extends Controller
                 'status' => $request->status,
             ]);
 
-            return redirect()->route('guru.index')->with(['Success' => 'Data Berhasil Diubah!']);
+            // Sweet alert
+            
+            Alert::success('Perubahan Berhasil', 'Data Guru berhasil diubah.');
+            return redirect()->route('guru.index');
         } else {
             return back();
         }
@@ -397,7 +412,10 @@ class GuruController extends Controller
             // Hapus data guru dari database
             $guru->delete();
 
-            return redirect()->route('guru.index')->with('Success', 'Data berhasil dihapus.');
+            // Sweet alert
+            Alert::success('Berhasil Dihapus', 'Data Guru berhasil dihapus.');
+
+            return redirect()->route('guru.index');
         } else {
             return back();
         }

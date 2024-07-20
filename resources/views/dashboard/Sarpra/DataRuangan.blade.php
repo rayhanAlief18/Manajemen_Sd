@@ -1,9 +1,7 @@
 @extends('layoutDash.main')
 
 @section('content')
-    <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
-        <!-- Content Header (Page header) -->
         <div class="content-header">
             <div class="container-fluid">
                 <div class="row mb-2">
@@ -11,7 +9,6 @@
                         <h1 class="m-0">Data {{$title}}</h1>
                     </div>
                     <div class="col-sm-6">
-                        <!-- Nav Page -->
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a href="#">Home</a></li>
                             <li class="breadcrumb-item active">{{$title}}</li>
@@ -20,9 +17,7 @@
                 </div>
             </div>
         </div>
-        <!-- Content Header End-->
 
-        <!-- Main content -->
         <section class="content">
             <div class="container-fluid">
                 @if (session('Success'))
@@ -34,7 +29,6 @@
                     </div>
                 @endif
 
-                <!-- Button Add -->
                 <div>
                     <a href="{{ route('ruangan.create', ['lantai' => request()->segment(3)]) }}" class="btn btn-primary col-2" style="margin-right: 2%; border-bottom-left-radius: 0; border-bottom-right-radius: 0">
                         <i class="mr-2 fas fa-user-plus"></i> Data Ruangan
@@ -44,7 +38,6 @@
                     </a>
                 </div>
 
-                <!-- General Table Start -->
                 <div class="card text-center">
                     <div class="card-header">
                         <ul class="nav nav-tabs card-header-tabs">
@@ -79,9 +72,13 @@
                                     <td>{{$ruangan->barangs->sum('barang_baik')}}</td>
                                     <td>{{$ruangan->barangs->sum('barang_rusak')}}</td>
                                     <td class="text-center">
-                                        <a href="{{ route('ruangan.edit', $ruangan->id) }}" class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></a>
-                                        <button type="button" onclick="handleDelete('{{ route('ruangan.destroy', $ruangan->id) }}')" class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
-                                        <button type="button" class="btn btn-sm btn-info show-modal" data-toggle="modal" data-target="#showRuanganModal{{ $ruangan->id }}"><i class="fas fa-eye"></i></button>
+                                        <form id="ruanganForm{{$ruangan->id}}" action="{{route('ruangan.destroy',$ruangan->id)}}" method="POST">
+                                            @csrf
+                                            @method('DELETE')
+                                            <a href="{{route('ruangan.edit',$ruangan->id)}}" class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></a>
+                                            <button type="button" class="btn btn-sm btn-danger" onclick="confirmSubmit('ruanganForm{{$ruangan->id}}', '{{$ruangan->nama}}')"><i class="fas fa-trash"></i></button>
+                                            <button type="button" class="btn btn-sm btn-info show-modal" data-toggle="modal" data-target="#showRuanganModal{{ $ruangan->id }}"><i class="fas fa-eye"></i></button>
+                                        </form>
                                     </td>
                                     <td>
                                         <button type="button" class="btn" onclick="toggleSubmenu('{{$loop->iteration}}')">
@@ -109,9 +106,13 @@
                                                     <td>{{$barang->barang_baik}}</td>
                                                     <td>{{$barang->barang_rusak}}</td>
                                                     <td>
-                                                        <a href="{{ route('barang.edit', $barang->id) }}" class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></a>
-                                                        <button type="button" onclick="handleDelete('{{ route('barang.destroy', $barang->id) }}')" class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
-                                                        <button type="button" class="btn btn-sm btn-info show-modal" data-toggle="modal" data-target="#showBarangModal{{ $barang->id }}"><i class="fas fa-eye"></i></button>
+                                                        <form id="barangForm{{$barang->id}}" action="{{route('barang.destroy', $barang->id)}}" method="POST">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <a href="{{ route('barang.edit', $barang->id) }}" class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></a>
+                                                            <button type="button" class="btn btn-sm btn-danger" onclick="confirmSubmit('barangForm{{$barang->id}}', '{{$barang->nama}}')"><i class="fas fa-trash"></i></button>
+                                                            <button type="button" class="btn btn-sm btn-info show-modal" data-toggle="modal" data-target="#showBarangModal{{ $barang->id }}"><i class="fas fa-eye"></i></button>
+                                                        </form>
                                                     </td>
                                                 </tr>
 
@@ -220,31 +221,6 @@
         </section>
     </div>
 
-    <!-- Modal Delete Data -->
-    <div class="modal fade" id="confirmDeleteModal" data-keyboard="false" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="confirmDeleteModalLabel">Confirmation Delete</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    Apakah Anda yakin ingin menghapus data ini?
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
-                    <form id="deleteForm" action="#" method="POST">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn btn-danger">Ya, Hapus</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div> <!-- End Modal Delete Data -->
-
     <script>
         function toggleSubmenu(menuId) {
             const submenu = document.getElementById('submenu-' + menuId);
@@ -262,10 +238,18 @@
             }
         }
 
-        function handleDelete(deleteUrl) {
-            var form = document.getElementById('deleteForm');
-            form.action = deleteUrl;
-            $('#confirmDeleteModal').modal('show');
+        function confirmSubmit(formId, dataValue) {
+            Swal.fire({
+                title: `Hapus Data ${dataValue}`,
+                text: 'Anda tidak akan bisa kembalikan data ini lagi',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Ya, Saya Yakin',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById(formId).submit();
+                }
+            });
         }
     </script>
 @endsection

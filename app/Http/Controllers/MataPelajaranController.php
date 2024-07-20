@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 
 use App\Models\MataPelajaran;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class MataPelajaranController extends Controller
 {
@@ -18,6 +19,9 @@ class MataPelajaranController extends Controller
         if (Auth::guard('guru')->user()->level == 'tata usaha' || Auth::guard('guru')->user()->level == 'wali kelas') {
             $title = "Mata Pelajaran";
             $mapel = MataPelajaran::all();
+
+            confirmDelete();
+
             return view('dashboard.MataPelajaran.DataMataPelajaran', [
                 'title' => $title,
                 'mapel' => $mapel,
@@ -65,14 +69,15 @@ class MataPelajaranController extends Controller
                 return redirect()->back()->withErrors($validator)->withInput();
             }
 
-
+            // Sweet alert
+            Alert::success('Berhasil Ditambahkan', 'Mata pelajaran berhasil ditambahkan.');
 
             // ELOQUENT
             $mata_pelajaran = new MataPelajaran;
             $mata_pelajaran->nama_pelajaran = $request->nama_pelajaran;
             $mata_pelajaran->kd_pelajaran = $request->kd_pelajaran;
             $mata_pelajaran->save();
-            return redirect()->route('matapelajaran.index')->with('Success', 'Data berhasil ditambahkan');
+            return redirect()->route('matapelajaran.index');
 
         } else {
             return back();
@@ -132,7 +137,10 @@ class MataPelajaranController extends Controller
             $mata_pelajaran->kd_pelajaran = $request->kd_pelajaran;
             $mata_pelajaran->save();
 
-            return redirect()->route('matapelajaran.index')->with('Success', 'Data berhasil diupdate');
+            // Sweet alert
+            Alert::success('Perubahan Berhasil', 'Mata pelajaran berhasil diubah.');
+
+            return redirect()->route('matapelajaran.index');
         } else {
             return back();
         }
@@ -148,7 +156,10 @@ class MataPelajaranController extends Controller
             $mapel = MataPelajaran::findOrFail($id);
             $mapel->delete();
 
-            return redirect()->route('matapelajaran.index')->with('Success', 'Data berhasil dihapus.');
+            // Sweet alert
+            Alert::success('Berhasil Dihapus', 'Mata pelajaran berhasil dihapus.');
+
+            return redirect()->route('matapelajaran.index');
         } else {
             return back();
         }
