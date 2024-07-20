@@ -90,6 +90,25 @@
                                             </div>
                                         @endif
                                     @endauth
+                                    @if (Auth::guard('waliMurid')->user()->level == 'wali murid')
+                                            @if (Auth::guard('waliMurid')->user()->kelas_id == $kelas->id)
+                                                <div class="col-lg-3 col-6">
+                                                    <!-- small box -->
+                                                    <div class="small-box bg-info">
+                                                        <div class="inner">
+                                                            <h3>Kelas : {{ $kelas->angka_kelas }}</h3>
+                                                            <p>Wali kelas: {{ $kelas->nama_guru }}</p>
+                                                        </div>
+                                                        <div class="icon">
+                                                            <i class="ion ion-bag"></i>
+                                                        </div>
+                                                        <a href="{{ route('absensi.show', $kelas->id) }}"
+                                                            class="small-box-footer">More
+                                                            info <i class="fas fa-arrow-circle-right"></i></a>
+                                                    </div>
+                                                </div>
+                                            @endif
+                                        @endif
                                 @endif
                             @endforeach
                         </div>

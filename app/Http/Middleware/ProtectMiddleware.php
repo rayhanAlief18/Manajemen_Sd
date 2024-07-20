@@ -17,11 +17,9 @@ class ProtectMiddleware
     public function handle(Request $request, Closure $next)
     {
         // Check if user is authenticated
-        if (Auth::guard('guru')->check()) {
+        if (Auth::guard('guru')->check() || Auth::guard('waliMurid')->check()) {
             // Check if the authenticated user has a specific 'level'
-            if (Auth::guard('guru')->user()->level == 'tata usaha' || Auth::guard('guru')->user()->level == 'wali kelas') {
                 return $next($request);
-            }
         }
 
         // If not authenticated or not authorized, redirect to login page

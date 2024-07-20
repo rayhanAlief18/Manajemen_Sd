@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Siswa;
 use App\Models\Kelas;
+use Illuminate\Support\Facades\Auth;
 
 class SiswaController extends Controller
 {
@@ -13,6 +14,8 @@ class SiswaController extends Controller
      */
     public function index()
     {
+        if (Auth::guard('guru')->user()->level == 'tata usaha') {
+
         $title = "Data Siswa";
         $kelas = Kelas::all();
         $data = Siswa::all();
@@ -20,7 +23,17 @@ class SiswaController extends Controller
             'title' => $title,
             'kelas' => $kelas,
             'data' => $data
-        ]);
+        ]); 
+        }elseif(Auth::guard('guru')->user()->level == 'wali kelas'){
+            $title = "Data Siswa";
+            $kelas = Kelas::all();
+            $data = Siswa::where('kelas_id', Auth::guard('guru')->user()->kelas_id)->get();
+            return view('dashboard.Siswa.DataSiswa', [
+                'title' => $title,
+                'kelas' => $kelas,
+                'data' => $data
+            ]); 
+        }
     }
 
     /**

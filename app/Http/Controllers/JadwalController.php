@@ -22,27 +22,20 @@ class JadwalController extends Controller
      */
     public function index(string $id = null)
     {
-        if (Auth::guard('guru')->user()->level == 'tata usaha' || Auth::guard('guru')->user()->level == 'wali kelas') {
-            //
-            $title = "Daftar Kelas";
-            // $jadwal = Jadwal::all();
-            $kelas = DB::table('kelas')
-                ->join('gurus', 'gurus.kelas_id', '=', 'kelas.id')
-                ->select('kelas.*', 'gurus.nama_guru')
-                ->orderBy('angka_kelas','asc')
-                ->get();
+        $title = "Pilih Kelas";
+        if (Auth::guard('guru')->check() || Auth::guard('waliMurid')->check()) {
 
+                // $jadwal = Jadwal::all();
+                $kelas = DB::table('kelas')
+                    ->join('gurus', 'gurus.kelas_id', '=', 'kelas.id')
+                    ->select('kelas.*', 'gurus.nama_guru')
+                    ->orderBy('angka_kelas', 'asc')
+                    ->get();
 
-            return view('dashboard.Jadwal.index', [
-                'title' => $title,
-                'kelas' => $kelas
-
-                // 'kelas'=>$kelas,
-                // 'DataGuru'=>$DataGuru,
-                // 'mapel'=>$mapel,
-                // 'jadwal'=>$jadwal,
-                // 'DataGuru'=>$DataGuru,
-            ]);
+                return view('dashboard.Jadwal.index', [
+                    'title' => $title,
+                    'kelas' => $kelas
+                ]);
         } else {
             return back();
         }
@@ -57,7 +50,7 @@ class JadwalController extends Controller
 
             $title = "Input Data Jadwal Pelajaran";
             // $DataGuru = Guru::all();
-            $DataGuru = DB::table('gurus')->join('kelas', 'gurus.kelas_id', '=', 'kelas.id')->select('gurus.*', 'kelas.angka_kelas', 'kelas.nama_kelas')->orderBy('angka_kelas','asc')->get();
+            $DataGuru = DB::table('gurus')->join('kelas', 'gurus.kelas_id', '=', 'kelas.id')->select('gurus.*', 'kelas.angka_kelas', 'kelas.nama_kelas')->orderBy('angka_kelas', 'asc')->get();
 
             $mapel = MataPelajaran::all();
             $kelas = Kelas::all();
@@ -141,7 +134,7 @@ class JadwalController extends Controller
      */
     public function show(string $id)
     {
-        if (Auth::guard('guru')->user()->level == 'tata usaha' || Auth::guard('guru')->user()->level == 'wali kelas') {
+        if (Auth::guard('guru')->check() || Auth::guard('waliMurid')->check()) {
 
             // Mengatur locale Carbon ke bahasa Indonesia
             Carbon::setLocale('id');

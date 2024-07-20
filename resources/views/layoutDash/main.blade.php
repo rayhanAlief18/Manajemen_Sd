@@ -36,6 +36,7 @@
     <link rel="stylesheet" href="{{ asset('lte/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
     <link rel="stylesheet" href="{{ asset('lte/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
     <link rel="stylesheet" href="{{ asset('lte/plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
+    {{-- <link rel="stylesheet" href="{{ asset('style.css') }}"> --}}
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -88,124 +89,173 @@
         </div>
       </div> --}}
 
+                @if (Auth::guard('guru')->check())
+                    <!-- Sidebar Menu -->
+                    <nav class="mt-2">
+                        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
+                            data-accordion="false">
+                            <!-- Add icons to the links using the .nav-icon class
+                            with font-awesome or any other icon font library -->
+                            <li class="nav-header">Operasional</li>
+                            <li class="nav-item">
+                                <a href="{{ url('/siswa') }}" class="nav-link">
+                                    <i class="nav-icon fas fa-user-graduate"></i>
+                                    <p> Siswa & Wali
+                                    </p>
+                                </a>
+                            </li>
+                            @auth('guru')
+                                @if (Auth::guard('guru')->user()->level == 'tata usaha')
+                                    <li class="nav-item">
+                                        <a href="{{ url('/BayarSpp') }}" class="nav-link">
+                                            <i class="nav-icon fas fa-file-invoice-dollar"></i>
+                                            <p>
+                                                Pembayaran SPP
+                                            </p>
+                                        </a>
+                                    </li>
 
-                <!-- Sidebar Menu -->
-                <nav class="mt-2">
-                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
-                        data-accordion="false">
-                        <!-- Add icons to the links using the .nav-icon class
-          with font-awesome or any other icon font library -->
-                        <li class="nav-header">Operasional</li>
+                                    <li class="nav-item">
+                                        <a href="{{ url('/prestasi') }}" class="nav-link">
+                                            <i class="nav-icon fas fa-address-book"></i>
+                                            <p>
+                                                Prestasi Siswa
+                                            </p>
+                                        </a>
+                                    </li>
+                                @endif
+                            @endauth
 
-                        {{-- <li class="nav-item">
-                            <a href="{{ url('/siswa') }}" class="nav-link">
-                                <i class="nav-icon fas fa-user-graduate"></i>
-                                <p> Siswa & Wali
-                                    {{-- <span class="badge badge-info right">2</span> --}}
-                        {{-- </p>
-                        </a>
-                        </li> --}}
-                        @auth('guru')
-                            @if (Auth::guard('guru')->user()->level == 'tata usaha')
+                            <li class="nav-item">
+                                <a href="{{ url('/nilai') }}" class="nav-link">
+                                    <i class="nav-icon fas fa-file-invoice-dollar  "></i>
+                                    <p>
+                                        Nilai Siswa
+                                    </p>
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a href="{{ route('matapelajaran.index') }}" class="nav-link">
+                                    <i class="nav-icon fas fa-book"></i>
+                                    <p>
+                                        Mata Pelajaran
+                                    </p>
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a href="{{ route('jadwal.index') }}" class="nav-link">
+                                    <i class="nav-icon fas fa-list"></i>
+                                    <p>
+                                        Pengelolaan Jadwal
+                                    </p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('absensi.index') }}" class="nav-link">
+                                    <i class="nav-icon fas fa-list"></i>
+                                    <p>
+                                        History Absensi
+                                    </p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ url('/kelas') }}" class="nav-link">
+                                    <i class="nav-icon fas fa-layer-group"></i>
+                                    <p>
+                                        Kelas
+                                    </p>
+                                </a>
+                            </li>
+                            @auth('guru')
+                                @if (Auth::guard('guru')->user()->level == 'tata usaha')
+                                    <li class="nav-header">Karyawan & Alumni</li>
+                                    <li class="nav-item">
+                                        <a href="{{ url('/guru') }}" class="nav-link">
+                                            <i class="nav-icon fas fa-user-tie"></i>
+                                            <p>
+                                                Guru
+                                            </p>
+                                        </a>
+                                    </li>
+
+                                    <li class="nav-header">Inventaris</li>
+                                    <li class="nav-item">
+                                        <a href="{{ url('/ruangan') }}" class="nav-link">
+                                            <i class="nav-icon fas fa-dolly"></i>
+                                            <p>
+                                                Data Ruangan
+                                                {{-- <span class="badge badge-info right">2</span> --}}
+                                            </p>
+                                        </a>
+                                    </li>
+                                @endif
+                            @endauth
+                            <li class="nav-header">Keluar</li>
+                            <li class="nav-item">
+                                <a href="{{ url('/logout') }}" class="nav-link">
+                                    <i class="nav-icon fas fa-door-open "></i>
+                                    <p>
+                                        Logout
+                                        {{-- <span class="badge badge-info right">2</span> --}}
+                                    </p>
+                                </a>
+                            </li>
+
+                        </ul>
+                    </nav>
+                @endif
+
+                @if (Auth::guard('waliMurid')->check())
+                    @if (Auth::guard('waliMurid')->user()->level == 'wali murid')
+                        <nav class="mt-2">
+                            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
+                                data-accordion="false">
+                                <!-- Add icons to the links using the .nav-icon class
+                            with font-awesome or any other icon font library -->
+                                <li class="nav-header">Operasional</li>
                                 <li class="nav-item">
-                                    <a href="{{ url('/BayarSpp') }}" class="nav-link">
-                                        <i class="nav-icon fas fa-file-invoice-dollar"></i>
+                                    <a href="{{ route('jadwal.index') }}" class="nav-link">
+                                        <i class="nav-icon fas fa-list"></i>
                                         <p>
-                                            Pembayaran SPP
+                                            Pengelolaan Jadwal
                                         </p>
                                     </a>
                                 </li>
-
                                 <li class="nav-item">
-                                    <a href="{{ url('/prestasi') }}" class="nav-link">
-                                        <i class="nav-icon fas fa-address-book"></i>
+                                    <a href="{{ route('ShowAllKelasTiapSiswa',Auth::guard('waliMurid')->user()->id) }}" class="nav-link">
+                                        <i class="nav-icon fas fa-list"></i>
                                         <p>
-                                            Prestasi Siswa
+                                            History Absensi
                                         </p>
                                     </a>
                                 </li>
-                            @endif
-                        @endauth
-
-                        <li class="nav-item">
-                            <a href="{{ url('/nilai') }}" class="nav-link">
-                                <i class="nav-icon fas fa-file-invoice-dollar  "></i>
-                                <p>
-                                    Nilai Siswa
-                                </p>
-                            </a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a href="{{ route('matapelajaran.index') }}" class="nav-link">
-                                <i class="nav-icon fas fa-book"></i>
-                                <p>
-                                    Mata Pelajaran
-                                </p>
-                            </a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a href="{{ route('jadwal.index') }}" class="nav-link">
-                                <i class="nav-icon fas fa-list"></i>
-                                <p>
-                                    Pengelolaan Jadwal
-                                </p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ route('absensi.index') }}" class="nav-link">
-                                <i class="nav-icon fas fa-list"></i>
-                                <p>
-                                    History Absensi
-                                </p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ url('/kelas') }}" class="nav-link">
-                                <i class="nav-icon fas fa-layer-group"></i>
-                                <p>
-                                    Kelas
-                                </p>
-                            </a>
-                        </li>
-                        @auth('guru')
-                            @if (Auth::guard('guru')->user()->level == 'tata usaha')
-                                <li class="nav-header">Karyawan & Alumni</li>
                                 <li class="nav-item">
-                                    <a href="{{ url('/guru') }}" class="nav-link">
-                                        <i class="nav-icon fas fa-user-tie"></i>
+                                    <a href="{{ route('nilai.show',Auth::guard('waliMurid')->user()->kelas_id) }}" class="nav-link">
+                                        <a href="{{ route('nilai.show', Auth::guard('waliMurid')->user()->id) . '?id=' . Auth::guard('waliMurid')->user()->id . '&nisn=' . Auth::guard('waliMurid')->user()->nisn . '&nama_siswa=' . Auth::guard('waliMurid')->user()->nama_siswa  }}" class="nav-link">
+                                        <i class="nav-icon fas fa-file-invoice-dollar  "></i>
                                         <p>
-                                            Guru
+                                            Nilai Siswa
                                         </p>
                                     </a>
                                 </li>
-
-                                <li class="nav-header">Inventaris</li>
+                                <li class="nav-header">Keluar</li>
                                 <li class="nav-item">
-                                    <a href="{{ url('/ruangan') }}" class="nav-link">
-                                        <i class="nav-icon fas fa-dolly"></i>
+                                    <a href="{{ url('/logout') }}" class="nav-link">
+                                        <i class="nav-icon fas fa-door-open "></i>
                                         <p>
-                                            Data Ruangan
+                                            Logout
                                             {{-- <span class="badge badge-info right">2</span> --}}
                                         </p>
                                     </a>
                                 </li>
-                            @endif
-                        @endauth
-                        <li class="nav-header">Keluar</li>
-                        <li class="nav-item">
-                            <a href="{{ url('/logout') }}" class="nav-link">
-                                <i class="nav-icon fas fa-door-open "></i>
-                                <p>
-                                    Logout
-                                    {{-- <span class="badge badge-info right">2</span> --}}
-                                </p>
-                            </a>
-                        </li>
 
-                    </ul>
-                </nav>
+                            </ul>
+                        </nav>
+                    @endif
+                @endif
+
                 <!-- /.sidebar-menu -->
             </div>
             <!-- /.sidebar -->

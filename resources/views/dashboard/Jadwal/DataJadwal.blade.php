@@ -89,12 +89,17 @@
                                         </div>
                                     @endif
                                 @endforeach
-                                @if (Auth::guard('guru')->user()->level == 'wali kelas')
-                                    <a href="{{ route('ShowSiswaAbsensi', $kelasAbs) }}"
-                                        class="btn btn-primary d-flex ml-2"><i class="fas fa-calendar-check mr-2 mt-1 "></i>
-                                        <p class="">Absen</p>
-                                    </a>
+                                @if (Auth::guard('guru')->check())
+                                    @if (Auth::guard('guru')->user()->level == 'wali kelas')
+                                        <a href="{{ route('ShowSiswaAbsensi', $kelasAbs) }}"
+                                            class="btn btn-primary d-flex ml-2"><i
+                                                class="fas fa-calendar-check mr-2 mt-1 "></i>
+                                            <p class="">Absen</p>
+                                        </a>
+                                    @else
+                                    @endif
                                 @endif
+
                             @endif
                         </div>
                     </div>
@@ -140,19 +145,24 @@
                                                             <td>{{ $senin->jumlah_sesi }}</td>
                                                             <td>{{ $senin->hari }}</td>
 
-                                                            <td>
-                                                                <form
-                                                                    action="{{ route('jadwal.destroy', $senin->id_jadwal) }}"
-                                                                    method="POST">
-                                                                    @method('DELETE')
-                                                                    @csrf
-                                                                    <a href="{{ route('jadwal.edit', $senin->id_jadwal) }}"
-                                                                        class="btn btn-sm btn-warning"><i
-                                                                            class="fas fa-edit"></i></a>
-                                                                    <button type="submit" class="btn btn-sm btn-danger"><i
-                                                                            class="fas fa-trash"></i></button>
-                                                                </form>
-                                                            </td>
+                                                            @if (Auth::guard('guru')->check())
+                                                                @if (Auth::guard('guru')->user()->level == 'tata usaha')
+                                                                    <td>
+                                                                        <form
+                                                                            action="{{ route('jadwal.destroy', $senin->id_jadwal) }}"
+                                                                            method="POST">
+                                                                            @method('DELETE')
+                                                                            @csrf
+                                                                            <a href="{{ route('jadwal.edit', $senin->id_jadwal) }}"
+                                                                                class="btn btn-sm btn-warning"><i
+                                                                                    class="fas fa-edit"></i></a>
+                                                                            <button type="submit"
+                                                                                class="btn btn-sm btn-danger"><i
+                                                                                    class="fas fa-trash"></i></button>
+                                                                        </form>
+                                                                    </td>
+                                                                @endif
+                                                            @endif
                                                         </tr>
                                                     @endif
                                                 @endforeach
@@ -195,19 +205,23 @@
                                                             <td>{{ $selasa->jumlah_sesi }}</td>
                                                             <td>{{ $selasa->hari }}</td>
 
-                                                            <td>
-                                                                <form
-                                                                    action="{{ route('jadwal.destroy', $selasa->id_jadwal) }}"
-                                                                    method="POST">
-                                                                    @method('DELETE')
-                                                                    @csrf
-                                                                    <a href="{{ route('jadwal.edit', $selasa->id_jadwal) }}"
-                                                                        class="btn btn-warning"><i
-                                                                            class="fas fa-edit"></i></a>
-                                                                    <button type="submit" class="btn btn-danger"><i
-                                                                            class="fas fa-trash"></i></button>
-                                                                </form>
-                                                            </td>
+                                                            @if (Auth::guard('guru')->check())
+                                                                @if (Auth::guard('guru')->user()->level == 'tata usaha')
+                                                                    <td>
+                                                                        <form
+                                                                            action="{{ route('jadwal.destroy', $selasa->id_jadwal) }}"
+                                                                            method="POST">
+                                                                            @method('DELETE')
+                                                                            @csrf
+                                                                            <a href="{{ route('jadwal.edit', $selasa->id_jadwal) }}"
+                                                                                class="btn btn-warning"><i
+                                                                                    class="fas fa-edit"></i></a>
+                                                                            <button type="submit" class="btn btn-danger"><i
+                                                                                    class="fas fa-trash"></i></button>
+                                                                        </form>
+                                                                    </td>
+                                                                @endif
+                                                            @endif
                                                         </tr>
                                                     @endif
                                                 @endforeach
@@ -250,19 +264,24 @@
                                                             <td>{{ $rabu->jumlah_sesi }}</td>
                                                             <td>{{ $rabu->hari }}</td>
 
-                                                            <td>
-                                                                <form
-                                                                    action="{{ route('jadwal.destroy', $rabu->id_jadwal) }}"
-                                                                    method="POST">
-                                                                    @method('DELETE')
-                                                                    @csrf
-                                                                    <a href="{{ route('jadwal.edit', $rabu->id_jadwal) }}"
-                                                                        class="btn btn-warning"><i
-                                                                            class="fas fa-edit"></i></a>
-                                                                    <button type="submit" class="btn btn-danger"><i
-                                                                            class="fas fa-trash"></i></button>
-                                                                </form>
-                                                            </td>
+                                                            @if (Auth::guard('guru')->check())
+                                                                @if (Auth::guard('guru')->user()->level == 'tata usaha')
+                                                                    <td>
+                                                                        <form
+                                                                            action="{{ route('jadwal.destroy', $rabu->id_jadwal) }}"
+                                                                            method="POST">
+                                                                            @method('DELETE')
+                                                                            @csrf
+                                                                            <a href="{{ route('jadwal.edit', $rabu->id_jadwal) }}"
+                                                                                class="btn btn-warning"><i
+                                                                                    class="fas fa-edit"></i></a>
+                                                                            <button type="submit"
+                                                                                class="btn btn-danger"><i
+                                                                                    class="fas fa-trash"></i></button>
+                                                                        </form>
+                                                                    </td>
+                                                                @endif
+                                                            @endif
                                                         </tr>
                                                     @endif
                                                 @endforeach
@@ -305,19 +324,24 @@
                                                             <td>{{ $kamis->jumlah_sesi }}</td>
                                                             <td>{{ $kamis->hari }}</td>
 
-                                                            <td>
-                                                                <form
-                                                                    action="{{ route('jadwal.destroy', $kamis->id_jadwal) }}"
-                                                                    method="POST">
-                                                                    @method('DELETE')
-                                                                    @csrf
-                                                                    <a href="{{ route('jadwal.edit', $kamis->id_jadwal) }}"
-                                                                        class="btn btn-warning"><i
-                                                                            class="fas fa-edit"></i></a>
-                                                                    <button type="submit" class="btn btn-danger"><i
-                                                                            class="fas fa-trash"></i></button>
-                                                                </form>
-                                                            </td>
+                                                            @if (Auth::guard('guru')->check())
+                                                                @if (Auth::guard('guru')->user()->level == 'tata usaha')
+                                                                    <td>
+                                                                        <form
+                                                                            action="{{ route('jadwal.destroy', $kamis->id_jadwal) }}"
+                                                                            method="POST">
+                                                                            @method('DELETE')
+                                                                            @csrf
+                                                                            <a href="{{ route('jadwal.edit', $kamis->id_jadwal) }}"
+                                                                                class="btn btn-warning"><i
+                                                                                    class="fas fa-edit"></i></a>
+                                                                            <button type="submit"
+                                                                                class="btn btn-danger"><i
+                                                                                    class="fas fa-trash"></i></button>
+                                                                        </form>
+                                                                    </td>
+                                                                @endif
+                                                            @endif
                                                         </tr>
                                                     @endif
                                                 @endforeach
@@ -360,19 +384,24 @@
                                                             <td>{{ $jumat->jumlah_sesi }}</td>
                                                             <td>{{ $jumat->hari }}</td>
 
-                                                            <td>
-                                                                <form
-                                                                    action="{{ route('jadwal.destroy', $jumat->id_jadwal) }}"
-                                                                    method="POST">
-                                                                    @method('DELETE')
-                                                                    @csrf
-                                                                    <a href="{{ route('jadwal.edit', $jumat->id_jadwal) }}"
-                                                                        class="btn btn-warning"><i
-                                                                            class="fas fa-edit"></i></a>
-                                                                    <button type="submit" class="btn btn-danger"><i
-                                                                            class="fas fa-trash"></i></button>
-                                                                </form>
-                                                            </td>
+                                                            @if (Auth::guard('guru')->check())
+                                                                @if (Auth::guard('guru')->user()->level == 'tata usaha')
+                                                                    <td>
+                                                                        <form
+                                                                            action="{{ route('jadwal.destroy', $jumat->id_jadwal) }}"
+                                                                            method="POST">
+                                                                            @method('DELETE')
+                                                                            @csrf
+                                                                            <a href="{{ route('jadwal.edit', $jumat->id_jadwal) }}"
+                                                                                class="btn btn-warning"><i
+                                                                                    class="fas fa-edit"></i></a>
+                                                                            <button type="submit"
+                                                                                class="btn btn-danger"><i
+                                                                                    class="fas fa-trash"></i></button>
+                                                                        </form>
+                                                                    </td>
+                                                                @endif
+                                                            @endif
                                                         </tr>
                                                     @endif
                                                 @endforeach
@@ -415,19 +444,24 @@
                                                             <td>{{ $sabtu->jumlah_sesi }}</td>
                                                             <td>{{ $sabtu->hari }}</td>
 
-                                                            <td>
-                                                                <form
-                                                                    action="{{ route('jadwal.destroy', $sabtu->id_jadwal) }}"
-                                                                    method="POST">
-                                                                    @method('DELETE')
-                                                                    @csrf
-                                                                    <a href="{{ route('jadwal.edit', $sabtu->id_jadwal) }}"
-                                                                        class="btn btn-warning"><i
-                                                                            class="fas fa-edit"></i></a>
-                                                                    <button type="submit" class="btn btn-danger"><i
-                                                                            class="fas fa-trash"></i></button>
-                                                                </form>
-                                                            </td>
+                                                            @if (Auth::guard('guru')->check())
+                                                                @if (Auth::guard('guru')->user()->level == 'tata usaha')
+                                                                    <td>
+                                                                        <form
+                                                                            action="{{ route('jadwal.destroy', $sabtu->id_jadwal) }}"
+                                                                            method="POST">
+                                                                            @method('DELETE')
+                                                                            @csrf
+                                                                            <a href="{{ route('jadwal.edit', $sabtu->id_jadwal) }}"
+                                                                                class="btn btn-warning"><i
+                                                                                    class="fas fa-edit"></i></a>
+                                                                            <button type="submit"
+                                                                                class="btn btn-danger"><i
+                                                                                    class="fas fa-trash"></i></button>
+                                                                        </form>
+                                                                    </td>
+                                                                @endif
+                                                            @endif
                                                         </tr>
                                                     @endif
                                                 @endforeach
