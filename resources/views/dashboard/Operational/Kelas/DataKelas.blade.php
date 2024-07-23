@@ -46,6 +46,7 @@
                 <th>No</th>
                 <th>Kelas</th>
                 <th>Murid</th>
+                <th>Wali Kelas</th>
               </tr>
               </thead>
               <tbody>
@@ -57,14 +58,20 @@
                     </td>
                     @if($class->angka_kelas <= 6)
                     <td>
-                      <a href="" class="btn btn-info"><i class="fas fa-person"></i>Murid</a>
+                      <a href="{{route('kelas.show',$class->id)}}" class="btn btn-info"><i class="fas fa-person"></i>Murid</a>
                     </td>
                     @else
                     <td>
                       -
                     </td>
                     @endif
-                    
+                    <td>
+                      @if($class->angka_kelas == 7 || $class->angka_kelas == 8 || $class->angka_kelas == 9 )
+                      -
+                      @else
+                      {{$class->nama_guru}}
+                      @endif
+                    </td>
                 </tr>
                 @endforeach
               </tbody>
@@ -72,6 +79,7 @@
               <tr>
                 <th>No</th>
                 <th>Kelas</th>
+                <th>Wali Kelas</th>
                 <th>Murid</th>
               </tr>
               </tfoot>

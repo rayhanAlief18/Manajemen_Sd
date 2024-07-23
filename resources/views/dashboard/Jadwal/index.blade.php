@@ -65,7 +65,6 @@
                                                         <!-- small box -->
                                                         <div class="small-box bg-info">
                                                             <div class="inner">
-                                                                ini wali kelas
                                                                 <h3>Kelas: {{ $kelass->angka_kelas }}</h3>
 
                                                                 <p>Wali kelas: {{ $kelass->nama_guru }}</p>
@@ -86,7 +85,6 @@
                                                     <!-- small box -->
                                                     <div class="small-box bg-info">
                                                         <div class="inner">
-                                                            ini tata usaha
                                                             <h3>Kelas: {{ $kelass->angka_kelas }}</h3>
 
                                                             <p>Wali kelas: {{ $kelass->nama_guru }}</p>
@@ -103,15 +101,14 @@
                                         @endif
                                         @endauth
 
-                                        @if (Auth::guard('waliMurid')->check())
+                                        @if (!Auth::guard('guru')->check())
                                             @if (Auth::guard('waliMurid')->user()->level == 'wali murid')
                                                 @if (Auth::guard('waliMurid')->user()->kelas_id == $kelass->id)
                                                     <div class="col-lg-3 col-6">
                                                         <!-- small box -->
                                                         <div class="small-box bg-info">
                                                             <div class="inner">
-                                                                ini ortu
-                                                                <h3>Kelassss: {{ $kelass->angka_kelas }}</h3>
+                                                                <h3>Kelas: {{ $kelass->angka_kelas }}</h3>
 
                                                                 <p>Wali kelas: {{ $kelass->nama_guru }}</p>
                                                             </div>

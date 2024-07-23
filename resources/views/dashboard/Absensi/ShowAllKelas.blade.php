@@ -59,6 +59,7 @@
                                                     <!-- small box -->
                                                     <div class="small-box bg-info">
                                                         <div class="inner">
+                                                            walikel
                                                             <h3>Kelas : {{ $kelas->angka_kelas }}</h3>
                                                             <p>Wali kelas: {{ $kelas->nama_guru }}</p>
                                                         </div>
@@ -77,6 +78,7 @@
                                                 <!-- small box -->
                                                 <div class="small-box bg-info">
                                                     <div class="inner">
+                                                        tatus
                                                         <h3>Kelas : {{ $kelas->angka_kelas }}</h3>
                                                         <p>Wali kelas: {{ $kelas->nama_guru }}</p>
                                                     </div>
@@ -90,7 +92,8 @@
                                             </div>
                                         @endif
                                     @endauth
-                                    @if (Auth::guard('waliMurid')->user()->level == 'wali murid')
+                                    @if (!Auth::guard('guru')->check())
+                                        @if (Auth::guard('waliMurid')->user()->level == 'wali murid')
                                             @if (Auth::guard('waliMurid')->user()->kelas_id == $kelas->id)
                                                 <div class="col-lg-3 col-6">
                                                     <!-- small box -->
@@ -109,6 +112,7 @@
                                                 </div>
                                             @endif
                                         @endif
+                                    @endif
                                 @endif
                             @endforeach
                         </div>

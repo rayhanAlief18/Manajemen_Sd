@@ -160,6 +160,7 @@
                                     </p>
                                 </a>
                             </li>
+                            @if (Auth::guard('guru')->user()->level == 'tata usaha')
                             <li class="nav-item">
                                 <a href="{{ url('/kelas') }}" class="nav-link">
                                     <i class="nav-icon fas fa-layer-group"></i>
@@ -168,6 +169,7 @@
                                     </p>
                                 </a>
                             </li>
+                            @endif
                             @auth('guru')
                                 @if (Auth::guard('guru')->user()->level == 'tata usaha')
                                     <li class="nav-header">Karyawan & Alumni</li>
@@ -207,7 +209,7 @@
                     </nav>
                 @endif
 
-                @if (Auth::guard('waliMurid')->check())
+                @if (!Auth::guard('guru')->check())
                     @if (Auth::guard('waliMurid')->user()->level == 'wali murid')
                         <nav class="mt-2">
                             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
@@ -216,7 +218,7 @@
                             with font-awesome or any other icon font library -->
                                 <li class="nav-header">Operasional</li>
                                 <li class="nav-item">
-                                    <a href="{{ route('jadwal.index') }}" class="nav-link">
+                                    <a href="{{ route('jadwal.show',Auth::guard('waliMurid')->user()->kelas_id) }}" class="nav-link">
                                         <i class="nav-icon fas fa-list"></i>
                                         <p>
                                             Pengelolaan Jadwal
@@ -232,7 +234,6 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="{{ route('nilai.show',Auth::guard('waliMurid')->user()->kelas_id) }}" class="nav-link">
                                         <a href="{{ route('nilai.show', Auth::guard('waliMurid')->user()->id) . '?id=' . Auth::guard('waliMurid')->user()->id . '&nisn=' . Auth::guard('waliMurid')->user()->nisn . '&nama_siswa=' . Auth::guard('waliMurid')->user()->nama_siswa  }}" class="nav-link">
                                         <i class="nav-icon fas fa-file-invoice-dollar  "></i>
                                         <p>

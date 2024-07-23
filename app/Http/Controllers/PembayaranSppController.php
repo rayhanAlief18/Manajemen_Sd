@@ -18,7 +18,7 @@ class PembayaranSppController extends Controller
     {
         if (Auth::guard('guru')->user()->level == 'tata usaha') {
             $title = "Data Pembayaran";
-            $siswa = Siswa::all();
+            $siswa = Siswa::orderBy('kelas_id')->get();
             $data = PembayaranSpp::all();
             confirmDelete();
             return view('dashboard.PembayaranSpp.DataBayarSpp', [

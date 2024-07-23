@@ -215,13 +215,19 @@ class NilaiSiswaController extends Controller
         {
             $title = "Data Nilai";
             $title2 = "Daftar kelas";
-            $kelas = Kelas::withCount('siswa')->where('angka_kelas', '<=', 6)->orderBy('angka_kelas', 'asc')->get();
+            $kelass = Kelas::withCount('siswa')->where('angka_kelas', '<=', 6)->orderBy('angka_kelas', 'asc')->get();
             $guru = Guru::with('kelas')->get();
+            // $kelass = DB::table('kelas')
+            //         ->join('gurus', 'gurus.kelas_id', '=', 'kelas.id')
+            //         ->join('siswas', 'siswas.kelas_id','=','kelas.id')
+            //         ->select('kelas.*', 'gurus.nama_guru')
+            //         ->orderBy('angka_kelas', 'asc')
+            //         ->get();
             return view('dashboard.NilaiSiswa.IndexNilai', [
                 'title' => $title,
                 'title2' => $title2,
-                'kelas' => $kelas,
-                'guru' => $guru
+                'kelass' => $kelass,
+                // 'guru' => $guru
             ]);
         } else {
             return back();

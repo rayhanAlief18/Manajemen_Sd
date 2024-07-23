@@ -16,23 +16,23 @@ class SiswaController extends Controller
     {
         if (Auth::guard('guru')->user()->level == 'tata usaha') {
 
-        $title = "Data Siswa";
-        $kelas = Kelas::all();
-        $data = Siswa::all();
-        return view('dashboard.Siswa.DataSiswa', [
-            'title' => $title,
-            'kelas' => $kelas,
-            'data' => $data
-        ]); 
-        }elseif(Auth::guard('guru')->user()->level == 'wali kelas'){
             $title = "Data Siswa";
             $kelas = Kelas::all();
-            $data = Siswa::where('kelas_id', Auth::guard('guru')->user()->kelas_id)->get();
+            $data = Siswa::orderBy('kelas_id')->get();
             return view('dashboard.Siswa.DataSiswa', [
                 'title' => $title,
                 'kelas' => $kelas,
                 'data' => $data
-            ]); 
+            ]);
+        } elseif (Auth::guard('guru')->user()->level == 'wali kelas') {
+            $kelas = Kelas::all();
+            $data = Siswa::where('kelas_id', Auth::guard('guru')->user()->kelas_id)->get();
+            $title = "Data Siswa";
+            return view('dashboard.Siswa.DataSiswa', [
+                'title' => $title,
+                'kelas' => $kelas,
+                'data' => $data
+            ]);
         }
     }
 
@@ -41,10 +41,15 @@ class SiswaController extends Controller
      */
     public function create()
     {
-        $title = "Tambah Siswa";
-        $kelas = Kelas::all();
-        // return view('list-barang.create', compact('_satuan'));
-        return view('dashboard.Siswa.TambahDataSiswa', compact('title', 'kelas'));
+        if (Auth::guard('guru')->user()->level == 'tata usaha') {
+
+            $title = "Tambah Siswa";
+            $kelas = Kelas::all();
+            // return view('list-barang.create', compact('_satuan'));
+            return view('dashboard.Siswa.TambahDataSiswa', compact('title', 'kelas'));
+        } else {
+            return back();
+        }
     }
 
     /**
@@ -52,116 +57,124 @@ class SiswaController extends Controller
      */
     public function store(Request $request)
     {
-        // Validasi data yang diterima dari form
-        $request->validate([
-            'NISN' => 'required|unique:siswas,nisn|numeric',
-            'NIK' => 'required|unique:siswas,nik|numeric',
-            'NIS' => 'required|numeric  ',
-            'NO_KK' => 'required|numeric',
-            'nama_siswa' => 'required|string|max:255',
-            'tanggal_lahir' => 'required|date',
-            'wali_siswa' => 'required|string|max:255',
-            'jenis_kelamin' => 'required|in:laki,perempuan',
-            'kelas' => 'required|exists:kelas,id',
+        if (Auth::guard('guru')->user()->level == 'tata usaha') {
+            // Validasi data yang diterima dari form
+            $request->validate([
+                'NISN' => 'required|unique:siswas,nisn|numeric',
+                'NIK' => 'required|unique:siswas,nik|numeric',
+                'NIS' => 'required|numeric  ',
+                'NO_KK' => 'required|numeric',
+                'nama_siswa' => 'required|string|max:255',
+                'tanggal_lahir' => 'required|date',
+                'wali_siswa' => 'required|string|max:255',
+                'jenis_kelamin' => 'required|in:laki,perempuan',
+                'kelas' => 'required|exists:kelas,id',
 
-            'agama' => 'required|string|max:255',
-            'tempat' => 'required|string|max:255',
-            'anak_ke' => 'required|numeric',
+                'agama' => 'required|string|max:255',
+                'tempat' => 'required|string|max:255',
+                'anak_ke' => 'required|numeric',
 
-            'foto_siswa' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // Ubah sesuai kebutuhan
-        ], ['NISN.unique' => 'NISN sudah ada.']);
+                'foto_siswa' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // Ubah sesuai kebutuhan
+            ], ['NISN.unique' => 'NISN sudah ada.']);
 
-        // Simpan data guru ke dalam basis data
-        $siswa = new Siswa();
-        $siswa->NISN = $request->NISN;
-        $siswa->NIK = $request->NIK;
-        $siswa->NIS = $request->NIS;
-        $siswa->NO_KK = $request->NO_KK;
-        $siswa->nama_siswa = $request->nama_siswa;
-        $siswa->tanggal_lahir = $request->tanggal_lahir;
-        $siswa->wali_siswa = $request->wali_siswa;
-        $siswa->jenis_kelamin = $request->jenis_kelamin;
-        $siswa->kelas_id = $request->kelas;
+            // Simpan data guru ke dalam basis data
+            $siswa = new Siswa();
+            $siswa->NISN = $request->NISN;
+            $siswa->NIK = $request->NIK;
+            $siswa->NIS = $request->NIS;
+            $siswa->NO_KK = $request->NO_KK;
+            $siswa->nama_siswa = $request->nama_siswa;
+            $siswa->tanggal_lahir = $request->tanggal_lahir;
+            $siswa->wali_siswa = $request->wali_siswa;
+            $siswa->jenis_kelamin = $request->jenis_kelamin;
+            $siswa->kelas_id = $request->kelas;
 
-        $siswa->agama = $request->agama;
-        $siswa->tempat = $request->tempat;
-        $siswa->anak_ke = $request->anak_ke;
-        // Mengelola file foto siswa
-        if ($request->hasFile('foto_siswa')) {
-            $image = $request->file('foto_siswa');
-            $imageName = time() . '.' . $image->getClientOriginalExtension();
+            $siswa->agama = $request->agama;
+            $siswa->tempat = $request->tempat;
+            $siswa->anak_ke = $request->anak_ke;
+            // Mengelola file foto siswa
+            if ($request->hasFile('foto_siswa')) {
+                $image = $request->file('foto_siswa');
+                $imageName = time() . '.' . $image->getClientOriginalExtension();
 
-            // Menyimpan file ke direktori yang diinginkan di dalam penyimpanan publik
-            $path = $image->storeAs('public/siswa', $imageName);
+                // Menyimpan file ke direktori yang diinginkan di dalam penyimpanan publik
+                $path = $image->storeAs('public/siswa', $imageName);
 
-            // Mengupdate atribut foto_siswa dengan nama file yang disimpan
-            $siswa->foto_siswa = $imageName;
+                // Mengupdate atribut foto_siswa dengan nama file yang disimpan
+                $siswa->foto_siswa = $imageName;
+            }
+
+
+            // Simpan data guru
+            $siswa->save();
+
+            // Redirect ke halaman yang sesuai atau berikan respons JSON sesuai kebutuhan
+            return redirect()->route('siswa.index')->with('success', 'Data Siswa berhasil disimpan!');
+        } else {
+            return back();
         }
-
-
-        // Simpan data guru
-        $siswa->save();
-
-        // Redirect ke halaman yang sesuai atau berikan respons JSON sesuai kebutuhan
-        return redirect()->route('siswa.index')->with('success', 'Data Siswa berhasil disimpan!');
     }
 
     public function updateSemester(Request $request)
     {
-        // Validasi request
-        $request->validate([
-            'siswas' => 'required|array', // Pastikan array ID siswa tidak kosong
-            'siswas.*' => 'required|integer|exists:siswas,id', // Pastikan setiap ID siswa valid
-        ]);
+        if (Auth::guard('guru')->user()->level == 'tata usaha') {
+            // Validasi request
+            $request->validate([
+                'siswas' => 'required|array', // Pastikan array ID siswa tidak kosong
+                'siswas.*' => 'required|integer|exists:siswas,id', // Pastikan setiap ID siswa valid
+            ]);
 
-        // Ambil array ID siswa
-        $idSiswas = $request->input('siswas');
+            // Ambil array ID siswa
+            $idSiswas = $request->input('siswas');
 
-        // Ambil semua data siswa berdasarkan ID
-        $siswas = Siswa::whereIn('id', $idSiswas)->get();
+            // Ambil semua data siswa berdasarkan ID
+            $siswas = Siswa::whereIn('id', $idSiswas)->get();
 
-        // Naikkan semester semua siswa
-        foreach ($siswas as $siswa) {
-            // Periksa nilai semester saat ini
-            if ($siswa->semester === 'Semester 1') {
-                $siswa->semester = 'Semester 2'; // Ubah ke semester 2
-                // if ($siswa->kelas_id === 1) {
-                //     $siswa->kelas_id = 4;
-                // } else if ($siswa->kelas_id === 4) {
-                //     $siswa->kelas_id = 5;
-                // } else if ($siswa->kelas_id === 5) {
-                //     $siswa->kelas_id = 6;
-                // } else if ($siswa->kelas_id === 6) {
-                //     $siswa->kelas_id = 7;
-                // } else if ($siswa->kelas_id === 7) {
-                //     $siswa->kelas_id = 8;
-                // } else {
-                //     $siswa->kelas_id = 10;
-                // }
-                // $siswa->save(); // Simpan perubahan
-            } else if ($siswa->semester === 'Semester 2') {
-                $siswa->semester = 'Semester 1'; // Ubah ke semester 1
+            // Naikkan semester semua siswa
+            foreach ($siswas as $siswa) {
+                // Periksa nilai semester saat ini
+                if ($siswa->semester === 'Semester 1') {
+                    $siswa->semester = 'Semester 2'; // Ubah ke semester 2
+                    // if ($siswa->kelas_id === 1) {
+                    //     $siswa->kelas_id = 4;
+                    // } else if ($siswa->kelas_id === 4) {
+                    //     $siswa->kelas_id = 5;
+                    // } else if ($siswa->kelas_id === 5) {
+                    //     $siswa->kelas_id = 6;
+                    // } else if ($siswa->kelas_id === 6) {
+                    //     $siswa->kelas_id = 7;
+                    // } else if ($siswa->kelas_id === 7) {
+                    //     $siswa->kelas_id = 8;
+                    // } else {
+                    //     $siswa->kelas_id = 10;
+                    // }
+                    // $siswa->save(); // Simpan perubahan
+                } else if ($siswa->semester === 'Semester 2') {
+                    $siswa->semester = 'Semester 1'; // Ubah ke semester 1
 
-                if ($siswa->kelas_id === 1) {
-                    $siswa->kelas_id = 4;
-                } else if ($siswa->kelas_id === 4) {
-                    $siswa->kelas_id = 5;
-                } else if ($siswa->kelas_id === 5) {
-                    $siswa->kelas_id = 6;
-                } else if ($siswa->kelas_id === 6) {
-                    $siswa->kelas_id = 7;
-                } else if ($siswa->kelas_id === 7) {
-                    $siswa->kelas_id = 8;
-                } else {
-                    $siswa->kelas_id = 10;
+                    if ($siswa->kelas_id === 1) {
+                        $siswa->kelas_id = 4;
+                    } else if ($siswa->kelas_id === 4) {
+                        $siswa->kelas_id = 5;
+                    } else if ($siswa->kelas_id === 5) {
+                        $siswa->kelas_id = 6;
+                    } else if ($siswa->kelas_id === 6) {
+                        $siswa->kelas_id = 7;
+                    } else if ($siswa->kelas_id === 7) {
+                        $siswa->kelas_id = 8;
+                    } else {
+                        $siswa->kelas_id = 10;
+                    }
                 }
+
+                $siswa->save(); // Simpan perubahan
             }
 
-            $siswa->save(); // Simpan perubahan
-        }
-
-        // Berikan pesan sukses
-        return redirect()->back()->with('success', 'Semester ' . count($siswas) . ' siswa telah diperbarui');
+            // Berikan pesan sukses
+            return redirect()->back()->with('success', 'Semester ' . count($siswas) . ' siswa telah diperbarui');
+        } else {
+            return back();
+        }   
     }
 
 

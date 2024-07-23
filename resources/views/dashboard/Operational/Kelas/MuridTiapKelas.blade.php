@@ -71,7 +71,7 @@
                                         <div class="form-group">
                                             {{-- <label for="siswas">Pilih Siswa:</label> --}}
                                             <select multiple name="siswas[]" id="siswas" class="form-control" hidden>
-                                                @foreach ($data as $siswa)
+                                                @foreach ($guru as $siswa)
                                                     <option value="{{ $siswa->id }}" hidden></option>
                                                 @endforeach
                                             </select>
@@ -100,7 +100,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($data as $guru)
+                                @foreach ($guru as $guru)
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ $guru->NISN }}</td>
@@ -108,7 +108,7 @@
                                         <td>{{ $guru->tanggal_lahir }}</td>
                                         <td>{{ $guru->jenis_kelamin }}</td>
                                         <td>
-                                            {{ $guru->kelas->angka_kelas }}
+                                            {{ $guru->angka_kelas }}
                                         </td>
                                         {{-- <td>{{ $guru->semester }}</td> --}}
                                         <td>{{ $guru->wali_siswa }}</td>
@@ -219,7 +219,7 @@
 
                                                             <div class="form-group col-sm-4">
                                                                 <label for="wali_siswa{{ $guru->id }}">Kelas</label>
-                                                                <p>{{ $guru->kelas->angka_kelas }}</p>
+                                                                <p>{{ $guru->angka_kelas }}</p>
                                                             </div>
 
                                                             <div class="form-group col-sm-4">
