@@ -13,6 +13,7 @@ use App\Models\Guru;
 use App\Models\Kelas;
 use App\Models\MataPelajaran;
 use App\Models\Jadwal;
+use RealRashid\SweetAlert\Facades\Alert;
 
 
 class JadwalController extends Controller
@@ -32,6 +33,7 @@ class JadwalController extends Controller
                     ->orderBy('angka_kelas', 'asc')
                     ->get();
 
+                confirmDelete();
                 return view('dashboard.Jadwal.index', [
                     'title' => $title,
                     'kelas' => $kelas
@@ -122,7 +124,10 @@ class JadwalController extends Controller
             //     'hari'     => $request->hari,
             // ]);
 
-            return redirect()->route('jadwal.show', $request->id_kelas)->with('Success', 'Data berhasil ditambahkan');
+            // Sweet alert
+            Alert::success('Berhasil Ditambahkan', 'Jadwal berhasil ditambahkan.');
+
+            return redirect()->route('jadwal.show', $request->id_kelas);
         } else {
             return back();
         }
@@ -242,7 +247,11 @@ class JadwalController extends Controller
             $jadwal->jumlah_sesi = $request->jumlah_sesi;
             $jadwal->hari = $request->hari;
             $jadwal->save();
-            return redirect()->route('jadwal.show', $request->id_kelas)->with('Success', 'Data berhasil diubah');
+
+            // Sweet alert
+            Alert::success('Perubahan Berhasil', 'Jadwal berhasil diubah.');
+
+            return redirect()->route('jadwal.show', $request->id_kelas);
         } else {
             return back();
         }
@@ -256,8 +265,13 @@ class JadwalController extends Controller
     {
         if (Auth::guard('guru')->user()->level == 'tata usaha' || Auth::guard('guru')->user()->level == 'wali kelas') {
             $jadwal = Jadwal::findOrFail($id);
+            $kelas = $jadwal->id_kelas;
             $jadwal->delete();
-            return redirect()->route('jadwal.show', $id)->with('Success', 'Data berhasil dihapus.');
+
+            // Sweet alert
+            Alert::success('Berhasil Dihapus', 'Jadwal berhasil dihapus.');
+
+            return redirect()->route('jadwal.show', $kelas);
         } else {
             return back();
         }
