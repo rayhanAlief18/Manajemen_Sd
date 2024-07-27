@@ -45,7 +45,7 @@
 
                     <!-- /.card-header -->
                     <!-- form start -->
-                    <form action="{{ route('jadwal.store') }}" method="POST" class="form-horizontal">
+                    <form id="jadwalForm" action="{{ route('jadwal.store') }}" method="POST" class="form-horizontal">
                         @csrf
                         <div class="card-body">
                             <div class="row">
@@ -58,7 +58,7 @@
                                         @endforeach
                                     </select>
                                     @error('id_mapel')
-                                        <div class="text-danger">{{ $message }}</div>
+                                    <div class="text-danger">{{ $message }}</div>
                                     @enderror
                                 </div>
                                 <div class="form-group col-md-6">
@@ -71,7 +71,8 @@
                                                     {
                                                     <option value="{{ $guru->id }}"
                                                         {{ old('id_guru') == $guru->id ? 'selected' : '' }}>
-                                                        {{ $guru->nama_guru }} ({{ $guru->nama_kelas }})</option>
+                                                        {{ $guru->nama_guru }} ({{ $guru->nama_kelas }})
+                                                    </option>
                                                 @endif
                                             @endif
                                             @if (Auth::guard('guru')->user()->level == 'wali kelas')
@@ -85,7 +86,7 @@
                                         @endforeach
                                     </select>
                                     @error('id_guru')
-                                        <div class="text-danger">{{ $message }}</div>
+                                    <div class="text-danger">{{ $message }}</div>
                                     @enderror
                                 </div>
                                 <div class="form-group col-md-6">
@@ -115,7 +116,7 @@
                                         @endforeach
                                     </select>
                                     @error('id_kelas')
-                                        <div class="text-danger">{{ $message }}</div>
+                                    <div class="text-danger">{{ $message }}</div>
                                     @enderror
                                 </div>
                                 <div class="form-group col-md-6">
@@ -135,23 +136,23 @@
                                         </option>
                                     </select>
                                     @error('hari')
-                                        <div class="text-danger">{{ $message }}</div>
+                                    <div class="text-danger">{{ $message }}</div>
                                     @enderror
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label for="exampleSelectBorder">Jam Mulai</label>
                                     <input name="jam_mulai" type="time" class="form-control"
-                                        placeholder="Masukan Jam Mulai..." value="{{ old('jam_mulai') }}">
+                                           placeholder="Masukan Jam Mulai..." value="{{ old('jam_mulai') }}">
                                     @error('jam_mulai')
-                                        <div class="text-danger">{{ $message }}</div>
+                                    <div class="text-danger">{{ $message }}</div>
                                     @enderror
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label for="exampleSelectBorder">Jam Selesai</label>
                                     <input name="jam_selesai" type="time" class="form-control"
-                                        placeholder="Masukan Jam Selesai..." value="{{ old('jam_selesai') }}">
+                                           placeholder="Masukan Jam Selesai..." value="{{ old('jam_selesai') }}">
                                     @error('jam_selesai')
-                                        <div class="text-danger">{{ $message }}</div>
+                                    <div class="text-danger">{{ $message }}</div>
                                     @enderror
                                 </div>
                             </div>
@@ -159,24 +160,35 @@
                             <div class="form-group col-md-6">
                                 <label for="exampleSelectBorder">Jumlah sesi</label>
                                 <input name="jumlah_sesi" type="number" class="form-control"
-                                    placeholder="Masukan jumlah sesi..." value="{{ old('jumlah_sesi') }}">
+                                       placeholder="Masukan jumlah sesi..." value="{{ old('jumlah_sesi') }}">
                                 @error('jumlah_sesi')
-                                    <div class="text-danger">{{ $message }}</div>
+                                <div class="text-danger">{{ $message }}</div>
                                 @enderror
                             </div>
                         </div>
+                    </form>
+                    <div class="card-footer">
+                        <a href="{{ route('jadwal.index') }}" class="btn btn-danger">Cancel</a>
+                        <button type="submit" class="btn btn-info float-right" onclick="confirmSubmit()">Save</button>
+                    </div>
                 </div>
-                <!-- /.card-body -->
-                <div class="card-footer">
-                    <button type="submit" class="btn btn-info">Save</button>
-                    <button type="submit" class="btn btn-danger float-right">Cancel</button>
-                </div>
-                <!-- /.card-footer -->
-                </form>
             </div>
-
+        </section>
     </div><!-- /.container-fluid -->
-    </section>
     <!-- /.content -->
-    </div>
+    <script>
+        function confirmSubmit() {
+            Swal.fire({
+                title: 'Tambah Data Jadwal',
+                text: 'Apakah data sudah selesai diisi?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Ya, Sudah',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('jadwalForm').submit();
+                }
+            });
+        }
+    </script>
 @endsection

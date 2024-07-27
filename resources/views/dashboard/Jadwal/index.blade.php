@@ -73,7 +73,7 @@
                                                             <i class="ion ion-bag"></i>
                                                         </div>
                                                         <a href="{{ route('jadwal.show', $kelass->id) }}"
-                                                            class="small-box-footer">More info <i
+                                                           class="small-box-footer">More info <i
                                                                 class="fas fa-arrow-circle-right"></i></a>
                                                     </div>
                                                 </div>
@@ -93,7 +93,7 @@
                                                         <i class="ion ion-bag"></i>
                                                     </div>
                                                     <a href="{{ route('jadwal.show', $kelass->id) }}"
-                                                        class="small-box-footer">More info <i
+                                                       class="small-box-footer">More info <i
                                                             class="fas fa-arrow-circle-right"></i></a>
                                                 </div>
                                             </div>
@@ -104,9 +104,8 @@
                         </div>
                     </div>
                     <!-- /.content-header -->
-
-
                 </div>
+            </div>
         </section>
         <!-- /.content -->
     </div>
