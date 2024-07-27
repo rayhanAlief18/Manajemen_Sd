@@ -98,8 +98,9 @@
                                                 </div>
                                             </div>
                                         @endif
-                                    @endif
-                                @endauth
+                                    @endauth
+                                @endif
+
 
                                 @if (!Auth::guard('guru')->check())
                                     @if (Auth::guard('waliMurid')->user()->level == 'wali murid')
@@ -109,7 +110,6 @@
                                                 <div class="small-box bg-info">
                                                     <div class="inner">
                                                         <h3>Kelas: {{ $kelass->angka_kelas }}</h3>
-
                                                         <p>Wali kelas: {{ $kelass->nama_guru }}</p>
                                                     </div>
                                                     <div class="icon">
@@ -122,7 +122,6 @@
                                             </div>
                                         @endif
                                     @endif
-                                @endif
                                 @endif
                             @endforeach
                         </div>

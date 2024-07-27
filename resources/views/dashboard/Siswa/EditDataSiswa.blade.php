@@ -45,7 +45,7 @@
 
                     <!-- /.card-header -->
                     <!-- form start -->
-                    <form action="{{ route('siswa.update', $siswa->id) }}" method="POST" enctype="multipart/form-data">
+                    <form id="siswaForm" action="{{ route('siswa.update', $siswa->id) }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
                         <div class="card-body row">
@@ -166,8 +166,8 @@
                         <!-- /.card-body -->
 
                         <div class="card-footer">
-                            <button type="submit" class="btn btn-info float-right">Submit</button>
                             <button type="button" class="btn btn-outline-secondary" onclick="window.history.back();">Kembali</button>
+                            <button type="button" class="btn btn-info" onclick="confirmSubmit()">Submit</button>
                             {{-- <button type="reset" class="btn btn-danger ">reset</button> --}}
                         </div>
                     </form>
@@ -199,5 +199,19 @@
                 previewFoto.style.display = 'none'; // Sembunyikan gambar
             }
         });
+
+        function confirmSubmit() {
+            Swal.fire({
+                title: 'Ubah Data Siswa',
+                text: 'Apakah data sudah selesai diubah?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Ya, Sudah',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('siswaForm').submit();
+                }
+            });
+        }
     </script>
 @endsection
