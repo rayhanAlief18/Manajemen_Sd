@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Siswa;
 use App\Models\Kelas;
 use Illuminate\Support\Facades\Auth;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class SiswaController extends Controller
 {
@@ -19,6 +20,7 @@ class SiswaController extends Controller
             $title = "Data Siswa";
             $kelas = Kelas::all();
             $data = Siswa::orderBy('kelas_id')->get();
+            confirmDelete();
             return view('dashboard.Siswa.DataSiswa', [
                 'title' => $title,
                 'kelas' => $kelas,
@@ -105,11 +107,14 @@ class SiswaController extends Controller
             }
 
 
-            // Simpan data guru
+            // Simpan data siswa
             $siswa->save();
 
+            // Sweet alert
+            Alert::success('Berhasil Ditambahkan', 'Data Siswa berhasil ditambahkan.');
+
             // Redirect ke halaman yang sesuai atau berikan respons JSON sesuai kebutuhan
-            return redirect()->route('siswa.index')->with('success', 'Data Siswa berhasil disimpan!');
+            return redirect()->route('siswa.index');
         } else {
             return back();
         }
@@ -170,11 +175,14 @@ class SiswaController extends Controller
                 $siswa->save(); // Simpan perubahan
             }
 
+            // Sweet alert
+            Alert::success('Semua Siswa Naik Kelas', 'Semua siswa berhasil naik kelas.');
+
             // Berikan pesan sukses
-            return redirect()->back()->with('success', 'Semester ' . count($siswas) . ' siswa telah diperbarui');
+            return redirect()->back();
         } else {
             return back();
-        }   
+        }
     }
 
 
@@ -260,8 +268,11 @@ class SiswaController extends Controller
         // Simpan data siswa yang telah diupdate
         $siswa->save();
 
+        // Sweet alert
+        Alert::success('Perubahan Berhasil', 'Data Siswa berhasil diubah.');
+
         // Redirect ke halaman yang sesuai atau berikan respons JSON sesuai kebutuhan
-        return redirect()->route('siswa.index')->with('success', 'Data siswa berhasil diperbarui!');
+        return redirect()->route('siswa.index');
     }
 
     /**
@@ -270,6 +281,10 @@ class SiswaController extends Controller
     public function destroy(string $id)
     {
         Siswa::find($id)->delete();
-        return redirect()->route('siswa.index')->with('success', 'Data Berhasil Di Hapus');
+
+        // Sweet alert
+        Alert::success('Berhasil Dihapus', 'Data Siswa berhasil dihapus.');
+
+        return redirect()->route('siswa.index');
     }
 }

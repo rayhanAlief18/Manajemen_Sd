@@ -43,7 +43,7 @@
 
                     <!-- /.card-header -->
                     <!-- form start -->
-                    <form action="{{ route('siswa.store') }}" method="POST" enctype="multipart/form-data">
+                    <form id="siswaForm" action="{{ route('siswa.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="card-body row">
                             <div class="form-group col-sm-4">
@@ -140,7 +140,7 @@
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
                             </div>
-                            
+
                             <div id="previewContainer">
                                 <img id="previewFoto" src="#" alt="Preview Foto"
                                     style="max-width: 300px; max-height: 300px;">
@@ -149,8 +149,8 @@
                         <!-- /.card-body -->
 
                         <div class="card-footer">
-                            <button type="submit" class="btn btn-info float-right">Submit</button>
                             <button type="button" class="btn btn-outline-secondary" onclick="window.history.back();">Kembali</button>
+                            <button type="button" class="btn btn-info" onclick="confirmSubmit()">Submit</button>
                             {{-- <button type="reset" class="btn btn-danger float-right">reset</button> --}}
                         </div>
                     </form>
@@ -183,5 +183,19 @@
                 previewFoto.style.display = 'none'; // Sembunyikan gambar
             }
         });
+
+        function confirmSubmit() {
+            Swal.fire({
+                title: 'Tambah Data Siswa',
+                text: 'Apakah data sudah selesai diisi?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Ya, Sudah',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('siswaForm').submit();
+                }
+            });
+        }
     </script>
 @endsection
