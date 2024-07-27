@@ -22,8 +22,17 @@ class GuruController extends Controller
      */
     public function index()
     {
-        if (Auth::guard('guru')->user()->level == 'tata usaha') {
+        if (Auth::guard('guru')->check()) {
+            if (Auth::guard('guru')->user()->level == 'tata usaha') {
 
+                $title = "Guru";
+                $DataGuru = Guru::select('gurus.*', 'gurus.id', 'gurus.nama_guru', 'kelas.angka_kelas', 'kelas.id as id_kelas')->join('kelas', 'kelas.id', '=', 'gurus.kelas_id')
+                    ->get();
+                return view('dashboard.Guru.DataGuru', [
+                    'title' => $title,
+                    'DataGuru' => $DataGuru,
+                ]);
+            }
             $title = "Guru";
             $DataGuru = Guru::select('gurus.*', 'gurus.id', 'gurus.nama_guru', 'kelas.angka_kelas', 'kelas.id as id_kelas')->join('kelas', 'kelas.id', '=', 'gurus.kelas_id')
                 ->get();
@@ -381,8 +390,8 @@ class GuruController extends Controller
             ]);
 
             // Sweet alert
+            
             Alert::success('Perubahan Berhasil', 'Data Guru berhasil diubah.');
-
             return redirect()->route('guru.index');
         } else {
             return back();

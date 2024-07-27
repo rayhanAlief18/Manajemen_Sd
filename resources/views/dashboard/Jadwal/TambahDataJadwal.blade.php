@@ -107,7 +107,7 @@
                                                     @if (Auth::guard('guru')->user()->kelas_id == $kelas->id)
                                                         {
                                                         <option value="{{ $kelas->id }}"
-                                                            {{ old('id_kelas') == $kelas->id ? 'selected' : '' }}>
+                                                            {{ old('id_kelas') == $kelas->id ? 'selected' : '' }} selected >
                                                             {{ $kelas->nama_kelas }}
                                                         </option>
                                                     @endif

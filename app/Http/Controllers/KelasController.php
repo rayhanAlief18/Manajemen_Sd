@@ -18,7 +18,9 @@ class KelasController extends Controller
     public function index()
     {
         $title = "Data Kelas";
-        $kelas = Kelas::all();
+        // $kelas = Kelas::all();
+        $kelas = DB::table('kelas')->join('gurus', 'gurus.kelas_id', '=', 'kelas.id')->select('kelas.*', 'gurus.nama_guru')->orderBy('angka_kelas', 'asc')->get();
+
         return view('dashboard.Operational.Kelas.DataKelas',[
             'title'=>$title,
             'kelas'=>$kelas,
@@ -71,15 +73,15 @@ class KelasController extends Controller
     public function show(string $id)
     {
         $Title = 'Data Siswa Kelas :';
-        $DataSiswa = DB::table('siswas')
-        ->join('kelas', 'siswa.kelas_id', '=', 'kelas.id')
-        ->select('siswa.*', 'kelas.angka_kelas')
-        ->where('kelas.id', $id)
-        ->first();
+        $guru = DB::table('siswas')  // Nama tabel harus 'siswas'
+        ->join('kelas', 'siswas.kelas_id', '=', 'kelas.id')  // Menggunakan 'siswas' bukan 'siswa'
+        ->select('siswas.*', 'kelas.angka_kelas')
+        ->where('siswas.kelas_id', $id)
+        ->get();
 
-        return view('dashboard.Operational.Kelas.TambahDataKelas',[
+        return view('dashboard.Operational.Kelas.MuridTiapKelas',[
             'title'=>$Title,
-            'guru'=>$DataSiswa,
+            'guru'=>$guru,
         ]);
     }
 

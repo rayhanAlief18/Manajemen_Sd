@@ -84,7 +84,7 @@
             </div>
         </div>
     </div> --}}
-    @yield('contentLogin')
+    @yield('content')
     
     {{-- <div class="wrapper">
         @if (Session::has('error'))

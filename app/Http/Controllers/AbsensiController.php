@@ -21,7 +21,7 @@ class AbsensiController extends Controller
      */
     public function index()
     {
-        if (Auth::guard('guru')->user()->level == 'tata usaha' || Auth::guard('guru')->user()->level == 'wali kelas') {
+        if (Auth::guard('guru')->check() || Auth::guard('waliMurid')->check()) {
 
             $title = "Data Absensi Tiap Kelas";
             $kelas = DB::table('kelas')
@@ -236,7 +236,7 @@ class AbsensiController extends Controller
      */
     public function show(string $id)
     {
-        if (Auth::guard('guru')->user()->level == 'tata usaha' || Auth::guard('guru')->user()->level == 'wali kelas') {
+        if (Auth::guard('guru')->check() || Auth::guard('waliMurid')->check()){
 
             $title = "Rekap Absensi Siswa";
             // $DataAbsensiNow = DB::table('absensi')
@@ -263,7 +263,8 @@ class AbsensiController extends Controller
     public function ShowAllKelasTiapSiswa(string $id)
     {
         
-        if (Auth::guard('guru')->user()->level == 'tata usaha' || Auth::guard('guru')->user()->level == 'wali kelas') {
+        if (Auth::guard('guru')->check() || Auth::guard('waliMurid')->check()) 
+        {
 
             $title = "Pilih Kelas Siswa";
             $kelas = DB::table('kelas')
@@ -310,7 +311,8 @@ class AbsensiController extends Controller
 
     public function ShowAbsensiPerSiswa(string $id_kelas, string $id_siswa)
     {
-        if (Auth::guard('guru')->user()->level == 'tata usaha' || Auth::guard('guru')->user()->level == 'wali kelas') {
+        if (Auth::guard('guru')->check() || Auth::guard('waliMurid')->check()) 
+        {
 
             //ini isi presentase
             $TotalPertemuan = DB::table('absensi')

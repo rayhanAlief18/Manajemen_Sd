@@ -89,12 +89,15 @@
                                         </div>
                                     @endif
                                 @endforeach
-                                @if (Auth::guard('guru')->user()->level == 'wali kelas')
-                                    <a href="{{ route('ShowSiswaAbsensi', $kelasAbs) }}"
-                                       class="btn btn-primary d-flex ml-2"><i
-                                            class="fas fa-calendar-check mr-2 mt-1 "></i>
-                                        <p class="">Absen</p>
-                                    </a>
+                                @if (Auth::guard('guru')->check())
+                                    @if (Auth::guard('guru')->user()->level == 'wali kelas')
+                                        <a href="{{ route('ShowSiswaAbsensi', $kelasAbs) }}"
+                                            class="btn btn-primary d-flex ml-2"><i
+                                                class="fas fa-calendar-check mr-2 mt-1 "></i>
+                                            <p class="">Absen</p>
+                                        </a>
+                                    @else
+                                    @endif
                                 @endif
                             @endif
                         </div>
@@ -118,40 +121,47 @@
                                     <div class="d-flex justify-content-between align-items-center pt-3 pl-4 pb-2 pr-4">
                                         <table class="table table-responsive table-borderless">
                                             <thead class="border bg-pastel-primary rounded-lg">
-                                            <tr>
-                                                <th scope="col">Kelas</th>
-                                                <th scope="col">Mata Pelajaran</th>
-                                                <th scope="col">Guru Pengampu</th>
-                                                <th scope="col">Jam Mulai</th>
-                                                <th scope="col">Jam Selesai</th>
-                                                <th scope="col">Durasi Sesi</th>
-                                                <th scope="col">Hari</th>
-                                                <th scope="col">Action</th>
-                                            </tr>
+                                                <tr>
+                                                    <th scope="col">Kelas</th>
+                                                    <th scope="col">Mata Pelajaran</th>
+                                                    <th scope="col">Guru Pengampu</th>
+                                                    <th scope="col">Jam Mulai</th>
+                                                    <th scope="col">Jam Selesai</th>
+                                                    <th scope="col">Durasi Sesi</th>
+                                                    <th scope="col">Hari</th>
+                                                    @if(!Auth::guard('waliMurid')->check())
+                                                    @elseif(Auth::guard('guru')->check())
+                                                    <th scope="col">Action</th>
+                                                    @endif
+                                                </tr>
                                             </thead>
                                             <tbody>
-                                            @foreach ($jadwal as $senin)
-                                                @if ($senin->hari == 'senin')
-                                                    <tr>
-                                                        <td>{{ $senin->angka_kelas }} </td>
-                                                        <td>{{ $senin->nama_pelajaran }}</td>
-                                                        <td>{{ $senin->nama_guru }}</td>
-                                                        <td>{{ $senin->jam_mulai }}</td>
-                                                        <td>{{ $senin->jam_selesai }}</td>
-                                                        <td>{{ $senin->jumlah_sesi }}</td>
-                                                        <td>{{ $senin->hari }}</td>
+                                                @foreach ($jadwal as $senin)
+                                                    @if ($senin->hari == 'senin')
+                                                        <tr>
+                                                            <td>{{ $senin->angka_kelas }} </td>
+                                                            <td>{{ $senin->nama_pelajaran }}</td>
+                                                            <td>{{ $senin->nama_guru }}</td>
+                                                            <td>{{ $senin->jam_mulai }}</td>
+                                                            <td>{{ $senin->jam_selesai }}</td>
+                                                            <td>{{ $senin->jumlah_sesi }}</td>
+                                                            <td>{{ $senin->hari }}</td>
 
-                                                        <td>
-                                                            <form id="seninForm{{$senin->id_jadwal}}" action="{{ route('jadwal.destroy', $senin->id_jadwal) }}" method="POST">
-                                                                @method('DELETE')
-                                                                @csrf
-                                                                <a href="{{ route('jadwal.edit', $senin->id_jadwal) }}" class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></a>
-                                                                <button type="button" class="btn btn-sm btn-danger" onclick="confirmSubmit('seninForm{{$senin->id_jadwal}}', '{{ $senin->nama_pelajaran }}')"><i class="fas fa-trash"></i></button>
-                                                            </form>
-                                                        </td>
-                                                    </tr>
-                                                @endif
-                                            @endforeach
+                                                            @if (Auth::guard('guru')->check())
+                                                                @if (Auth::guard('guru')->user()->level == 'tata usaha' || Auth::guard('guru')->user()->level =='wali kelas')
+                                                                    <td>
+                                                                        <form id="seninForm{{$senin->id_jadwal}}" action="{{ route('jadwal.destroy', $senin->id_jadwal) }}" method="POST">
+                                                                            @method('DELETE')
+                                                                            @csrf
+                                                                            <a href="{{ route('jadwal.edit', $senin->id_jadwal) }}" class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></a>
+                                                                            <button type="button" class="btn btn-sm btn-danger" onclick="confirmSubmit('seninForm{{$senin->id_jadwal}}', '{{ $senin->nama_pelajaran }}')"><i class="fas fa-trash"></i></button>
+                                                                        </form>
+                                                                    </td>
+                                                                @endif
+                                                            @endif
+                                                        </tr>
+                                                    @endif
+                                                @endforeach
                                             </tbody>
                                         </table>
                                     </div>
@@ -168,40 +178,47 @@
                                     <div class="d-flex justify-content-between align-items-center pt-3 pl-4 pb-2 pr-4">
                                         <table class="table table-responsive table-borderless">
                                             <thead class="border bg-pastel-primary rounded-lg">
-                                            <tr>
-                                                <th scope="col">Kelas</th>
-                                                <th scope="col">Mata Pelajaran</th>
-                                                <th scope="col">Guru Pengampu</th>
-                                                <th scope="col">Jam Mulai</th>
-                                                <th scope="col">Jam Selesai</th>
-                                                <th scope="col">Durasi Sesi</th>
-                                                <th scope="col">Hari</th>
-                                                <th scope="col">Action</th>
-                                            </tr>
+                                                <tr>
+                                                    <th scope="col">Kelas</th>
+                                                    <th scope="col">Mata Pelajaran</th>
+                                                    <th scope="col">Guru Pengampu</th>
+                                                    <th scope="col">Jam Mulai</th>
+                                                    <th scope="col">Jam Selesai</th>
+                                                    <th scope="col">Durasi Sesi</th>
+                                                    <th scope="col">Hari</th>
+                                                    @if(!Auth::guard('waliMurid')->check())
+                                                    @elseif(Auth::guard('guru')->check())
+                                                    <th scope="col">Action</th>
+                                                    @endif
+                                                </tr>
                                             </thead>
                                             <tbody>
-                                            @foreach ($jadwal as $selasa)
-                                                @if ($selasa->hari == 'selasa')
-                                                    <tr>
-                                                        <td>{{ $selasa->angka_kelas }} </td>
-                                                        <td>{{ $selasa->nama_pelajaran }}</td>
-                                                        <td>{{ $selasa->nama_guru }}</td>
-                                                        <td>{{ $selasa->jam_mulai }}</td>
-                                                        <td>{{ $selasa->jam_selesai }}</td>
-                                                        <td>{{ $selasa->jumlah_sesi }}</td>
-                                                        <td>{{ $selasa->hari }}</td>
+                                                @foreach ($jadwal as $selasa)
+                                                    @if ($selasa->hari == 'selasa')
+                                                        <tr>
+                                                            <td>{{ $selasa->angka_kelas }} </td>
+                                                            <td>{{ $selasa->nama_pelajaran }}</td>
+                                                            <td>{{ $selasa->nama_guru }}</td>
+                                                            <td>{{ $selasa->jam_mulai }}</td>
+                                                            <td>{{ $selasa->jam_selesai }}</td>
+                                                            <td>{{ $selasa->jumlah_sesi }}</td>
+                                                            <td>{{ $selasa->hari }}</td>
 
-                                                        <td>
-                                                            <form id="selasaForm{{$selasa->id_jadwal}}" action="{{ route('jadwal.destroy', $selasa->id_jadwal) }}" method="POST">
-                                                                @method('DELETE')
-                                                                @csrf
-                                                                <a href="{{ route('jadwal.edit', $selasa->id_jadwal) }}" class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></a>
-                                                                <button type="button" class="btn btn-sm btn-danger" onclick="confirmSubmit('selasaForm{{$selasa->id_jadwal}}', '{{ $selasa->nama_pelajaran }}')"><i class="fas fa-trash"></i></button>
-                                                            </form>
-                                                        </td>
-                                                    </tr>
-                                                @endif
-                                            @endforeach
+                                                            @if (Auth::guard('guru')->check())
+                                                                @if (Auth::guard('guru')->user()->level == 'tata usaha' || Auth::guard('guru')->user()->level =='wali kelas')
+                                                                    <td>
+                                                                        <form id="selasaForm{{$selasa->id_jadwal}}" action="{{ route('jadwal.destroy', $selasa->id_jadwal) }}" method="POST">
+                                                                            @method('DELETE')
+                                                                            @csrf
+                                                                            <a href="{{ route('jadwal.edit', $selasa->id_jadwal) }}" class="btn btn-sm btn-warning btn-sm"><i class="fas fa-edit"></i></a>
+                                                                            <button type="button" class="btn btn-sm btn-danger" onclick="confirmSubmit('selasaForm{{$selasa->id_jadwal}}', '{{ $selasa->nama_pelajaran }}')"><i class="fas fa-trash"></i></button>
+                                                                        </form>
+                                                                    </td>
+                                                                @endif
+                                                            @endif
+                                                        </tr>
+                                                    @endif
+                                                @endforeach
                                             </tbody>
                                         </table>
                                     </div>
@@ -218,40 +235,47 @@
                                     <div class="d-flex justify-content-between align-items-center pt-3 pl-4 pb-2 pr-4">
                                         <table class="table table-responsive table-borderless">
                                             <thead class="border bg-pastel-primary rounded-lg">
-                                            <tr>
-                                                <th scope="col">Kelas</th>
-                                                <th scope="col">Mata Pelajaran</th>
-                                                <th scope="col">Guru Pengampu</th>
-                                                <th scope="col">Jam Mulai</th>
-                                                <th scope="col">Jam Selesai</th>
-                                                <th scope="col">Durasi Sesi</th>
-                                                <th scope="col">Hari</th>
-                                                <th scope="col">Action</th>
-                                            </tr>
+                                                <tr>
+                                                    <th scope="col">Kelas</th>
+                                                    <th scope="col">Mata Pelajaran</th>
+                                                    <th scope="col">Guru Pengampu</th>
+                                                    <th scope="col">Jam Mulai</th>
+                                                    <th scope="col">Jam Selesai</th>
+                                                    <th scope="col">Durasi Sesi</th>
+                                                    <th scope="col">Hari</th>
+                                                    @if(!Auth::guard('waliMurid')->check())
+                                                    @elseif(Auth::guard('guru')->check())
+                                                    <th scope="col">Action</th>
+                                                    @endif
+                                                </tr>
                                             </thead>
                                             <tbody>
-                                            @foreach ($jadwal as $rabu)
-                                                @if ($rabu->hari == 'rabu')
-                                                    <tr>
-                                                        <td>{{ $rabu->angka_kelas }}</td>
-                                                        <td>{{ $rabu->nama_pelajaran }}</td>
-                                                        <td>{{ $rabu->nama_guru }}</td>
-                                                        <td>{{ $rabu->jam_mulai }}</td>
-                                                        <td>{{ $rabu->jam_selesai }}</td>
-                                                        <td>{{ $rabu->jumlah_sesi }}</td>
-                                                        <td>{{ $rabu->hari }}</td>
+                                                @foreach ($jadwal as $rabu)
+                                                    @if ($rabu->hari == 'rabu')
+                                                        <tr>
+                                                            <td>{{ $rabu->angka_kelas }}</td>
+                                                            <td>{{ $rabu->nama_pelajaran }}</td>
+                                                            <td>{{ $rabu->nama_guru }}</td>
+                                                            <td>{{ $rabu->jam_mulai }}</td>
+                                                            <td>{{ $rabu->jam_selesai }}</td>
+                                                            <td>{{ $rabu->jumlah_sesi }}</td>
+                                                            <td>{{ $rabu->hari }}</td>
 
-                                                        <td>
-                                                            <form id="rabuForm{{$rabu->id_jadwal}}" action="{{ route('jadwal.destroy', $rabu->id_jadwal) }}" method="POST">
-                                                                @method('DELETE')
-                                                                @csrf
-                                                                <a href="{{ route('jadwal.edit', $rabu->id_jadwal) }}" class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></a>
-                                                                <button type="button" class="btn btn-sm btn-danger" onclick="confirmSubmit('rabuForm{{$rabu->id_jadwal}}', '{{ $rabu->nama_pelajaran }}')"><i class="fas fa-trash"></i></button>
-                                                            </form>
-                                                        </td>
-                                                    </tr>
-                                                @endif
-                                            @endforeach
+                                                            @if (Auth::guard('guru')->check())
+                                                                @if (Auth::guard('guru')->user()->level == 'tata usaha' || Auth::guard('guru')->user()->level =='wali kelas')
+                                                                    <td>
+                                                                        <form id="rabuForm{{$rabu->id_jadwal}}" action="{{ route('jadwal.destroy', $rabu->id_jadwal) }}" method="POST">
+                                                                            @method('DELETE')
+                                                                            @csrf
+                                                                            <a href="{{ route('jadwal.edit', $rabu->id_jadwal) }}" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></a>
+                                                                            <button type="button" class="btn btn-sm btn-danger" onclick="confirmSubmit('rabuForm{{$rabu->id_jadwal}}', '{{ $rabu->nama_pelajaran }}')"><i class="fas fa-trash"></i></button>
+                                                                        </form>
+                                                                    </td>
+                                                                @endif
+                                                            @endif
+                                                        </tr>
+                                                    @endif
+                                                @endforeach
                                             </tbody>
                                         </table>
                                     </div>
@@ -268,40 +292,47 @@
                                     <div class="d-flex justify-content-between align-items-center pt-3 pl-4 pb-2 pr-4">
                                         <table class="table table-responsive table-borderless">
                                             <thead class="border bg-pastel-primary rounded-lg">
-                                            <tr>
-                                                <th scope="col">Kelas</th>
-                                                <th scope="col">Mata Pelajaran</th>
-                                                <th scope="col">Guru Pengampu</th>
-                                                <th scope="col">Jam Mulai</th>
-                                                <th scope="col">Jam Selesai</th>
-                                                <th scope="col">Durasi Sesi</th>
-                                                <th scope="col">Hari</th>
-                                                <th scope="col">Action</th>
-                                            </tr>
+                                                <tr>
+                                                    <th scope="col">Kelas</th>
+                                                    <th scope="col">Mata Pelajaran</th>
+                                                    <th scope="col">Guru Pengampu</th>
+                                                    <th scope="col">Jam Mulai</th>
+                                                    <th scope="col">Jam Selesai</th>
+                                                    <th scope="col">Durasi Sesi</th>
+                                                    <th scope="col">Hari</th>
+                                                    @if(!Auth::guard('waliMurid')->check())
+                                                    @elseif(Auth::guard('guru')->check())
+                                                    <th scope="col">Action</th>
+                                                    @endif
+                                                </tr>
                                             </thead>
                                             <tbody>
-                                            @foreach ($jadwal as $kamis)
-                                                @if ($kamis->hari == 'kamis')
-                                                    <tr>
-                                                        <td>{{ $kamis->angka_kelas }}</td>
-                                                        <td>{{ $kamis->nama_pelajaran }}</td>
-                                                        <td>{{ $kamis->nama_guru }}</td>
-                                                        <td>{{ $kamis->jam_mulai }}</td>
-                                                        <td>{{ $kamis->jam_selesai }}</td>
-                                                        <td>{{ $kamis->jumlah_sesi }}</td>
-                                                        <td>{{ $kamis->hari }}</td>
+                                                @foreach ($jadwal as $kamis)
+                                                    @if ($kamis->hari == 'kamis')
+                                                        <tr>
+                                                            <td>{{ $kamis->angka_kelas }}</td>
+                                                            <td>{{ $kamis->nama_pelajaran }}</td>
+                                                            <td>{{ $kamis->nama_guru }}</td>
+                                                            <td>{{ $kamis->jam_mulai }}</td>
+                                                            <td>{{ $kamis->jam_selesai }}</td>
+                                                            <td>{{ $kamis->jumlah_sesi }}</td>
+                                                            <td>{{ $kamis->hari }}</td>
 
-                                                        <td>
-                                                            <form id="kamisForm{{$kamis->id_jadwal}}" action="{{ route('jadwal.destroy', $kamis->id_jadwal) }}" method="POST">
-                                                                @method('DELETE')
-                                                                @csrf
-                                                                <a href="{{ route('jadwal.edit', $kamis->id_jadwal) }}" class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></a>
-                                                                <button type="button" class="btn btn-sm btn-danger" onclick="confirmSubmit('kamisForm{{$kamis->id_jadwal}}', '{{ $kamis->nama_pelajaran }}')"><i class="fas fa-trash"></i></button>
-                                                            </form>
-                                                        </td>
-                                                    </tr>
-                                                @endif
-                                            @endforeach
+                                                            @if (Auth::guard('guru')->check())
+                                                                @if (Auth::guard('guru')->user()->level == 'tata usaha' || Auth::guard('guru')->user()->level =='wali kelas')
+                                                                    <td>
+                                                                        <form id="kamisForm{{$kamis->id_jadwal}}" action="{{ route('jadwal.destroy', $kamis->id_jadwal) }}" method="POST">
+                                                                            @method('DELETE')
+                                                                            @csrf
+                                                                            <a href="{{ route('jadwal.edit', $kamis->id_jadwal) }}" class="btn btn-sm btn-warning btn-sm"><i class="fas fa-edit"></i></a>
+                                                                            <button type="button" class="btn btn-sm btn-danger" onclick="confirmSubmit('kamisForm{{$kamis->id_jadwal}}', '{{ $kamis->nama_pelajaran }}')"><i class="fas fa-trash"></i></button>
+                                                                        </form>
+                                                                    </td>
+                                                                @endif
+                                                            @endif
+                                                        </tr>
+                                                    @endif
+                                                @endforeach
                                             </tbody>
                                         </table>
                                     </div>
@@ -318,40 +349,47 @@
                                     <div class="d-flex justify-content-between align-items-center pt-3 pl-4 pb-2 pr-4">
                                         <table class="table table-responsive table-borderless">
                                             <thead class="border bg-pastel-primary rounded-lg">
-                                            <tr>
-                                                <th scope="col">Kelas</th>
-                                                <th scope="col">Mata Pelajaran</th>
-                                                <th scope="col">Guru Pengampu</th>
-                                                <th scope="col">Jam Mulai</th>
-                                                <th scope="col">Jam Selesai</th>
-                                                <th scope="col">Durasi Sesi</th>
-                                                <th scope="col">Hari</th>
-                                                <th scope="col">Action</th>
-                                            </tr>
+                                                <tr>
+                                                    <th scope="col">Kelas</th>
+                                                    <th scope="col">Mata Pelajaran</th>
+                                                    <th scope="col">Guru Pengampu</th>
+                                                    <th scope="col">Jam Mulai</th>
+                                                    <th scope="col">Jam Selesai</th>
+                                                    <th scope="col">Durasi Sesi</th>
+                                                    <th scope="col">Hari</th>
+                                                    @if(!Auth::guard('waliMurid')->check())
+                                                    @elseif(Auth::guard('guru')->check())
+                                                    <th scope="col">Action</th>
+                                                    @endif
+                                                </tr>
                                             </thead>
                                             <tbody>
-                                            @foreach ($jadwal as $jumat)
-                                                @if ($jumat->hari == 'jumat')
-                                                    <tr>
-                                                        <td>{{ $jumat->angka_kelas }}</td>
-                                                        <td>{{ $jumat->nama_pelajaran }}</td>
-                                                        <td>{{ $jumat->nama_guru }}</td>
-                                                        <td>{{ $jumat->jam_mulai }}</td>
-                                                        <td>{{ $jumat->jam_selesai }}</td>
-                                                        <td>{{ $jumat->jumlah_sesi }}</td>
-                                                        <td>{{ $jumat->hari }}</td>
+                                                @foreach ($jadwal as $jumat)
+                                                    @if ($jumat->hari == 'jumat')
+                                                        <tr>
+                                                            <td>{{ $jumat->angka_kelas }}</td>
+                                                            <td>{{ $jumat->nama_pelajaran }}</td>
+                                                            <td>{{ $jumat->nama_guru }}</td>
+                                                            <td>{{ $jumat->jam_mulai }}</td>
+                                                            <td>{{ $jumat->jam_selesai }}</td>
+                                                            <td>{{ $jumat->jumlah_sesi }}</td>
+                                                            <td>{{ $jumat->hari }}</td>
 
-                                                        <td>
-                                                            <form id="jumatForm{{$jumat->id_jadwal}}" action="{{ route('jadwal.destroy', $jumat->id_jadwal) }}" method="POST">
-                                                                @method('DELETE')
-                                                                @csrf
-                                                                <a href="{{ route('jadwal.edit', $jumat->id_jadwal) }}" class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></a>
-                                                                <button type="button" class="btn btn-sm btn-danger" onclick="confirmSubmit('jumatForm{{$jumat->id_jadwal}}', '{{ $jumat->nama_pelajaran }}')"><i class="fas fa-trash"></i></button>
-                                                            </form>
-                                                        </td>
-                                                    </tr>
-                                                @endif
-                                            @endforeach
+                                                            @if (Auth::guard('guru')->check())
+                                                                @if (Auth::guard('guru')->user()->level == 'tata usaha' || Auth::guard('guru')->user()->level =='wali kelas')
+                                                                    <td>
+                                                                        <form id="jumatForm{{$jumat->id_jadwal}}" action="{{ route('jadwal.destroy', $jumat->id_jadwal) }}" method="POST">
+                                                                            @method('DELETE')
+                                                                            @csrf
+                                                                            <a href="{{ route('jadwal.edit', $jumat->id_jadwal) }}" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></a>
+                                                                            <button type="button" class="btn btn-sm btn-danger" onclick="confirmSubmit('jumatForm{{$jumat->id_jadwal}}', '{{ $jumat->nama_pelajaran }}')"><i class="fas fa-trash"></i></button>
+                                                                        </form>
+                                                                    </td>
+                                                                @endif
+                                                            @endif
+                                                        </tr>
+                                                    @endif
+                                                @endforeach
                                             </tbody>
                                         </table>
                                     </div>
@@ -368,40 +406,47 @@
                                     <div class="d-flex justify-content-between align-items-center pt-3 pl-4 pb-2 pr-4">
                                         <table class="table table-responsive table-borderless">
                                             <thead class="border bg-pastel-primary rounded-lg">
-                                            <tr>
-                                                <th scope="col">Kelas</th>
-                                                <th scope="col">Mata Pelajaran</th>
-                                                <th scope="col">Guru Pengampu</th>
-                                                <th scope="col">Jam Mulai</th>
-                                                <th scope="col">Jam Selesai</th>
-                                                <th scope="col">Durasi Sesi</th>
-                                                <th scope="col">Hari</th>
-                                                <th scope="col">Action</th>
-                                            </tr>
+                                                <tr>
+                                                    <th scope="col">Kelas</th>
+                                                    <th scope="col">Mata Pelajaran</th>
+                                                    <th scope="col">Guru Pengampu</th>
+                                                    <th scope="col">Jam Mulai</th>
+                                                    <th scope="col">Jam Selesai</th>
+                                                    <th scope="col">Durasi Sesi</th>
+                                                    <th scope="col">Hari</th>
+                                                    @if(!Auth::guard('waliMurid')->check())
+                                                    @elseif(Auth::guard('guru')->check())
+                                                    <th scope="col">Action</th>
+                                                    @endif
+                                                </tr>
                                             </thead>
                                             <tbody>
-                                            @foreach ($jadwal as $sabtu)
-                                                @if ($sabtu->hari == 'sabtu')
-                                                    <tr>
-                                                        <td>{{ $sabtu->angka_kelas }}</td>
-                                                        <td>{{ $sabtu->nama_pelajaran }}</td>
-                                                        <td>{{ $sabtu->nama_guru }}</td>
-                                                        <td>{{ $sabtu->jam_mulai }}</td>
-                                                        <td>{{ $sabtu->jam_selesai }}</td>
-                                                        <td>{{ $sabtu->jumlah_sesi }}</td>
-                                                        <td>{{ $sabtu->hari }}</td>
+                                                @foreach ($jadwal as $sabtu)
+                                                    @if ($sabtu->hari == 'sabtu')
+                                                        <tr>
+                                                            <td>{{ $sabtu->angka_kelas }}</td>
+                                                            <td>{{ $sabtu->nama_pelajaran }}</td>
+                                                            <td>{{ $sabtu->nama_guru }}</td>
+                                                            <td>{{ $sabtu->jam_mulai }}</td>
+                                                            <td>{{ $sabtu->jam_selesai }}</td>
+                                                            <td>{{ $sabtu->jumlah_sesi }}</td>
+                                                            <td>{{ $sabtu->hari }}</td>
 
-                                                        <td>
-                                                            <form id="sabtuForm{{$sabtu->id_jadwal}}" action="{{ route('jadwal.destroy', $sabtu->id_jadwal) }}" method="POST">
-                                                                @method('DELETE')
-                                                                @csrf
-                                                                <a href="{{ route('jadwal.edit', $sabtu->id_jadwal) }}" class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></a>
-                                                                <button type="button" class="btn btn-sm btn-danger" onclick="confirmSubmit('sabtuForm{{$sabtu->id_jadwal}}', '{{ $sabtu->nama_pelajaran }}')"><i class="fas fa-trash"></i></button>
-                                                            </form>
-                                                        </td>
-                                                    </tr>
-                                                @endif
-                                            @endforeach
+                                                            @if (Auth::guard('guru')->check())
+                                                                @if (Auth::guard('guru')->user()->level == 'tata usaha' || Auth::guard('guru')->user()->level =='wali kelas')
+                                                                    <td>
+                                                                        <form id="sabtuForm{{$sabtu->id_jadwal}}" action="{{ route('jadwal.destroy', $sabtu->id_jadwal) }}" method="POST">
+                                                                            @method('DELETE')
+                                                                            @csrf
+                                                                            <a href="{{ route('jadwal.edit', $sabtu->id_jadwal) }}" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></a>
+                                                                            <button type="button" class="btn btn-sm btn-danger" onclick="confirmSubmit('sabtuForm{{$sabtu->id_jadwal}}', '{{ $sabtu->nama_pelajaran }}')"><i class="fas fa-trash"></i></button>
+                                                                        </form>
+                                                                    </td>
+                                                                @endif
+                                                            @endif
+                                                        </tr>
+                                                    @endif
+                                                @endforeach
                                             </tbody>
                                         </table>
                                     </div>
@@ -419,7 +464,7 @@
 
     {{-- mmodal Tambah --}}
     <div class="modal fade" id="exampleModal" tabindex="-1" data-keyboard="false" data-backdrop="static"
-         aria-labelledby="exampleModalLabel" aria-hidden="true">
+        aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
@@ -437,7 +482,7 @@
                                 <div class="form-group col-md-6">
                                     <label for="mataPelajaran">Mata Pelajaran</label>
                                     <select class="custom-select form-control" name="id_mapel" id="mataPelajaran"
-                                            name="matapelajaran">
+                                        name="matapelajaran">
                                         <option disabled readonly>Pilih mata pelajaran...</option>
                                         @foreach ($mapel as $mapel)
                                             <option name="id_mapel" value="{{ $mapel->id }}">
@@ -448,7 +493,7 @@
                                 <div class="form-group col-md-6">
                                     <label for="namaGuru">Guru Pengampu</label>
                                     <select class="custom-select form-control" name="id_guru" id="namaGuru"
-                                            name="nama_guru">
+                                        name="nama_guru">
                                         <option disabled readonly>Pilih guru pengampu...</option>
                                         @foreach ($DataGuru as $guru)
                                             <option value="{{ $guru->id }}">{{ $guru->nama_guru }}</option>
@@ -458,7 +503,7 @@
                                 <div class="form-group col-md-6">
                                     <label for="kelas">Kelas</label>
                                     <select class="custom-select form-control" name="id_kelas" id="kelas"
-                                            name="kelas">
+                                        name="kelas">
                                         <option disabled readonly>Pilih kelas...</option>
                                         @foreach ($kelas as $kelas)
                                             <option value="{{ $kelas->id }}">{{ $kelas->angka_kelas }}
@@ -481,17 +526,17 @@
                                 <div class="form-group col-md-6">
                                     <label for="jamMulai">Jam Mulai</label>
                                     <input name="jam_mulai" type="time" class="form-control" id="jamMulai"
-                                           placeholder="Masukan Jam Mulai...">
+                                        placeholder="Masukan Jam Mulai...">
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label for="jamSelesai">Jam Selesai</label>
                                     <input name="jam_selesai" type="time" class="form-control" id="jamSelesai"
-                                           placeholder="Masukan Jam Selesai...">
+                                        placeholder="Masukan Jam Selesai...">
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label for="sesi">Jumlah Sesi</label>
                                     <input name="jumlah_sesi" type="number" class="form-control" id="sesi"
-                                           placeholder="Masukan jumlah sesi...">
+                                        placeholder="Masukan jumlah sesi...">
                                 </div>
                             </div>
                         </div>
