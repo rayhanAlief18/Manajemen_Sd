@@ -57,7 +57,7 @@ Route::resource('/siswa', SiswaController::class)->middleware('protect');;
 Route::resource('/BayarSpp', PembayaranSppController::class)->middleware('protect');;
 Route::resource('/nilai', NilaiSiswaController::class)->middleware('protect');;
 Route::resource('/matapelajaran', MataPelajaranController::class)->middleware('protect');;
-Route::resource('jadwal', JadwalController::class)->middleware('protect');;
+Route::resource('jadwal', JadwalController::class)->middleware(['protect']);;
 Route::resource('/prestasi', PrestasiController::class)->middleware('protect');;
 Route::resource('/barang', BarangController::class)->middleware('protect');;
 Route::resource('/ruangan', RuanganController::class)->middleware('protect');;
@@ -73,7 +73,7 @@ Route::get('/riwayatbayar', [PembayaranSppController::class, 'riwayatBayar'])->n
 Route::get('/BuktiRiwayarBayar/{id}', [PembayaranSppController::class, 'BuktiRiwayatBayar'])->name('BuktiRiwayatBayar')->middleware('protect');
 Route::get('/ShowSiswaAbsensi/{id}', [AbsensiController::class, 'ShowSiswaAbsensi'])->name('ShowSiswaAbsensi')->middleware('protect');
 Route::post('/tambahAbsensiSiswa/{id}', [AbsensiController::class, 'tambahAbsensiSiswa'])->name('tambahAbsensiSiswa')->middleware('protect');
-Route::get('/ShowAllKelasTiapSiswa/{id}', [AbsensiController::class, 'ShowAllKelasTiapSiswa'])->name('ShowAllKelasTiapSiswa')->middleware('protect');
+Route::get('/ShowAllKelasTiapSiswa/{id_kelas}/{id_siswa}', [AbsensiController::class, 'ShowAllKelasTiapSiswa'])->name('ShowAllKelasTiapSiswa')->middleware('protect');
 Route::get('/ShowAbsensiPerSiswa/{id_kelas}/{id_siswa}', [AbsensiController::class, 'ShowAbsensiPerSiswa'])->name('ShowAbsensiPerSiswa')->middleware('protect');
 Route::get('/editAbsensi/{id}/{id_kelas}/{id_siswa}', [AbsensiController::class, 'editAbsensi'])->name('editAbsensi')->middleware('protect');
 Route::put('/updateAbsensi/{id}/{id_kelas}/{id_siswa}', [AbsensiController::class,'updateAbsensi'])->name('updateAbsensi')->middleware('protect');
@@ -83,7 +83,11 @@ Route::put('/updateAbsensi/{id}/{id_kelas}/{id_siswa}', [AbsensiController::clas
 Route::get('/riwayatbayar', [PembayaranSppController::class, 'riwayatBayar'])->name('RiwayatBayar');
 Route::get('/ShowSiswaAbsensi/{id}', [AbsensiController::class, 'ShowSiswaAbsensi'])->name('ShowSiswaAbsensi');
 Route::post('/tambahAbsensiSiswa/{id}', [AbsensiController::class, 'tambahAbsensiSiswa'])->name('tambahAbsensiSiswa');
-Route::get('/ShowAllKelasTiapSiswa/{id}', [AbsensiController::class, 'ShowAllKelasTiapSiswa'])->name('ShowAllKelasTiapSiswa');
+Route::get('/ShowAllKelasTiapSiswa/{id_kelas}/{id_siswa}', [AbsensiController::class, 'ShowAllKelasTiapSiswa'])->name('ShowAllKelasTiapSiswa');
+// Route::post('/TransitIdSiswaHistoryAbsensi/{id_kelas}/{id_siswa}', [AbsensiController::class, 'TransitIdSiswaHistoryAbsensi'])->name('TransitIdSiswaHistoryAbsensi');
+Route::post('/TransitIdSiswaHistoryAbsensi/{id_kelas}/{id_siswa}', [AbsensiController::class, 'TransitIdSiswaHistoryAbsensi'])->name('TransitIdSiswaHistoryAbsensi');
+Route::post('/TransitNilaiSiswa/{id_siswa}', [NilaiSiswaController::class, 'TransitNilaiSiswa'])->name('TransitNilaiSiswa');
+Route::post('/TransitJadwal/{id_jadwal}', [JadwalController::class, 'TransitJadwal'])->name('TransitJadwal');
 Route::get('/ShowAbsensiPerSiswa/{id_kelas}/{id_siswa}', [AbsensiController::class, 'ShowAbsensiPerSiswa'])->name('ShowAbsensiPerSiswa');
 
 Route::get('/riwayatBayarById/{id}/', [PembayaranSppController::class, 'riwayatBayarById'])->name('riwayatBayarById')->middleware('protect');
@@ -98,6 +102,9 @@ Route::get('/ruangan/lantai/{lantai}', [RuanganController::class, 'showLantai'])
 //EXPORT NILAI BY SISWA
 Route::get('/nilai/export-pdf/{id}', [NilaiSiswaController::class, 'exportPdf'])->name('nilai.exportPdf');
 Route::get('/nilai/form/{id}', [NilaiSiswaController::class, 'showForm'])->name('nilai.form');
+
+// nilai pribadi di halaman ortu
+Route::get('/NilaiSiswaPribadi/{id_siswa}', [NilaiSiswaController::class, 'NilaiSiswaPribadi'])->name('NilaiSiswaPribadi');
 
 
 // Login Wali

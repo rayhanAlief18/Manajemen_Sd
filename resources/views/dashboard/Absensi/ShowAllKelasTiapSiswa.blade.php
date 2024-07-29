@@ -57,8 +57,14 @@
                                         </td>
                                         @if ($class->angka_kelas <= 6)
                                             <td>
-                                                <a href="{{ route('ShowAbsensiPerSiswa', ['id_kelas' => $class->id, 'id_siswa' => $id_siswa]) }}"
-                                                    class="btn btn-info">Tampilkan Absen</a>
+                                                <form method="POST" action="{{ route('TransitIdSiswaHistoryAbsensi', ['id_kelas' => $class->id, 'id_siswa' => $id_siswa]) }}">
+                                                    @csrf
+                                                    <input type="hidden" value="{{ $id_siswa }}" name="id_siswa_tampilAbs">
+                                                    <input type="hidden" value="{{ $class->id }}" name="id_kelas_tampilAbs">
+                                                    <button type="submit" class="btn btn-info">Tampilkan Absensi</button>
+                                                </form>
+                                                    {{-- <a href="{{ route('ShowAbsensiPerSiswa', ['id_kelas' => $class->id, 'id_siswa' => $id_siswa]) }}"
+                                                        class="btn btn-info">Tampilkan Absen</a> --}}
 
                                             </td>
                                         @else

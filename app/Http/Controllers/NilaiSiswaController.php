@@ -211,11 +211,15 @@ class NilaiSiswaController extends Controller
 
     public function index()
     {
-        if (Auth::guard('guru')->check() || Auth::guard('waliMurid')->check()) 
-        {
+        if (Auth::guard('guru')->check() || Auth::guard('waliMurid')->check()) {
             $title = "Data Nilai";
             $title2 = "Daftar kelas";
-            $kelass = Kelas::withCount('siswa')->where('angka_kelas', '<=', 6)->orderBy('angka_kelas', 'asc')->get();
+            // $kelass = Kelas::withCount('siswa')->where('angka_kelas', '<=', 6)->orderBy('angka_kelas', 'asc')->get();
+            $kelass = DB::table('kelas')
+                ->join('gurus', 'gurus.kelas_id', '=', 'kelas.id')
+                ->select('kelas.*', 'gurus.nama_guru')
+                ->orderBy('angka_kelas', 'asc')
+                ->get();
             $guru = Guru::with('kelas')->get();
             // $kelass = DB::table('kelas')
             //         ->join('gurus', 'gurus.kelas_id', '=', 'kelas.id')
@@ -223,6 +227,7 @@ class NilaiSiswaController extends Controller
             //         ->select('kelas.*', 'gurus.nama_guru')
             //         ->orderBy('angka_kelas', 'asc')
             //         ->get();
+
             return view('dashboard.NilaiSiswa.IndexNilai', [
                 'title' => $title,
                 'title2' => $title2,
@@ -236,8 +241,7 @@ class NilaiSiswaController extends Controller
 
     public function DaftarKelas(Request $request, $id)
     {
-        if (Auth::guard('guru')->check()) 
-        {
+        if (Auth::guard('guru')->check()) {
             $title = "Data Nilai Siswa";
             $kelas = Kelas::findOrFail($id); // Ambil data kelas berdasarkan ID
             $data = $kelas->siswa; // Mengambil data siswa yang terkait dengan kelas
@@ -253,13 +257,32 @@ class NilaiSiswaController extends Controller
                 ->distinct()
                 ->pluck('tahun_ajaran')
                 ->toArray();
+            if (Auth::guard('guru')->user()->level == 'tata usaha') {
+                return view('dashboard.NilaiSiswa.DataNilaiSiswa', compact('data', 'title', 'kelas', 'smtr', 'thajar'));
 
-            return view('dashboard.NilaiSiswa.DataNilaiSiswa', compact('data', 'title', 'kelas', 'smtr', 'thajar'));
+                //     if(Auth::guard('guru')->user()->level == 'wali kelas'){
+                //         if(Auth::guard('guru')->user()->kelas_id == $id){
+                //             return view('dashboard.NilaiSiswa.DataNilaiSiswa', compact('data', 'title', 'kelas', 'smtr', 'thajar'));
+                //         }else{
+                //             return back();
+                //         }
+                // }
+            } elseif (Auth::guard('guru')->user()->level == 'wali kelas') {
+                $iduser = intval($id);
+                if ($iduser == Auth::guard('guru')->user()->kelas_id) {
+                    return view('dashboard.NilaiSiswa.DataNilaiSiswa', compact('data', 'title', 'kelas', 'smtr', 'thajar'));
+                } else {
+                    return back();
+                }
+            } else {
+                return back();
+            }
         } else {
             return back();
         }
     }
 
+    
     public function riwayatBayar()
     {
         if (Auth::guard('guru')->user()->level == 'tata usaha') {
@@ -357,67 +380,106 @@ class NilaiSiswaController extends Controller
         return redirect()->route('nilai.show', ['nilai' => $student])->with('success', 'Data siswa berhasil diperbarui!');
     }
 
+    public function TransitNilaiSiswa(Request $request, $id_siswa)
+    {
+        if ($request->id_siswa_nilai) {
+            session(['id' => $request->input('id_siswa_nilai')]);
+            return redirect()->route('nilai.show',$id_siswa);
+        }
+    }
 
     public function show(Request $request, $id)
     {
         if (Auth::guard('guru')->check() || Auth::guard('waliMurid')->check()) {
+            // dd($id_siswas)
 
-            // Mengambil parameter query string
-            $nisn = $request->query('nisn');
-            $nama_siswa = $request->query('nama_siswa');
-            // Mendapatkan semester yang unik berdasarkan siswa_id
-            $smtr = NilaiSiswa::where('siswa_id', $id)
-                ->distinct()
-                ->pluck('semester')
-                ->toArray();
+            $id_siswa = session('id');
+            // dd($id_siswa);
 
-            // Mendapatkan tahun ajaran yang unik berdasarkan siswa_id
-            $thajar = NilaiSiswa::where('siswa_id', $id)
-                ->distinct()
-                ->pluck('tahun_ajaran')
-                ->toArray();
+                // Mengambil parameter query string
+                $nisn = $request->query('nisn');
+                $nama_siswa = $request->query('nama_siswa');
+                // Mendapatkan semester yang unik berdasarkan siswa_id
+                $smtr = NilaiSiswa::where('siswa_id', $id)
+                    ->distinct()
+                    ->pluck('semester')
+                    ->toArray();
 
-            // Mengambil parameter query string
-            $nisn = $request->query('nisn');
-            $nama_siswa = $request->query('nama_siswa');
+                // Mendapatkan tahun ajaran yang unik berdasarkan siswa_id
+                $thajar = NilaiSiswa::where('siswa_id', $id)
+                    ->distinct()
+                    ->pluck('tahun_ajaran')
+                    ->toArray();
 
-            // Menggunakan model MataPelajaran untuk mendapatkan semua mata pelajaran
-            $mapel = MataPelajaran::all();
+                // Mengambil parameter query string
+                $nisn = $request->query('nisn');
+                $nama_siswa = $request->query('nama_siswa');
 
-            // Filter NilaiSiswa berdasarkan siswa_id dengan eager loading mataPelajaran
-            $tagihan = NilaiSiswa::with(['siswa', 'kelas', 'mataPelajaran'])->where('siswa_id', $id)->get();
+                // Menggunakan model MataPelajaran untuk mendapatkan semua mata pelajaran
+                $mapel = MataPelajaran::all();
 
-            $title = "Data Nilai Siswa";
-            $siswa = Siswa::findOrFail($id);
-            $kelas = Kelas::all();
+                // Filter NilaiSiswa berdasarkan siswa_id dengan eager loading mataPelajaran
+                $tagihan = NilaiSiswa::with(['siswa', 'kelas', 'mataPelajaran'])->where('siswa_id', $id)->get();
 
-            $data = NilaiSiswa::with('mataPelajaran')->where('siswa_id', $id)->get();
+                $title = "Data Nilai Siswa";
+                $siswa = Siswa::findOrFail($id);
+                $kelas = Kelas::all();
 
-            // Mengembalikan view dengan data yang diperlukan
-            return view('dashboard.NilaiSiswa.TambahNilaiSiswa', compact('title', 'siswa', 'data', 'kelas', 'mapel','smtr','thajar'))->with('success', 'Data siswa berhasil diperbarui!');
-            // Filter NilaiSiswa berdasarkan siswa_id dengan eager loading mataPelajaran, siswa, dan kelas
-            $tagihan = NilaiSiswa::with(['siswa', 'kelas', 'mataPelajaran'])->where('siswa_id', $id)->get();
+                $data = NilaiSiswa::with('mataPelajaran')->where('siswa_id', $id)->get();
 
-            // Menentukan judul halaman
-            $title = "Data Nilai Siswa";
+                // Mengembalikan view dengan data yang diperlukan
+                // return view('dashboard.NilaiSiswa.TambahNilaiSiswa', compact('title', 'siswa', 'data', 'kelas', 'mapel', 'smtr', 'thajar'))->with('success', 'Data siswa berhasil diperbarui!');
+                // Filter NilaiSiswa berdasarkan siswa_id dengan eager loading mataPelajaran, siswa, dan kelas
+                $tagihan = NilaiSiswa::with(['siswa', 'kelas', 'mataPelajaran'])->where('siswa_id', $id)->get();
 
-            // Mendapatkan data siswa berdasarkan id
-            $siswa = Siswa::findOrFail($id);
+                // Menentukan judul halaman
+                $title = "Data Nilai Siswa";
 
-            // Mendapatkan semua data kelas
-            $kelas = Kelas::all();
+                // Mendapatkan data siswa berdasarkan id
+                $siswa = Siswa::findOrFail($id);
 
-            // Mendapatkan data nilai siswa dengan relasi mataPelajaran berdasarkan siswa_id
-            $data = NilaiSiswa::with('mataPelajaran')->where('siswa_id', $id)->get();
+                // Mendapatkan semua data kelas
+                $kelas = Kelas::all();
 
-            // Mengembalikan view dengan data yang diperlukan
-            return view('dashboard.NilaiSiswa.TambahNilaiSiswa', compact('title', 'siswa', 'data', 'kelas', 'mapel', 'smtr', 'thajar'))->with('success', 'Data siswa berhasil diperbarui!');
+                // Mendapatkan data nilai siswa dengan relasi mataPelajaran berdasarkan siswa_id
+                $data = NilaiSiswa::with('mataPelajaran')->where('siswa_id', $id)->get();
+
+                if (Auth::guard('guru')->check()) {
+                    if (Auth::guard('guru')->user()->level == "wali kelas") {
+                        if (intval($id_siswa) == intval($id)) {
+                            return view('dashboard.NilaiSiswa.TambahNilaiSiswa', compact('title', 'siswa', 'data', 'kelas', 'mapel', 'smtr', 'thajar'))->with('success', 'Data siswa berhasil diperbarui!');
+                        }else{
+                            return back();
+                        }
+                    }
+                }
+                // Mengembalikan view dengan data yang diperlukan
+                return view('dashboard.NilaiSiswa.TambahNilaiSiswa', compact('title', 'siswa', 'data', 'kelas', 'mapel', 'smtr', 'thajar'))->with('success', 'Data siswa berhasil diperbarui!');
+
+            } else {
+                return back();
+            }
+        
+    }
+
+
+    public function NilaiSiswaPribadi(string $id)
+    {
+        if (Auth::guard('waliMurid')->check()) {
+            $iduser = intval($id);
+
+            if (Auth::guard('waliMurid')->user()->id == $iduser) {
+                $title = "Data Nilai Siswa";
+                // Mendapatkan data nilai siswa dengan relasi mataPelajaran berdasarkan siswa_id
+                $data = NilaiSiswa::with('mataPelajaran')->where('siswa_id', $id)->get();
+                return view('dashboard.NilaiSiswa.NilaiSiswaPribadi', compact('title', 'data'));
+            } else {
+                return back();
+            }
         } else {
             return back();
         }
     }
-
-
 
 
     /**

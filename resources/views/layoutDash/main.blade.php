@@ -226,7 +226,7 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="{{ route('ShowAllKelasTiapSiswa',Auth::guard('waliMurid')->user()->id) }}" class="nav-link">
+                                    <a href="{{ url('ShowAllKelasTiapSiswa/'.Auth::guard('waliMurid')->user()->kelas_id.'/'.Auth::guard('waliMurid')->user()->id) }}" class="nav-link">
                                         <i class="nav-icon fas fa-list"></i>
                                         <p>
                                             History Absensi
@@ -234,7 +234,7 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                        <a href="{{ route('nilai.show', Auth::guard('waliMurid')->user()->id) . '?id=' . Auth::guard('waliMurid')->user()->id . '&nisn=' . Auth::guard('waliMurid')->user()->nisn . '&nama_siswa=' . Auth::guard('waliMurid')->user()->nama_siswa  }}" class="nav-link">
+                                    <a href="{{ route('NilaiSiswaPribadi',Auth::guard('waliMurid')->user()->id)}}" class="nav-link">
                                         <i class="nav-icon fas fa-file-invoice-dollar  "></i>
                                         <p>
                                             Nilai Siswa

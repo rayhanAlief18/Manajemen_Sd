@@ -112,10 +112,16 @@
                                     <td>{{ $datas->nama_siswa }}</td>
                                     <td>{{ $datas->semester }}</td>
                                     <td>
-                                        <a data-toggle="tooltip" data-placement="top" title="Masukkan Nilai Siswa"
+                                        <form method="POST" action="{{ route('TransitNilaiSiswa',$datas->id) }}">
+                                            @csrf
+                                            <input type="hidden" value="{{ $datas->id }}" name="id_siswa_nilai">
+                                            <button data-toggle="tooltip" data-placement="top" title="Masukkan Nilai Siswa"
+                                            class="btn btn-sm btn-primary" type="submit" class="btn btn-info">+ Nilai</button>
+                                        </form>
+                                        {{-- <a data-toggle="tooltip" data-placement="top" title="Masukkan Nilai Siswa"
                                             class="btn btn-sm btn-primary"
                                             href="{{ route('nilai.show', $datas->id) . '?id=' . $datas->id . '&nisn=' . $datas->nisn . '&nama_siswa=' . $datas->nama_siswa }}">
-                                            + Nilai</a>
+                                            + Nilai</a> --}}
                                     </td>
                                 </tr>
 

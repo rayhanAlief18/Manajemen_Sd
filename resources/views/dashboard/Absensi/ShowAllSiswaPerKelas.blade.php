@@ -65,7 +65,12 @@
                         {{$class->nama_guru}}
                       </td>
                       <td>
-                        <a href="{{route('ShowAllKelasTiapSiswa',$class->id)}}" class="btn btn-info"><i class="fas fa-calendar-check"></i></a>
+                        <form method="POST" action="{{ route('TransitIdSiswaHistoryAbsensi', ['id_kelas' => $class->kelas_id, 'id_siswa' => $class->id]) }}">
+                          @csrf
+                          <input type="hidden" value="{{ $class->id }}" name="id_siswa">
+                          <input type="hidden" value="{{ $class->kelas_id }}" name="id_kelas">
+                          <button type="submit" class="btn btn-info"><i class="fas fa-calendar-check"></i></button>
+                      </form>
                       </td>
                   </tr>
                   @endforeach

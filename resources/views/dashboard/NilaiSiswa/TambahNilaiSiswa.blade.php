@@ -135,6 +135,8 @@
                             </div>
                         </div>
                         <div class="card-footer">
+                            {{-- <input type="text" value="{{$siswa->id}}" name="id_siswas" style="display:none;"> --}}
+
                             <button type="submit" class="btn btn-info float-right">Submit</button>
                             <button type="button" class="btn btn-outline-secondary"
                                 onclick="window.history.back();">Kembali</button>
