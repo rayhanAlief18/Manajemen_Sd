@@ -57,7 +57,7 @@
                     <div class="card-body">
 
                         {{-- @foreach ($jadwal as $jadwal)
-                
+
               @endforeach --}}
                         {{-- <a href="" class="btn btn-primary btn-sm my-2">Absensi</a> --}}
                         <div class="row">
@@ -99,7 +99,6 @@
                                     @else
                                     @endif
                                 @endif
-
                             @endif
                         </div>
                     </div>
@@ -173,6 +172,11 @@
                                                                             <button type="submit"
                                                                                 class="btn btn-sm btn-danger"><i
                                                                                     class="fas fa-trash"></i></button>
+                                                                        <form id="seninForm{{$senin->id_jadwal}}" action="{{ route('jadwal.destroy', $senin->id_jadwal) }}" method="POST">
+                                                                            @method('DELETE')
+                                                                            @csrf
+                                                                            <a href="{{ route('jadwal.edit', $senin->id_jadwal) }}" class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></a>
+                                                                            <button type="button" class="btn btn-sm btn-danger" onclick="confirmSubmit('seninForm{{$senin->id_jadwal}}', '{{ $senin->nama_pelajaran }}')"><i class="fas fa-trash"></i></button>
                                                                         </form>
                                                                     </td>
                                                                 @endif
@@ -247,6 +251,11 @@
                                                                             <button type="submit"
                                                                                 class="btn btn-danger btn-sm"><i
                                                                                     class="fas fa-trash"></i></button>
+                                                                        <form id="selasaForm{{$selasa->id_jadwal}}" action="{{ route('jadwal.destroy', $selasa->id_jadwal) }}" method="POST">
+                                                                            @method('DELETE')
+                                                                            @csrf
+                                                                            <a href="{{ route('jadwal.edit', $selasa->id_jadwal) }}" class="btn btn-sm btn-warning btn-sm"><i class="fas fa-edit"></i></a>
+                                                                            <button type="button" class="btn btn-sm btn-danger" onclick="confirmSubmit('selasaForm{{$selasa->id_jadwal}}', '{{ $selasa->nama_pelajaran }}')"><i class="fas fa-trash"></i></button>
                                                                         </form>
                                                                     </td>
                                                                 @endif
@@ -321,6 +330,11 @@
                                                                             <button type="submit"
                                                                                 class="btn btn-danger btn-sm"><i
                                                                                     class="fas fa-trash"></i></button>
+                                                                        <form id="rabuForm{{$rabu->id_jadwal}}" action="{{ route('jadwal.destroy', $rabu->id_jadwal) }}" method="POST">
+                                                                            @method('DELETE')
+                                                                            @csrf
+                                                                            <a href="{{ route('jadwal.edit', $rabu->id_jadwal) }}" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></a>
+                                                                            <button type="button" class="btn btn-sm btn-danger" onclick="confirmSubmit('rabuForm{{$rabu->id_jadwal}}', '{{ $rabu->nama_pelajaran }}')"><i class="fas fa-trash"></i></button>
                                                                         </form>
                                                                     </td>
                                                                 @endif
@@ -395,6 +409,11 @@
                                                                             <button type="submit"
                                                                                 class="btn btn-danger btn-sm"><i
                                                                                     class="fas fa-trash"></i></button>
+                                                                        <form id="kamisForm{{$kamis->id_jadwal}}" action="{{ route('jadwal.destroy', $kamis->id_jadwal) }}" method="POST">
+                                                                            @method('DELETE')
+                                                                            @csrf
+                                                                            <a href="{{ route('jadwal.edit', $kamis->id_jadwal) }}" class="btn btn-sm btn-warning btn-sm"><i class="fas fa-edit"></i></a>
+                                                                            <button type="button" class="btn btn-sm btn-danger" onclick="confirmSubmit('kamisForm{{$kamis->id_jadwal}}', '{{ $kamis->nama_pelajaran }}')"><i class="fas fa-trash"></i></button>
                                                                         </form>
                                                                     </td>
                                                                 @endif
@@ -469,6 +488,11 @@
                                                                             <button type="submit"
                                                                                 class="btn btn-danger btn-sm"><i
                                                                                     class="fas fa-trash"></i></button>
+                                                                        <form id="jumatForm{{$jumat->id_jadwal}}" action="{{ route('jadwal.destroy', $jumat->id_jadwal) }}" method="POST">
+                                                                            @method('DELETE')
+                                                                            @csrf
+                                                                            <a href="{{ route('jadwal.edit', $jumat->id_jadwal) }}" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></a>
+                                                                            <button type="button" class="btn btn-sm btn-danger" onclick="confirmSubmit('jumatForm{{$jumat->id_jadwal}}', '{{ $jumat->nama_pelajaran }}')"><i class="fas fa-trash"></i></button>
                                                                         </form>
                                                                     </td>
                                                                 @endif
@@ -543,6 +567,11 @@
                                                                             <button type="submit"
                                                                                 class="btn btn-danger btn-sm"><i
                                                                                     class="fas fa-trash"></i></button>
+                                                                        <form id="sabtuForm{{$sabtu->id_jadwal}}" action="{{ route('jadwal.destroy', $sabtu->id_jadwal) }}" method="POST">
+                                                                            @method('DELETE')
+                                                                            @csrf
+                                                                            <a href="{{ route('jadwal.edit', $sabtu->id_jadwal) }}" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></a>
+                                                                            <button type="button" class="btn btn-sm btn-danger" onclick="confirmSubmit('sabtuForm{{$sabtu->id_jadwal}}', '{{ $sabtu->nama_pelajaran }}')"><i class="fas fa-trash"></i></button>
                                                                         </form>
                                                                     </td>
                                                                 @endif
@@ -562,6 +591,7 @@
 
             </div>
             <!-- /.row (main row) -->
+        </section>
     </div><!-- /.container-fluid -->
 
     {{-- mmodal Tambah --}}
@@ -574,9 +604,8 @@
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
-
-
                 </div>
+
                 <form action="{{ route('jadwal.store') }}" method="POST" class="form-horizontal">
                     @csrf
                     <div class="modal-body">
@@ -652,12 +681,20 @@
             </div>
         </div>
     </div>
-    {{-- end tambah modal --}}
 
-
-
-    </div>
-    </section>
-    <!-- /.content -->
-    </div>
+    <script>
+        function confirmSubmit(formId, dataValue) {
+            Swal.fire({
+                title: `Hapus Jadwal ${dataValue}`,
+                text: 'Anda tidak akan bisa kembalikan data ini lagi',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Ya, Saya Yakin',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById(formId).submit();
+                }
+            });
+        }
+    </script>
 @endsection

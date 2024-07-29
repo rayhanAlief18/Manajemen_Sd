@@ -13,6 +13,7 @@ use App\Models\Guru;
 use App\Models\Kelas;
 use App\Models\MataPelajaran;
 use App\Models\Jadwal;
+use RealRashid\SweetAlert\Facades\Alert;
 
 
 class JadwalController extends Controller
@@ -36,6 +37,11 @@ class JadwalController extends Controller
                 'title' => $title,
                 'kelas' => $kelas
             ]);
+            // confirmDelete();
+            // return view('dashboard.Jadwal.index', [
+            //     'title' => $title,
+            //     'kelas' => $kelas
+            // ]);
         } else {
             return back();
         }
@@ -122,7 +128,10 @@ class JadwalController extends Controller
             //     'hari'     => $request->hari,
             // ]);
 
-            return redirect()->route('jadwal.show', $request->id_kelas)->with('Success', 'Data berhasil ditambahkan');
+            // Sweet alert
+            Alert::success('Berhasil Ditambahkan', 'Jadwal berhasil ditambahkan.');
+
+            return redirect()->route('jadwal.show', $request->id_kelas);
         } else {
             return back();
         }
@@ -152,9 +161,9 @@ class JadwalController extends Controller
                 ->select('jadwals.*', 'jadwals.id as id_jadwal', 'gurus.nama_guru', 'kelas.angka_kelas', 'kelas.id as id_kelas', 'mata_pelajarans.nama_pelajaran')->where('kelas.id', $id)
                 ->get();
 
-            
+
             //protected id kelas ortu
-            if(Auth::guard('waliMurid')->check()){
+            if (Auth::guard('waliMurid')->check()) {
                 if ($iduser == Auth::guard('waliMurid')->user()->kelas_id) {
                     return view('dashboard.Jadwal.DataJadwal', [
                         'title' => $title,
@@ -166,11 +175,11 @@ class JadwalController extends Controller
                         'jadwal' => $jadwal,
                         'hariIni' => $hariIni,
                     ]);
-                }else{
+                } else {
                     return back();
                 }
-            }elseif(Auth::guard('guru')->check()) {
-                if(Auth::guard('guru')->user()->level == 'wali kelas'){
+            } elseif (Auth::guard('guru')->check()) {
+                if (Auth::guard('guru')->user()->level == 'wali kelas') {
                     if ($iduser == Auth::guard('guru')->user()->kelas_id) {
                         return view('dashboard.Jadwal.DataJadwal', [
                             'title' => $title,
@@ -182,10 +191,10 @@ class JadwalController extends Controller
                             'jadwal' => $jadwal,
                             'hariIni' => $hariIni,
                         ]);
-                    }else{
+                    } else {
                         return back();
                     }
-                }elseif(Auth::guard('guru')->user()->level == 'tata usaha'){
+                } elseif (Auth::guard('guru')->user()->level == 'tata usaha') {
                     return view('dashboard.Jadwal.DataJadwal', [
                         'title' => $title,
                         'DataGuru' => $DataGuru,
@@ -197,10 +206,10 @@ class JadwalController extends Controller
                         'hariIni' => $hariIni,
                     ]);
                 }
-            }else{
+            } else {
                 return back();
             }
-            
+
         } else {
             return back();
         }
@@ -211,13 +220,13 @@ class JadwalController extends Controller
      */
     public function TransitJadwal(Request $request, string $id_jadwal)
     {
-        if($request->id_jadwal){
+        if ($request->id_jadwal) {
             session(['id_jadwal' => $request->input('id_jadwal')]);
-            return redirect()->route('jadwal.edit',$id_jadwal);
+            return redirect()->route('jadwal.edit', $id_jadwal);
         }
     }
 
-    
+
     public function edit(string $id)
     {
         if (Auth::guard('guru')->user()->level == 'tata usaha' || Auth::guard('guru')->user()->level == 'wali kelas') {
@@ -232,16 +241,16 @@ class JadwalController extends Controller
                 ->first();
             // dd($mapel);
 
-            if(Auth::guard('guru')->user()->level == 'wali kelas'){
-                if(intval($id) == intval(session('id_jadwal'))){
+            if (Auth::guard('guru')->user()->level == 'wali kelas') {
+                if (intval($id) == intval(session('id_jadwal'))) {
                     return view('dashboard.Jadwal.DataEditJadwal', [
                         'title' => $title,
                         'DataGuru' => $DataGuru,
                         'mapel' => $mapel,
                         'kelas' => $kelas,
                         'jadwal' => $jadwal,
-                    ]);    
-                }else{
+                    ]);
+                } else {
                     return back();
                 }
             }
@@ -300,7 +309,11 @@ class JadwalController extends Controller
             $jadwal->jumlah_sesi = $request->jumlah_sesi;
             $jadwal->hari = $request->hari;
             $jadwal->save();
-            return redirect()->route('jadwal.show', $request->id_kelas)->with('Success', 'Data berhasil diubah');
+
+            // Sweet alert
+            Alert::success('Perubahan Berhasil', 'Jadwal berhasil diubah.');
+
+            return redirect()->route('jadwal.show', $request->id_kelas);
         } else {
             return back();
         }
@@ -314,8 +327,13 @@ class JadwalController extends Controller
     {
         if (Auth::guard('guru')->user()->level == 'tata usaha' || Auth::guard('guru')->user()->level == 'wali kelas') {
             $jadwal = Jadwal::findOrFail($id);
+            $kelas = $jadwal->id_kelas;
             $jadwal->delete();
-            return redirect()->route('jadwal.show', $id)->with('Success', 'Data berhasil dihapus.');
+
+            // Sweet alert
+            Alert::success('Berhasil Dihapus', 'Jadwal berhasil dihapus.');
+
+            return redirect()->route('jadwal.show', $kelas);
         } else {
             return back();
         }

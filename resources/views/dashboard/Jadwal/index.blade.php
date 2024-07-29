@@ -58,33 +58,13 @@
                             @foreach ($kelas as $kelass)
                                 @if ($kelass->angka_kelas <= 6)
                                     @auth('guru')
-                                        @if (Auth::guard('guru')->check())
-                                            @if (Auth::guard('guru')->user()->level == 'wali kelas')
-                                                @if (Auth::guard('guru')->user()->kelas_id == $kelass->id)
-                                                    <div class="col-lg-3 col-6">
-                                                        <!-- small box -->
-                                                        <div class="small-box bg-info">
-                                                            <div class="inner">
-                                                                <h3>Kelas: {{ $kelass->angka_kelas }}</h3>
-
-                                                                <p>Wali kelas: {{ $kelass->nama_guru }}</p>
-                                                            </div>
-                                                            <div class="icon">
-                                                                <i class="ion ion-bag"></i>
-                                                            </div>
-                                                            <a href="{{ route('jadwal.show', $kelass->id) }}"
-                                                                class="small-box-footer">More info <i
-                                                                    class="fas fa-arrow-circle-right"></i></a>
-                                                        </div>
-                                                    </div>
-                                                @endif
-                                            @endif
-
-                                            @if (Auth::guard('guru')->user()->level == 'tata usaha')
+                                        @if (Auth::guard('guru')->user()->level == 'wali kelas')
+                                            @if (Auth::guard('guru')->user()->kelas_id == $kelass->id)
                                                 <div class="col-lg-3 col-6">
                                                     <!-- small box -->
                                                     <div class="small-box bg-info">
                                                         <div class="inner">
+
                                                             <h3>Kelas: {{ $kelass->angka_kelas }}</h3>
 
                                                             <p>Wali kelas: {{ $kelass->nama_guru }}</p>
@@ -93,45 +73,63 @@
                                                             <i class="ion ion-bag"></i>
                                                         </div>
                                                         <a href="{{ route('jadwal.show', $kelass->id) }}"
-                                                            class="small-box-footer">More info <i
+                                                           class="small-box-footer">More info <i
                                                                 class="fas fa-arrow-circle-right"></i></a>
                                                     </div>
                                                 </div>
                                             @endif
                                         @endif
-                                        @endauth
 
-                                        @if (!Auth::guard('guru')->check())
-                                            @if (Auth::guard('waliMurid')->user()->level == 'wali murid')
-                                                @if (Auth::guard('waliMurid')->user()->kelas_id == $kelass->id)
-                                                    <div class="col-lg-3 col-6">
-                                                        <!-- small box -->
-                                                        <div class="small-box bg-info">
-                                                            <div class="inner">
-                                                                <h3>Kelas: {{ $kelass->angka_kelas }}</h3>
+                                        @if (Auth::guard('guru')->user()->level == 'tata usaha')
+                                            <div class="col-lg-3 col-6">
+                                                <!-- small box -->
+                                                <div class="small-box bg-info">
+                                                    <div class="inner">
+                                                        <h3>Kelas: {{ $kelass->angka_kelas }}</h3>
 
-                                                                <p>Wali kelas: {{ $kelass->nama_guru }}</p>
-                                                            </div>
-                                                            <div class="icon">
-                                                                <i class="ion ion-bag"></i>
-                                                            </div>
-                                                            <a href="{{ route('jadwal.show', $kelass->id) }}"
-                                                                class="small-box-footer">More info <i
-                                                                    class="fas fa-arrow-circle-right"></i></a>
-                                                        </div>
+                                                        <p>Wali kelas: {{ $kelass->nama_guru }}</p>
                                                     </div>
-                                                @endif
-                                            @endif
+                                                    <div class="icon">
+                                                        <i class="ion ion-bag"></i>
+                                                    </div>
+                                                    <a href="{{ route('jadwal.show', $kelass->id) }}"
+                                                       class="small-box-footer">More info <i
+                                                            class="fas fa-arrow-circle-right"></i></a>
+                                                </div>
+                                            </div>
+                                        @endif
+                                    @endauth
+                                @endif
+
+
+                                @if (!Auth::guard('guru')->check())
+                                    @if (Auth::guard('waliMurid')->user()->level == 'wali murid')
+                                        @if (Auth::guard('waliMurid')->user()->kelas_id == $kelass->id)
+                                            <div class="col-lg-3 col-6">
+                                                <!-- small box -->
+                                                <div class="small-box bg-info">
+                                                    <div class="inner">
+                                                        <h3>Kelas: {{ $kelass->angka_kelas }}</h3>
+                                                        <p>Wali kelas: {{ $kelass->nama_guru }}</p>
+                                                    </div>
+                                                    <div class="icon">
+                                                        <i class="ion ion-bag"></i>
+                                                    </div>
+                                                    <a href="{{ route('jadwal.show', $kelass->id) }}"
+                                                       class="small-box-footer">More info <i
+                                                            class="fas fa-arrow-circle-right"></i></a>
+                                                </div>
+                                            </div>
                                         @endif
                                     @endif
-                                @endforeach
-                            </div>
+                                @endif
+                            @endforeach
                         </div>
-                        <!-- /.content-header -->
-
-
                     </div>
-            </section>
-            <!-- /.content -->
-        </div>
-    @endsection
+                    <!-- /.content-header -->
+                </div>
+            </div>
+        </section>
+        <!-- /.content -->
+    </div>
+@endsection
