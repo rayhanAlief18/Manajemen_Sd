@@ -45,7 +45,7 @@
 
                     <!-- /.card-header -->
                     <!-- form start -->
-                    <form action="{{ route('nilai.update', $data->id) }}" method="POST" enctype="multipart/form-data">
+                    <form id="nilaiForm" action="{{ route('nilai.update', $data->id) }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
                         <div class="card-body row">
@@ -53,13 +53,13 @@
                                 <label for="nama_siswa">Nama Siswa</label>
                                 <input type="text" value="{{ $data->siswa->nama_siswa }}" class="form-control"
                                     id="nama_siswa" readonly>
-                                   
+
                             </div>
                             <div class="form-group col-sm-4">
                                 <label for="nama_siswa">Semester</label>
                                 <input type="text" value="{{ $data->semester }}" class="form-control" id="nama_siswa"
                                     readonly>
-                                   
+
                             </div>
 
                             <div class="form-group col-sm-4">
@@ -94,7 +94,7 @@
                         <!-- /.card-body -->
 
                         <div class="card-footer">
-                            <button type="submit" class="btn btn-info float-right">Submit</button>
+                            <button type="button" class="btn btn-info float-right" onclick="confirmSubmit()">Submit</button>
                             <button type="button" class="btn btn-outline-secondary"
                                 onclick="window.history.back();">Kembali</button>
                         </div>
@@ -127,5 +127,20 @@
                 previewFoto.style.display = 'none'; // Sembunyikan gambar
             }
         });
+
+        function confirmSubmit() {
+            Swal.fire({
+                title: 'Ubah Nilai Mata Pelajaran',
+                text: 'Apakah data sudah selesai diubah?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Ya, Sudah',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('nilaiForm').submit();
+                }
+            });
+        }
+
     </script>
 @endsection

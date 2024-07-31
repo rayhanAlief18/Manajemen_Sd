@@ -235,6 +235,8 @@ class NilaiSiswaController extends Controller
             //         ->orderBy('angka_kelas', 'asc')
             //         ->get();
 
+            confirmDelete();
+
             return view('dashboard.NilaiSiswa.IndexNilai', [
                 'title' => $title,
                 'title2' => $title2,
@@ -396,12 +398,12 @@ class NilaiSiswaController extends Controller
         $nilai_siswa->catatan = $request->filled('catatan') ? $request->catatan : 'Tidak ada catatan';
 
         $nilai_siswa->save();
-        Alert::success('Berhasil Ditambahkan', 'Nilai berhasil ditambahkan.');
-
+        // Sweet alert
+        Alert::success('Berhasil Ditambahkan', 'Nilai siswa berhasil ditambahkan.');
 
         // Setelah menyimpan, arahkan ke halaman detail nilai siswa
         // return redirect()->route('nilai.showNilaiID')->with('success', 'Grade created successfully.');
-        return redirect()->route('nilai.show', ['nilai' => $student])->with('success', 'Data siswa berhasil diperbarui!');
+        return redirect()->route('nilai.show', ['nilai' => $student]);
     }
 
     public function TransitNilaiSiswa(Request $request, $id_siswa)
@@ -551,8 +553,11 @@ class NilaiSiswaController extends Controller
         // Mendapatkan ID siswa yang terkait
         $siswaId = $nilai->siswa_id;
 
+        // Sweet alert
+        Alert::success('Perubahan Berhasil', 'Nilai siswa berhasil diubah.');
+
         // Mengarahkan ke rute 'nilai.show' dengan parameter 'nilai' (id siswa)
-        return redirect()->route('nilai.show', ['nilai' => $siswaId])->with('success', 'Data siswa berhasil diperbarui!');
+        return redirect()->route('nilai.show', ['nilai' => $siswaId]);
     }
 
     /**
@@ -564,6 +569,9 @@ class NilaiSiswaController extends Controller
         $nilai_siswa->delete();
         $siswaId = $nilai_siswa->siswa_id;
 
-        return redirect()->route('nilai.show', ['nilai' => $siswaId])->with('success', 'Data nilai siswa berhasil dihapus.');
+        // Sweet alert
+        Alert::success('Berhasil Dihapus', 'Nilai siswa berhasil dihapus.');
+
+        return redirect()->route('nilai.show', ['nilai' => $siswaId]);
     }
 }
