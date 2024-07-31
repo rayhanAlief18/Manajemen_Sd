@@ -1,0 +1,266 @@
+nav {
+    background-color: #FFEBD5;
+
+    .btn-daftar {
+        background-color: #793D00;
+        border-radius: 10px;
+
+    }
+
+    .navbar-brand img {
+        max-width: 40px;
+        padding: 0px;
+    }
+    .active{
+        font-weight: 600;
+    }
+    .nav-item a{
+        color: #92560D;
+    }
+}
+
+/* HERO SECTION */
+.hero-section {
+    .top-content h2 {
+        color: #793D00;
+        font-weight: 700;
+        font-size: 42px;
+    }
+
+    p {
+        color: #92560D;
+        font-size: 16px;
+    }
+
+    button {
+        background-color: #C58940;
+        color: white;
+    }
+
+    img {
+        max-width: 100%;
+    }
+
+    height: 100vh;
+
+    @media screen and (max-width: 768px) {
+        .top-content h2 {
+            color: #793D00;
+            font-weight: 700;
+            font-size: 32px;
+        }
+
+        img {
+            padding-top: 20px;
+        }
+    }
+
+}
+
+.content-2 {
+    height: max-content;
+
+    .top-content h2 {
+        color: #793D00;
+        font-weight: 600;
+        font-size: 32px;
+    }
+
+    .top-content p {
+        color: #92560D;
+        font-size: 16px;
+    }
+
+    .second-content .card {
+        background-color: #d3d3d3;
+        border-radius: 20px;
+        border: none;
+    }
+}
+
+.content-3 {
+
+    margin: 100px 0;
+
+    .content-left img {
+        max-width: 300px;
+    }
+}
+
+
+.jumlah-siswa {
+    margin: 100px 0;
+    padding: 20px;
+
+}
+
+.jumlah-siswa .container {
+    background-color: #FFE5C6;
+    border-radius: 20px;
+    height: max-content;
+}
+
+
+.content-program {
+    margin: 10px 0;
+}
+
+.content-program .container {
+    padding: 100px 0;
+}
+
+
+.prestasi {
+    padding: 100px 0;
+
+    .container {
+        margin: 0 auto;
+    }
+
+    .slide-container {
+        width: 100%;
+        padding: 40px 0;
+    }
+
+    .slide-content {
+        margin: 0 40px;
+        overflow: hidden;
+    }
+
+    .card {
+        border-radius: 8px;
+        border: none;
+        background-color: #f8dab4;
+    }
+
+    .swiper-slide .card-content p {
+        font-size: 14px;
+        color: #616161;
+    }
+
+    .image-content,
+    .card-content {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .image-content {
+        position: relative;
+    }
+
+
+    .card-image {
+        position: relative;
+        height: 170px;
+        width: 100%;
+        border-radius: 10px;
+    }
+
+    .card-image .card-img {
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+        border-radius: 10px;
+    }
+
+    .name {
+        font-size: 16px;
+        font-weight: 600;
+        color: #333;
+    }
+
+    .description {
+        font-size: 14px;
+        color: #707070;
+        text-align: center;
+    }
+
+    .button {
+        border: none;
+        font-size: 16px;
+        color: #FFF;
+        padding: 8px 16px;
+        background-color: #793D00;
+        border-radius: 6px;
+        margin: 14px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .button:hover {
+        background: #793D00;
+    }
+
+    .swiper-navBtn {
+        color: #ffb76e;
+        transition: color 0.3s ease;
+    }
+
+    .swiper-navBtn:hover {
+        color: #793D00;
+    }
+
+    .swiper-navBtn::before,
+    .swiper-navBtn::after {
+        font-size: 25px;
+    }
+
+    .swiper-button-next {
+        right: 0;
+    }
+
+    .swiper-button-prev {
+        left: 0;
+    }
+
+    .swiper-pagination-bullet {
+        background-color: #f8dab4;
+        opacity: 1;
+    }
+
+    .swiper-pagination-bullet-active {
+        background-color: #793D00;
+    }
+
+    @media screen and (max-width: 768px) {
+        .slide-content {
+            margin: 0 10px;
+        }
+
+        .swiper-navBtn {
+            display: none;
+        }
+    }
+}
+
+.galeri {
+    .card {
+        border: none;
+
+        img {
+            height: 200px;
+        }
+    }
+}
+
+.FaQ {
+    /* height: 100vh; */
+    padding: 100px 0;
+
+    .accordion {
+        .card {
+            background-color: #FFE5C6;
+            border-radius: 10px;
+
+            .card-header button {
+                color: #793D00;
+                font-weight: 600;
+                font-size: 18px;
+            }
+        }
+    }
+}
+
+footer {
+    background-color: #793D00;
+}

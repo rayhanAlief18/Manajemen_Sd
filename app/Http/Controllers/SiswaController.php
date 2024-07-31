@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Siswa;
 use App\Models\Kelas;
+use App\Models\Landing_Page;
 use Illuminate\Support\Facades\Auth;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Facades\Hash;
@@ -17,7 +18,7 @@ class SiswaController extends Controller
     public function index()
     {
         if (Auth::guard('guru')->user()->level == 'tata usaha') {
-
+            $landing_page = Landing_Page::all();
             $title = "Data Siswa";
             $kelas = Kelas::all();
             $data = Siswa::orderBy('kelas_id')->get();
@@ -25,7 +26,8 @@ class SiswaController extends Controller
             return view('dashboard.Siswa.DataSiswa', [
                 'title' => $title,
                 'kelas' => $kelas,
-                'data' => $data
+                'data' => $data,
+                'landing_page' => $landing_page,
             ]);
         } elseif (Auth::guard('guru')->user()->level == 'wali kelas') {
             $kelas = Kelas::all();
@@ -283,7 +285,7 @@ class SiswaController extends Controller
 
         $request->validate([
             'NISN' => 'required|unique:siswas,nisn|numeric',
-            'NIK' => 'required|unique:siswas,nik|numeric',
+            'NIK' => 'required|numeric',
             'NIS' => 'required|numeric  ',
             'NO_KK' => 'required|numeric',
             'nama_siswa' => 'required|string|max:255',
@@ -355,5 +357,102 @@ class SiswaController extends Controller
         Alert::success('Berhasil Dihapus', 'Data Siswa berhasil dihapus.');
 
         return redirect()->route('siswa.index');
+    }
+
+    public function BukaDaftar(string $id)
+    {
+        $ld_page = Landing_Page::findOrFail($id);
+        if ($ld_page->status == "on") {
+            $ld_page->status = 'off';
+        } else {
+            $ld_page->status = 'on';
+        }
+        $ld_page->save();
+
+        return redirect()->route('siswa.index')->with('success', 'Prestasi berhasil diperbarui.');
+    }
+
+    public function AddSiswa()
+    {
+        $title = "Daftar Siswa baru";
+        return view('dashboard.Siswa.AddSiswa', compact('title'));
+    }
+
+
+    public function DaftarSiswa(Request $request)
+    {
+        $customMessages = [
+            'NIK.required' => 'NIK wajib diisi.',
+            'NIK.unique' => 'NIK sudah terdaftar.',
+            'NIK.numeric' => 'NIK harus berupa angka.',
+            'NO_KK.required' => 'Nomor KK wajib diisi.',
+            'NO_KK.numeric' => 'Nomor KK harus berupa angka.',
+            'nama_siswa.required' => 'Nama siswa wajib diisi.',
+            'nama_siswa.string' => 'Nama siswa harus berupa teks.',
+            'nama_siswa.max' => 'Nama siswa tidak boleh lebih dari 255 karakter.',
+            'tanggal_lahir.required' => 'Tanggal lahir wajib diisi.',
+            'tanggal_lahir.date' => 'Tanggal lahir harus berupa tanggal yang valid.',
+            'wali_siswa.required' => 'Nama wali siswa wajib diisi.',
+            'wali_siswa.string' => 'Nama wali siswa harus berupa teks.',
+            'wali_siswa.max' => 'Nama wali siswa tidak boleh lebih dari 255 karakter.',
+            'jenis_kelamin.required' => 'Jenis kelamin wajib diisi.',
+            'jenis_kelamin.in' => 'Jenis kelamin harus berupa laki atau perempuan.',
+            'agama.required' => 'Agama wajib diisi.',
+            'agama.string' => 'Agama harus berupa teks.',
+            'agama.max' => 'Agama tidak boleh lebih dari 255 karakter.',
+            'tempat.required' => 'Tempat wajib diisi.',
+            'tempat.string' => 'Tempat harus berupa teks.',
+            'tempat.max' => 'Tempat tidak boleh lebih dari 255 karakter.',
+            'anak_ke.required' => 'Anak ke wajib diisi.',
+            'anak_ke.numeric' => 'Anak ke harus berupa angka.',
+            'email.required' => 'Email wajib diisi.',
+            'password.required' => 'Password wajib diisi.',
+
+        ];
+        // Validasi data yang diterima dari form
+        $request->validate([
+            // 'NISN' => 'required|unique:siswas,nisn|numeric',
+            'NIK' => 'required|unique:siswas,nik|numeric',
+            // 'NIS' => 'required|numeric  ',
+            'NO_KK' => 'required|numeric',
+            'nama_siswa' => 'required|string|max:255',
+            'tanggal_lahir' => 'required|date',
+            'wali_siswa' => 'required|string|max:255',
+            'jenis_kelamin' => 'required|in:laki,perempuan',
+            // 'kelas' => 'required|exists:kelas,id',
+
+            'agama' => 'required|string|max:255',
+            'tempat' => 'required|string|max:255',
+            'anak_ke' => 'required|numeric',
+            'email' => 'required',
+            'password' => 'required',
+
+            // 'foto_siswa' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // Ubah sesuai kebutuhan
+        ],$customMessages);
+
+        // Simpan data guru ke dalam basis data
+        $siswa = new Siswa();
+        // $siswa->NISN = 0;
+        // $siswa->NIS = 0;
+        $siswa->kelas_id = 12;
+        $siswa->NIK = $request->NIK;
+        $siswa->NO_KK = $request->NO_KK;
+        $siswa->nama_siswa = $request->nama_siswa;
+        $siswa->tanggal_lahir = $request->tanggal_lahir;
+        $siswa->wali_siswa = $request->wali_siswa;
+        $siswa->jenis_kelamin = $request->jenis_kelamin;
+
+        $siswa->agama = $request->agama;
+        $siswa->tempat = $request->tempat;
+        $siswa->anak_ke = $request->anak_ke;
+        $siswa->email = $request->email;
+        $siswa->password = Hash::make($request->password);
+        $siswa->foto_siswa = 'none';
+
+        // Simpan data guru
+        $siswa->save();
+
+        // Redirect ke halaman yang sesuai atau berikan respons JSON sesuai kebutuhan
+        return redirect()->route('web.index')->with('success', 'Data Siswa berhasil disimpan!');
     }
 }

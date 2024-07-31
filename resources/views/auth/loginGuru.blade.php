@@ -38,7 +38,7 @@
         </div>
     </form>
     <div class="register-link">
-        <p>Login sebagai <a href="{{url('/')}}">Wali Siswa</a></p>
+        <p>Login sebagai <a href="{{url('/loginWali')}}">Wali Siswa</a></p>
     </div>
 
 </div>

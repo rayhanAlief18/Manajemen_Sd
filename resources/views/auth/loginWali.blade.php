@@ -13,7 +13,7 @@
             </ul>
         </div>
     @endif
-    <form action="{{route('loginWali')}}" method="POST">
+    <form action="{{route('loginWaliExecute')}}" method="POST">
         @csrf
         <div class="w-full mb-3" style="display: flex; justify-content: center;">
             <img src="{{ asset('lte/dist/img/LOGO-SD-BHAYANGKARI.png') }}" alt="AdminLTE Logo"

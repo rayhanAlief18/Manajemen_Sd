@@ -11,9 +11,13 @@ class AuthController extends Controller
 {
     public function index()
     {
-        return view('auth.loginWali');
+        // return view('auth.loginWali');
     }
 
+    public function loginWali(Request $request)
+    {
+        return view('auth.loginWali');
+    }
     public function loginGuru(Request $request)
     {
         return view('auth.loginGuru');
@@ -42,7 +46,7 @@ class AuthController extends Controller
         }
     }
 
-    public function loginWali(Request $request)
+    public function loginWaliExecute(Request $request)
     {
         $request->validate([
             'email' => 'required',

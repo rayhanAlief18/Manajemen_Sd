@@ -20,6 +20,9 @@ use App\Http\Controllers\PrestasiController;
 use App\Http\Controllers\RuanganController;
 use App\Http\Controllers\SiswaController;
 
+
+use App\Http\Controllers\WebController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -38,9 +41,15 @@ use App\Http\Controllers\SiswaController;
 // Route::get('ex', function () { return view('dashboard.NilaiSiswa.export_PdfAll'); });
 Route::get('ex', [NilaiSiswaController::class, 'exportPdfFiltered']);
 
+// Route::middleware('guest')->group(function() {
+//     Route::get('/',[AuthController::class,'index']);
+//     Route::post('/',[AuthController::class,'login']);
+// });
+
+
 Route::middleware('guest')->group(function() {
-    Route::get('/',[AuthController::class,'index']);
-    Route::post('/',[AuthController::class,'login']);
+    Route::get('/',[WebController::class,'index']);
+    Route::post('/',[WebController::class,'login']);
 });
 
 Route::get('/logout', [AuthController::class, 'logout']);
@@ -108,6 +117,22 @@ Route::get('/NilaiSiswaPribadi/{id_siswa}', [NilaiSiswaController::class, 'Nilai
 
 
 // Login Wali
-Route::post('/loginWali', [AuthController::class, 'loginWali'])->name('loginWali');
+Route::get('/loginWali', [AuthController::class, 'loginWali'])->name('loginWali');
+Route::post('/loginWaliExecute', [AuthController::class, 'loginWaliExecute'])->name('loginWaliExecute');
 Route::post('/loginGuruExecute', [AuthController::class, 'loginGuruExecute'])->name('loginGuruExecute');
 Route::get('/loginGuru', [AuthController::class, 'loginGuru'])->name('loginGuru');
+
+//juna 31 jul
+// Prestasi View
+Route::post('/ViewWeb/{id}', [PrestasiController::class, 'ViewWeb'])->name('ViewWeb');
+
+// Prestasi View
+Route::post('/BukaDaftar/{id}', [SiswaController::class, 'BukaDaftar'])->name('BukaDaftar');
+
+
+// Rute untuk menampilkan form pendaftaran siswa
+Route::get('/ads_siswa/create', [SiswaController::class, 'AddSiswa'])->name('ads_siswa.create');
+
+// Rute untuk menyimpan data siswa
+Route::post('/ads_siswa', [SiswaController::class, 'DaftarSiswa'])->name('ads_siswa.store');
+Route::get('/web', [WebController::class, 'index'])->name('web.index');
