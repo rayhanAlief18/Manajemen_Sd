@@ -131,11 +131,20 @@ class RuanganController extends Controller
     {
         if (Auth::guard('guru')->user()->level == 'tata usaha') {
             // Validasi input
+            $messages = [
+                'nama.required' => 'Nama harus diisi.',
+                'nama.string' => 'Nama harus berupa teks.',
+                'nama.max' => 'Nama tidak boleh lebih dari 100 karakter.',
+                'deskripsi.string' => 'Deskripsi harus berupa teks.',
+                'lantai.required' => 'Lantai harus dipilih.',
+                'lantai.in' => 'Pilihan lantai tidak valid. Pilih antara: Lantai 1, Lantai 2, atau Lantai 3.',
+            ];
+
             $validator = Validator::make($request->all(), [
                 'nama' => 'required|string|max:100',
                 'deskripsi' => 'nullable|string',
                 'lantai' => 'required|in:Lantai 1,Lantai 2,Lantai 3',
-            ]);
+            ],$messages);
 
             if ($validator->fails()) {
                 return redirect()->back()->withErrors($validator)->withInput();

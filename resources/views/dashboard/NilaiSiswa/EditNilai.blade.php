@@ -26,14 +26,14 @@
         <section class="content">
             <div class="container-fluid mt-4">
                 @if ($errors->any())
-                    @foreach ($errors->all() as $error)
+                    {{-- @foreach ($errors->all() as $error) --}}
                         <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                            <strong>{{ $error }}</strong> mohon periksa kembali
+                            <strong>Kesalahan! </strong> mohon periksa kembali
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
-                    @endforeach
+                    {{-- @endforeach --}}
                 @endif
                 <!-- general form elements -->
                 <div class="card card-info">
@@ -53,11 +53,13 @@
                                 <label for="nama_siswa">Nama Siswa</label>
                                 <input type="text" value="{{ $data->siswa->nama_siswa }}" class="form-control"
                                     id="nama_siswa" readonly>
+                                   
                             </div>
                             <div class="form-group col-sm-4">
                                 <label for="nama_siswa">Semester</label>
                                 <input type="text" value="{{ $data->semester }}" class="form-control" id="nama_siswa"
                                     readonly>
+                                   
                             </div>
 
                             <div class="form-group col-sm-4">
@@ -73,12 +75,18 @@
                                 <label for="nilai">Nilai</label>
                                 <input type="number" value="{{ $data->nilai }}" name="nilai" class="form-control"
                                     id="nilai" placeholder="Masukkan Nilai" min="0">
+                                    @error('nilai')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
                             </div>
 
                             <div class="form-group col-sm-4">
                                 <label for="catatan">Catatan</label>
                                 <input type="text" value="{{ $data->catatan}}" name="catatan" class="form-control" id="catatan"
                                     placeholder="Masukkan Catatan">
+                                    @error('catatan')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
                             </div>
                         </div>
 

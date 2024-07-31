@@ -94,6 +94,15 @@
                     <nav class="mt-2">
                         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                             data-accordion="false">
+                            <li class="nav-header">Dashboard</li>
+                                <li class="nav-item">
+                                    <a href="{{ route('dashboard') }}" class="nav-link">
+                                        <i class="nav-icon fas fa-address-book "></i>
+                                        <p>
+                                            Dashboard
+                                        </p>
+                                    </a>
+                                </li> 
                             <!-- Add icons to the links using the .nav-icon class
                             with font-awesome or any other icon font library -->
                             <li class="nav-header">Operasional</li>
@@ -216,10 +225,19 @@
                                 data-accordion="false">
                                 <!-- Add icons to the links using the .nav-icon class
                             with font-awesome or any other icon font library -->
-                                <li class="nav-header">Operasional</li>
+                            <li class="nav-header">Dashboard</li>
+                                <li class="nav-item">
+                                    <a href="{{ route('dashboard') }}" class="nav-link">
+                                        <i class="nav-icon fas fa-address-book "></i>
+                                        <p>
+                                            Dashboard
+                                        </p>
+                                    </a>
+                                </li>    
+                            <li class="nav-header">Operasional</li>
                                 <li class="nav-item">
                                     <a href="{{ route('jadwal.show',Auth::guard('waliMurid')->user()->kelas_id) }}" class="nav-link">
-                                        <i class="nav-icon fas fa-list"></i>
+                                        <i class="nav-icon fas fa-calendar-alt"></i>
                                         <p>
                                             Pengelolaan Jadwal
                                         </p>
@@ -227,7 +245,7 @@
                                 </li>
                                 <li class="nav-item">
                                     <a href="{{ url('ShowAllKelasTiapSiswa/'.Auth::guard('waliMurid')->user()->kelas_id.'/'.Auth::guard('waliMurid')->user()->id) }}" class="nav-link">
-                                        <i class="nav-icon fas fa-list"></i>
+                                        <i class="nav-icon fas fa-calendar-check  "></i>
                                         <p>
                                             History Absensi
                                         </p>
@@ -235,7 +253,7 @@
                                 </li>
                                 <li class="nav-item">
                                     <a href="{{ route('NilaiSiswaPribadi',Auth::guard('waliMurid')->user()->id)}}" class="nav-link">
-                                        <i class="nav-icon fas fa-file-invoice-dollar  "></i>
+                                        <i class="nav-icon fas fa-list"></i>
                                         <p>
                                             Nilai Siswa
                                         </p>

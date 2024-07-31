@@ -122,7 +122,6 @@
                                         <table class="table table-responsive table-borderless">
                                             <thead class="border bg-pastel-primary rounded-lg">
                                                 <tr>
-                                                    <th scope="col">Kelas</th>
                                                     <th scope="col">Mata Pelajaran</th>
                                                     <th scope="col">Guru Pengampu</th>
                                                     <th scope="col">Jam Mulai</th>
@@ -130,7 +129,7 @@
                                                     <th scope="col">Durasi Sesi</th>
                                                     <th scope="col">Hari</th>
                                                     @if (!Auth::guard('waliMurid')->check())
-                                                    @elseif(Auth::guard('guru')->check())
+                                                    
                                                         <th scope="col">Action</th>
                                                     @endif
                                                 </tr>
@@ -139,7 +138,6 @@
                                                 @foreach ($jadwal as $senin)
                                                     @if ($senin->hari == 'senin')
                                                         <tr>
-                                                            <td>{{ $senin->angka_kelas }} </td>
                                                             <td>{{ $senin->nama_pelajaran }}</td>
                                                             <td>{{ $senin->nama_guru }}</td>
                                                             <td>{{ $senin->jam_mulai }}</td>
@@ -150,9 +148,9 @@
                                                             @if (Auth::guard('guru')->check())
                                                                 @if (Auth::guard('guru')->user()->level == 'tata usaha' || Auth::guard('guru')->user()->level == 'wali kelas')
                                                                     <td>
-                                                                        <a href="{{ route('jadwal.edit', $senin->id_jadwal) }}"
+                                                                        {{-- <a href="{{ route('jadwal.edit', $senin->id_jadwal) }}"
                                                                             class="btn btn-sm btn-warning"><i
-                                                                                class="fas fa-edit"></i></a>
+                                                                                class="fas fa-edit"></i></a> --}}
                                                                         <form method="POST"
                                                                             action="{{ route('TransitJadwal',$senin->id_jadwal)  }}">
                                                                             @csrf
@@ -161,21 +159,13 @@
                                                                                 name="id_jadwal">
 
                                                                             <button type="submit"
-                                                                                class="btn btn-info">Tampilkan
-                                                                                Absensi</button>
+                                                                                class="btn btn-warning btn-sm"><i
+                                                                                class="fas fa-edit"></i></button>
                                                                         </form>
-                                                                        <form
-                                                                            action="{{ route('jadwal.destroy', $senin->id_jadwal) }}"
-                                                                            method="POST">
-                                                                            @method('DELETE')
-                                                                            @csrf
-                                                                            <button type="submit"
-                                                                                class="btn btn-sm btn-danger"><i
-                                                                                    class="fas fa-trash"></i></button>
+                                                                        
                                                                         <form id="seninForm{{$senin->id_jadwal}}" action="{{ route('jadwal.destroy', $senin->id_jadwal) }}" method="POST">
                                                                             @method('DELETE')
                                                                             @csrf
-                                                                            <a href="{{ route('jadwal.edit', $senin->id_jadwal) }}" class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></a>
                                                                             <button type="button" class="btn btn-sm btn-danger" onclick="confirmSubmit('seninForm{{$senin->id_jadwal}}', '{{ $senin->nama_pelajaran }}')"><i class="fas fa-trash"></i></button>
                                                                         </form>
                                                                     </td>
@@ -201,7 +191,6 @@
                                         <table class="table table-responsive table-borderless">
                                             <thead class="border bg-pastel-primary rounded-lg">
                                                 <tr>
-                                                    <th scope="col">Kelas</th>
                                                     <th scope="col">Mata Pelajaran</th>
                                                     <th scope="col">Guru Pengampu</th>
                                                     <th scope="col">Jam Mulai</th>
@@ -209,7 +198,7 @@
                                                     <th scope="col">Durasi Sesi</th>
                                                     <th scope="col">Hari</th>
                                                     @if (!Auth::guard('waliMurid')->check())
-                                                    @elseif(Auth::guard('guru')->check())
+                                                    
                                                         <th scope="col">Action</th>
                                                     @endif
                                                 </tr>
@@ -218,7 +207,6 @@
                                                 @foreach ($jadwal as $selasa)
                                                     @if ($selasa->hari == 'selasa')
                                                         <tr>
-                                                            <td>{{ $selasa->angka_kelas }} </td>
                                                             <td>{{ $selasa->nama_pelajaran }}</td>
                                                             <td>{{ $selasa->nama_guru }}</td>
                                                             <td>{{ $selasa->jam_mulai }}</td>
@@ -229,9 +217,7 @@
                                                             @if (Auth::guard('guru')->check())
                                                                 @if (Auth::guard('guru')->user()->level == 'tata usaha' || Auth::guard('guru')->user()->level == 'wali kelas')
                                                                     <td>
-                                                                        <a href="{{ route('jadwal.edit', $selasa->id_jadwal) }}"
-                                                                            class="btn btn-warning btn-sm"><i
-                                                                                class="fas fa-edit"></i></a>
+                                                                        
                                                                         <form method="POST"
                                                                             action="{{ route('TransitJadwal',$selasa->id_jadwal)  }}">
                                                                             @csrf
@@ -240,21 +226,13 @@
                                                                                 name="id_jadwal">
 
                                                                             <button type="submit"
-                                                                                class="btn btn-info">Tampilkan
-                                                                                Absensi</button>
+                                                                                class="btn btn-warning btn-sm"><i
+                                                                                class="fas fa-edit"></i></button>
                                                                         </form>
-                                                                        <form
-                                                                            action="{{ route('jadwal.destroy', $selasa->id_jadwal) }}"
-                                                                            method="POST">
-                                                                            @method('DELETE')
-                                                                            @csrf
-                                                                            <button type="submit"
-                                                                                class="btn btn-danger btn-sm"><i
-                                                                                    class="fas fa-trash"></i></button>
+                                                                       
                                                                         <form id="selasaForm{{$selasa->id_jadwal}}" action="{{ route('jadwal.destroy', $selasa->id_jadwal) }}" method="POST">
                                                                             @method('DELETE')
                                                                             @csrf
-                                                                            <a href="{{ route('jadwal.edit', $selasa->id_jadwal) }}" class="btn btn-sm btn-warning btn-sm"><i class="fas fa-edit"></i></a>
                                                                             <button type="button" class="btn btn-sm btn-danger" onclick="confirmSubmit('selasaForm{{$selasa->id_jadwal}}', '{{ $selasa->nama_pelajaran }}')"><i class="fas fa-trash"></i></button>
                                                                         </form>
                                                                     </td>
@@ -280,7 +258,6 @@
                                         <table class="table table-responsive table-borderless">
                                             <thead class="border bg-pastel-primary rounded-lg">
                                                 <tr>
-                                                    <th scope="col">Kelas</th>
                                                     <th scope="col">Mata Pelajaran</th>
                                                     <th scope="col">Guru Pengampu</th>
                                                     <th scope="col">Jam Mulai</th>
@@ -288,7 +265,6 @@
                                                     <th scope="col">Durasi Sesi</th>
                                                     <th scope="col">Hari</th>
                                                     @if (!Auth::guard('waliMurid')->check())
-                                                    @elseif(Auth::guard('guru')->check())
                                                         <th scope="col">Action</th>
                                                     @endif
                                                 </tr>
@@ -297,7 +273,6 @@
                                                 @foreach ($jadwal as $rabu)
                                                     @if ($rabu->hari == 'rabu')
                                                         <tr>
-                                                            <td>{{ $rabu->angka_kelas }}</td>
                                                             <td>{{ $rabu->nama_pelajaran }}</td>
                                                             <td>{{ $rabu->nama_guru }}</td>
                                                             <td>{{ $rabu->jam_mulai }}</td>
@@ -308,9 +283,7 @@
                                                             @if (Auth::guard('guru')->check())
                                                                 @if (Auth::guard('guru')->user()->level == 'tata usaha' || Auth::guard('guru')->user()->level == 'wali kelas')
                                                                     <td>
-                                                                        <a href="{{ route('jadwal.edit', $rabu->id_jadwal) }}"
-                                                                            class="btn btn-warning btn-sm"><i
-                                                                                class="fas fa-edit"></i></a>
+                                                                        
                                                                         <form method="POST"
                                                                             action="{{route('TransitJadwal',$rabu->id_jadwal)  }}">
                                                                             @csrf
@@ -319,21 +292,13 @@
                                                                                 name="id_jadwal">
 
                                                                             <button type="submit"
-                                                                                class="btn btn-info">Tampilkan
-                                                                                Absensi</button>
+                                                                                class="btn btn-warning btn-sm"><i
+                                                                                class="fas fa-edit"></i></button>
                                                                         </form>
-                                                                        <form
-                                                                            action="{{ route('jadwal.destroy', $rabu->id_jadwal) }}"
-                                                                            method="POST">
-                                                                            @method('DELETE')
-                                                                            @csrf
-                                                                            <button type="submit"
-                                                                                class="btn btn-danger btn-sm"><i
-                                                                                    class="fas fa-trash"></i></button>
+                                                                        
                                                                         <form id="rabuForm{{$rabu->id_jadwal}}" action="{{ route('jadwal.destroy', $rabu->id_jadwal) }}" method="POST">
                                                                             @method('DELETE')
                                                                             @csrf
-                                                                            <a href="{{ route('jadwal.edit', $rabu->id_jadwal) }}" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></a>
                                                                             <button type="button" class="btn btn-sm btn-danger" onclick="confirmSubmit('rabuForm{{$rabu->id_jadwal}}', '{{ $rabu->nama_pelajaran }}')"><i class="fas fa-trash"></i></button>
                                                                         </form>
                                                                     </td>
@@ -359,7 +324,6 @@
                                         <table class="table table-responsive table-borderless">
                                             <thead class="border bg-pastel-primary rounded-lg">
                                                 <tr>
-                                                    <th scope="col">Kelas</th>
                                                     <th scope="col">Mata Pelajaran</th>
                                                     <th scope="col">Guru Pengampu</th>
                                                     <th scope="col">Jam Mulai</th>
@@ -367,7 +331,7 @@
                                                     <th scope="col">Durasi Sesi</th>
                                                     <th scope="col">Hari</th>
                                                     @if (!Auth::guard('waliMurid')->check())
-                                                    @elseif(Auth::guard('guru')->check())
+                                                    
                                                         <th scope="col">Action</th>
                                                     @endif
                                                 </tr>
@@ -376,7 +340,6 @@
                                                 @foreach ($jadwal as $kamis)
                                                     @if ($kamis->hari == 'kamis')
                                                         <tr>
-                                                            <td>{{ $kamis->angka_kelas }}</td>
                                                             <td>{{ $kamis->nama_pelajaran }}</td>
                                                             <td>{{ $kamis->nama_guru }}</td>
                                                             <td>{{ $kamis->jam_mulai }}</td>
@@ -387,9 +350,7 @@
                                                             @if (Auth::guard('guru')->check())
                                                                 @if (Auth::guard('guru')->user()->level == 'tata usaha' || Auth::guard('guru')->user()->level == 'wali kelas')
                                                                     <td>
-                                                                        <a href="{{ route('jadwal.edit', $kamis->id_jadwal) }}"
-                                                                            class="btn btn-warning btn-sm"><i
-                                                                                class="fas fa-edit"></i></a>
+                                                                        
                                                                         <form method="POST"
                                                                             action="{{ route('TransitJadwal',$kamis->id_jadwal)  }}">
                                                                             @csrf
@@ -398,21 +359,13 @@
                                                                                 name="id_jadwal">
 
                                                                             <button type="submit"
-                                                                                class="btn btn-info">Tampilkan
-                                                                                Absensi</button>
+                                                                                class="btn btn-warning btn-sm"><i
+                                                                                class="fas fa-edit"></i></button>
                                                                         </form>
-                                                                        <form
-                                                                            action="{{ route('jadwal.destroy', $kamis->id_jadwal) }}"
-                                                                            method="POST">
-                                                                            @method('DELETE')
-                                                                            @csrf
-                                                                            <button type="submit"
-                                                                                class="btn btn-danger btn-sm"><i
-                                                                                    class="fas fa-trash"></i></button>
+                                                                        
                                                                         <form id="kamisForm{{$kamis->id_jadwal}}" action="{{ route('jadwal.destroy', $kamis->id_jadwal) }}" method="POST">
                                                                             @method('DELETE')
                                                                             @csrf
-                                                                            <a href="{{ route('jadwal.edit', $kamis->id_jadwal) }}" class="btn btn-sm btn-warning btn-sm"><i class="fas fa-edit"></i></a>
                                                                             <button type="button" class="btn btn-sm btn-danger" onclick="confirmSubmit('kamisForm{{$kamis->id_jadwal}}', '{{ $kamis->nama_pelajaran }}')"><i class="fas fa-trash"></i></button>
                                                                         </form>
                                                                     </td>
@@ -438,7 +391,6 @@
                                         <table class="table table-responsive table-borderless">
                                             <thead class="border bg-pastel-primary rounded-lg">
                                                 <tr>
-                                                    <th scope="col">Kelas</th>
                                                     <th scope="col">Mata Pelajaran</th>
                                                     <th scope="col">Guru Pengampu</th>
                                                     <th scope="col">Jam Mulai</th>
@@ -446,7 +398,7 @@
                                                     <th scope="col">Durasi Sesi</th>
                                                     <th scope="col">Hari</th>
                                                     @if (!Auth::guard('waliMurid')->check())
-                                                    @elseif(Auth::guard('guru')->check())
+                                                    
                                                         <th scope="col">Action</th>
                                                     @endif
                                                 </tr>
@@ -455,7 +407,6 @@
                                                 @foreach ($jadwal as $jumat)
                                                     @if ($jumat->hari == 'jumat')
                                                         <tr>
-                                                            <td>{{ $jumat->angka_kelas }}</td>
                                                             <td>{{ $jumat->nama_pelajaran }}</td>
                                                             <td>{{ $jumat->nama_guru }}</td>
                                                             <td>{{ $jumat->jam_mulai }}</td>
@@ -466,9 +417,7 @@
                                                             @if (Auth::guard('guru')->check())
                                                                 @if (Auth::guard('guru')->user()->level == 'tata usaha' || Auth::guard('guru')->user()->level == 'wali kelas')
                                                                     <td>
-                                                                        <a href="{{ route('jadwal.edit', $jumat->id_jadwal) }}"
-                                                                            class="btn btn-warning btn-sm"><i
-                                                                                class="fas fa-edit"></i></a>
+                                                                       
                                                                         <form method="POST"
                                                                             action="{{ route('TransitJadwal',$jumat->id_jadwal)  }}">
                                                                             @csrf
@@ -477,21 +426,13 @@
                                                                                 name="id_jadwal">
 
                                                                             <button type="submit"
-                                                                                class="btn btn-info">Tampilkan
-                                                                                Absensi</button>
+                                                                                class="btn btn-warning btn-sm"><i
+                                                                                class="fas fa-edit"></i></button>
                                                                         </form>
-                                                                        <form
-                                                                            action="{{ route('jadwal.destroy', $jumat->id_jadwal) }}"
-                                                                            method="POST">
-                                                                            @method('DELETE')
-                                                                            @csrf
-                                                                            <button type="submit"
-                                                                                class="btn btn-danger btn-sm"><i
-                                                                                    class="fas fa-trash"></i></button>
+                                                                        
                                                                         <form id="jumatForm{{$jumat->id_jadwal}}" action="{{ route('jadwal.destroy', $jumat->id_jadwal) }}" method="POST">
                                                                             @method('DELETE')
                                                                             @csrf
-                                                                            <a href="{{ route('jadwal.edit', $jumat->id_jadwal) }}" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></a>
                                                                             <button type="button" class="btn btn-sm btn-danger" onclick="confirmSubmit('jumatForm{{$jumat->id_jadwal}}', '{{ $jumat->nama_pelajaran }}')"><i class="fas fa-trash"></i></button>
                                                                         </form>
                                                                     </td>
@@ -517,7 +458,6 @@
                                         <table class="table table-responsive table-borderless">
                                             <thead class="border bg-pastel-primary rounded-lg">
                                                 <tr>
-                                                    <th scope="col">Kelas</th>
                                                     <th scope="col">Mata Pelajaran</th>
                                                     <th scope="col">Guru Pengampu</th>
                                                     <th scope="col">Jam Mulai</th>
@@ -525,7 +465,7 @@
                                                     <th scope="col">Durasi Sesi</th>
                                                     <th scope="col">Hari</th>
                                                     @if (!Auth::guard('waliMurid')->check())
-                                                    @elseif(Auth::guard('guru')->check())
+                                                    
                                                         <th scope="col">Action</th>
                                                     @endif
                                                 </tr>
@@ -534,7 +474,6 @@
                                                 @foreach ($jadwal as $sabtu)
                                                     @if ($sabtu->hari == 'sabtu')
                                                         <tr>
-                                                            <td>{{ $sabtu->angka_kelas }}</td>
                                                             <td>{{ $sabtu->nama_pelajaran }}</td>
                                                             <td>{{ $sabtu->nama_guru }}</td>
                                                             <td>{{ $sabtu->jam_mulai }}</td>
@@ -545,9 +484,7 @@
                                                             @if (Auth::guard('guru')->check())
                                                                 @if (Auth::guard('guru')->user()->level == 'tata usaha' || Auth::guard('guru')->user()->level == 'wali kelas')
                                                                     <td>
-                                                                        <a href="{{ route('jadwal.edit', $sabtu->id_jadwal) }}"
-                                                                            class="btn btn-warning btn-sm"><i
-                                                                                class="fas fa-edit"></i></a>
+                                                                        
                                                                         <form method="POST"
                                                                             action="{{ route('TransitJadwal',$sabtu->id_jadwal) }}">
                                                                             @csrf
@@ -556,21 +493,13 @@
                                                                                 name="id_jadwal">
 
                                                                             <button type="submit"
-                                                                                class="btn btn-info">Tampilkan
-                                                                                Absensi</button>
+                                                                                class="btn btn-warning btn-sm"><i
+                                                                                class="fas fa-edit"></i></button>
                                                                         </form>
-                                                                        <form
-                                                                            action="{{ route('jadwal.destroy', $sabtu->id_jadwal) }}"
-                                                                            method="POST">
-                                                                            @method('DELETE')
-                                                                            @csrf
-                                                                            <button type="submit"
-                                                                                class="btn btn-danger btn-sm"><i
-                                                                                    class="fas fa-trash"></i></button>
+                                                                       
                                                                         <form id="sabtuForm{{$sabtu->id_jadwal}}" action="{{ route('jadwal.destroy', $sabtu->id_jadwal) }}" method="POST">
                                                                             @method('DELETE')
                                                                             @csrf
-                                                                            <a href="{{ route('jadwal.edit', $sabtu->id_jadwal) }}" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></a>
                                                                             <button type="button" class="btn btn-sm btn-danger" onclick="confirmSubmit('sabtuForm{{$sabtu->id_jadwal}}', '{{ $sabtu->nama_pelajaran }}')"><i class="fas fa-trash"></i></button>
                                                                         </form>
                                                                     </td>
@@ -674,7 +603,7 @@
                                     placeholder="Masukan jumlah sesi...">
                             </div>
                         </div>
-                        <button type="submit" class="btn btn-info">Save</button>
+                        <button type="submit" class="btn btn-warning btn-sm">Save</button>
                         <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
                     </div>
                 </form>

@@ -26,14 +26,12 @@
         <section class="content">
             <div class="container-fluid">
                 @if ($errors->any())
-                    @foreach ($errors->all() as $error)
                         <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                            <strong>{{ $error }}</strong> mohon periksa kembali
+                            <strong>Kesalahan!</strong> mohon periksa kembali
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
-                    @endforeach
                 @endif
                 <!-- general form elements -->
                 <div class="card card-info">
@@ -50,75 +48,114 @@
                                 <label for="nik">NIK</label>
                                 <input type="number" name="NIK" class="form-control" id="nik"
                                     placeholder="Masukkan NIK..." value="{{ old('NIK') }}">
+                                @error('NIK')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
                             </div>
                             <div class="form-group col-sm-4">
                                 <label for="nik">NO KK (Kartu Keluarga)</label>
                                 <input type="number" name="NO_KK" class="form-control" id="nik"
                                     placeholder="Masukkan NO_KK..." value="{{ old('NO_KK') }}">
+                                @error('NO_KK')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
                             </div>
                             <div class="form-group col-sm-4">
                                 <label for="nis">NIS</label>
                                 <input type="number" name="NIS" class="form-control" id="nis"
                                     placeholder="Masukkan NIS..." value="{{ old('NIS') }}">
+                                @error('NIS')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
                             </div>
                             <div class="form-group col-sm-4">
                                 <label for="nisn">NISN</label>
                                 <input type="number" name="NISN" class="form-control" id="nisn"
                                     placeholder="Masukkan NISN..." value="{{ old('NISN') }}">
+                                @error('NISN')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
                             </div>
                             <div class="form-group col-sm-4">
                                 <label for="nama_siswa">Nama Siswa</label>
                                 <input type="text" name="nama_siswa" class="form-control" id="nama_siswa"
                                     placeholder="Masukkan Nama Siswa..." value="{{ old('nama_siswa') }}">
+                                @error('nama_siswa')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
                             </div>
                             <div class="form-group col-sm-4">
                                 <label for="tanggal_lahir">Tanggal Lahir</label>
                                 <input type="date" name="tanggal_lahir" class="form-control" id="tanggal_lahir"
                                     placeholder="Masukkan Jenis Kelamin..." value="{{ old('tanggal_lahir') }}">
+                                @error('date')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
                             </div>
                             <div class="form-group col-sm-4">
                                 <label for="jenis_kelamin">Jenis Kelamin</label>
                                 <select name="jenis_kelamin" class="form-control" id="jenis_kelamin">
-                                    <option value="laki" {{ old('jenis_kelamin') == 'laki' ? 'selected' : '' }}>Laki-Laki</option>
-                                    <option value="perempuan" {{ old('jenis_kelamin') == 'lperempuan' ? 'selected' : '' }}>Perempuan</option>
+                                    <option value="laki" {{ old('jenis_kelamin') == 'laki' ? 'selected' : '' }}>Laki-Laki
+                                    </option>
+                                    <option value="perempuan" {{ old('jenis_kelamin') == 'lperempuan' ? 'selected' : '' }}>
+                                        Perempuan</option>
                                 </select>
+                                @error('jenis_kelamin')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
                             </div>
                             <div class="form-group col-sm-4">
                                 <label for="wali_siswa">Ortu / Wali Siswa</label>
                                 <input type="text" name="wali_siswa" class="form-control" id="wali_siswa"
                                     placeholder="Masukkan Wali Siswa..." value="{{ old('wali_siswa') }}">
+                                @error('wali_siswa')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
                             </div>
                             <div class="form-group col-md-4">
                                 <label for="exampleSelectBorder">Agama</label>
                                 <select name="agama" class="custom-select form-control" id="exampleSelectBorder">
-                                    <option value="" {{ old('agama') == '' ? 'selected' : '' }} disabled hidden>Masukkan Data Agama...</option>
+                                    <option value="" {{ old('agama') == '' ? 'selected' : '' }} disabled hidden>
+                                        Masukkan Data Agama...</option>
                                     <option value="islam" {{ old('agama') == 'islam' ? 'selected' : '' }}>Islam</option>
-                                    <option value="kristen" {{ old('agama') == 'kristen' ? 'selected' : '' }}>Kristen</option>
+                                    <option value="kristen" {{ old('agama') == 'kristen' ? 'selected' : '' }}>Kristen
+                                    </option>
                                     <option value="hindu" {{ old('agama') == 'hindu' ? 'selected' : '' }}>Hindu</option>
                                     <option value="Budha" {{ old('agama') == 'Budha' ? 'selected' : '' }}>Budha</option>
-                                    <option value="khongucu" {{ old('agama') == 'khongucu' ? 'selected' : '' }}>Khongucu</option>
+                                    <option value="khongucu" {{ old('agama') == 'khongucu' ? 'selected' : '' }}>Khongucu
+                                    </option>
                                 </select>
+                                @error('agama')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
                             </div>
                             <div class="form-group col-sm-4">
                                 <label for="tempat">Alamat</label>
                                 <input type="text" name="tempat" class="form-control" id="tempat"
                                     placeholder="Masukkan Tempat Tinggal..." value="{{ old('tempat') }}">
+                                @error('tempat')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
                             </div>
                             <div class="form-group col-sm-4">
                                 <label for="anak_ke">Anak Ke</label>
                                 <input type="number" name="anak_ke" class="form-control" id="anak_ke"
                                     placeholder="Masukkan Anak Ke..." value="{{ old('anak_ke') }}">
+                                @error('anak_ke')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
                             </div>
                             <div class="form-group col-sm-4">
                                 <label for="exampleSelectBorder">Kelas</label>
                                 <select name="kelas" class="form-control" id="exampleSelectBorder">
                                     @foreach ($kelas as $class)
-                                        <option value="{{ $class->id }}" {{ old('kelas') == $class->id ? 'selected' : '' }}>
-                                            @if($class->angka_kelas <= 6)
+                                        <option value="{{ $class->id }}"
+                                            {{ old('kelas') == $class->id ? 'selected' : '' }}>
+                                            @if ($class->angka_kelas <= 6)
                                                 {{ $class->angka_kelas }}
-                                            @elseif($class->angka_kelas == 7 )
+                                            @elseif($class->angka_kelas == 7)
                                                 Lulus
-                                            @elseif($class->angka_kelas == 8 )
+                                            @elseif($class->angka_kelas == 8)
                                                 (untuk pegawai)
                                             @endif
 
@@ -126,6 +163,22 @@
                                     @endforeach
                                 </select>
                                 @error('kelas')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="form-group col-sm-4">
+                                <label for="anak_ke">Email</label>
+                                <input type="email" name="email" class="form-control" id="email"
+                                    placeholder="Masukkan Email..." value="{{ old('email') }}">
+                                @error('email')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="form-group col-sm-4">
+                                <label for="anak_ke">Password</label>
+                                <input type="text" name="password" class="form-control" id="password"
+                                    placeholder="Masukkan Passowrd..." value="{{ old('password') }}">
+                                @error('password')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
                             </div>
@@ -149,7 +202,8 @@
                         <!-- /.card-body -->
 
                         <div class="card-footer">
-                            <button type="button" class="btn btn-outline-secondary" onclick="window.history.back();">Kembali</button>
+                            <button type="button" class="btn btn-outline-secondary"
+                                onclick="window.history.back();">Kembali</button>
                             <button type="button" class="btn btn-info" onclick="confirmSubmit()">Submit</button>
                             {{-- <button type="reset" class="btn btn-danger float-right">reset</button> --}}
                         </div>

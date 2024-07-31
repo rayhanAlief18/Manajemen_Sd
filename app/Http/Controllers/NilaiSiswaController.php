@@ -12,6 +12,9 @@ use App\Models\Kelas;
 use App\Models\MataPelajaran;
 use App\Models\NilaiSiswa;
 use Illuminate\Support\Facades\Auth;
+use RealRashid\SweetAlert\Facades\Alert;
+use Illuminate\Support\Facades\Validator;
+
 
 use PDF;
 
@@ -216,10 +219,14 @@ class NilaiSiswaController extends Controller
             $title2 = "Daftar kelas";
             // $kelass = Kelas::withCount('siswa')->where('angka_kelas', '<=', 6)->orderBy('angka_kelas', 'asc')->get();
             $kelass = DB::table('kelas')
-                ->join('gurus', 'gurus.kelas_id', '=', 'kelas.id')
-                ->select('kelas.*', 'gurus.nama_guru')
+                ->leftJoin('siswas', 'siswas.kelas_id', '=', 'kelas.id')
+                ->leftJoin('gurus', 'gurus.kelas_id', '=', 'kelas.id')
+                ->select('kelas.id', 'kelas.nama_kelas', 'kelas.angka_kelas', 'kelas.created_at', 'kelas.updated_at', 'gurus.nama_guru', DB::raw('COUNT(siswas.id) as siswa_count'))
+                ->where('angka_kelas', '<=', 6)
+                ->groupBy('kelas.id', 'kelas.nama_kelas', 'kelas.angka_kelas', 'kelas.created_at', 'kelas.updated_at', 'gurus.nama_guru')
                 ->orderBy('angka_kelas', 'asc')
                 ->get();
+
             $guru = Guru::with('kelas')->get();
             // $kelass = DB::table('kelas')
             //         ->join('gurus', 'gurus.kelas_id', '=', 'kelas.id')
@@ -282,7 +289,7 @@ class NilaiSiswaController extends Controller
         }
     }
 
-    
+
     public function riwayatBayar()
     {
         if (Auth::guard('guru')->user()->level == 'tata usaha') {
@@ -340,12 +347,27 @@ class NilaiSiswaController extends Controller
 
     public function store(Request $request)
     {
+        $customMessages = [
+            'id_siswa.required' => 'ID siswa wajib diisi.',
+            'id_siswa.exists' => 'ID siswa tidak valid.',
+            'pelajaran_id.required' => 'ID pelajaran wajib diisi.',
+            'pelajaran_id.exists' => 'ID pelajaran tidak valid.',
+            'tahun_ajaran.required' => 'Tahun ajaran wajib diisi.',
+            'tahun_ajaran.string' => 'Tahun ajaran harus berupa teks.',
+            'kategori.required' => 'Kategori wajib diisi.',
+            'kategori.string' => 'Kategori harus berupa teks.',
+            'nilai.required' => 'Nilai wajib diisi.',
+            'nilai.numeric' => 'Nilai harus berupa angka.',
+            'nilai.between' => 'Nilai harus antara 0 dan 100.',
+            'catatan.string' => 'Catatan harus berupa teks.',
+        ];
+
         $request->validate([
             'pelajaran_id' => 'required|exists:mata_pelajarans,id',
             'tahun_ajaran' => 'required|string',
             'kategori' => 'required|string',
             'nilai' => 'required|integer',
-        ]);
+        ], $customMessages);
 
         // Menggunakan siswa_id untuk menemukan siswa
         $student = Siswa::find($request->id_siswa);
@@ -374,6 +396,8 @@ class NilaiSiswaController extends Controller
         $nilai_siswa->catatan = $request->filled('catatan') ? $request->catatan : 'Tidak ada catatan';
 
         $nilai_siswa->save();
+        Alert::success('Berhasil Ditambahkan', 'Nilai berhasil ditambahkan.');
+
 
         // Setelah menyimpan, arahkan ke halaman detail nilai siswa
         // return redirect()->route('nilai.showNilaiID')->with('success', 'Grade created successfully.');
@@ -384,7 +408,7 @@ class NilaiSiswaController extends Controller
     {
         if ($request->id_siswa_nilai) {
             session(['id' => $request->input('id_siswa_nilai')]);
-            return redirect()->route('nilai.show',$id_siswa);
+            return redirect()->route('nilai.show', $id_siswa);
         }
     }
 
@@ -396,70 +420,70 @@ class NilaiSiswaController extends Controller
             $id_siswa = session('id');
             // dd($id_siswa);
 
-                // Mengambil parameter query string
-                $nisn = $request->query('nisn');
-                $nama_siswa = $request->query('nama_siswa');
-                // Mendapatkan semester yang unik berdasarkan siswa_id
-                $smtr = NilaiSiswa::where('siswa_id', $id)
-                    ->distinct()
-                    ->pluck('semester')
-                    ->toArray();
+            // Mengambil parameter query string
+            $nisn = $request->query('nisn');
+            $nama_siswa = $request->query('nama_siswa');
+            // Mendapatkan semester yang unik berdasarkan siswa_id
+            $smtr = NilaiSiswa::where('siswa_id', $id)
+                ->distinct()
+                ->pluck('semester')
+                ->toArray();
 
-                // Mendapatkan tahun ajaran yang unik berdasarkan siswa_id
-                $thajar = NilaiSiswa::where('siswa_id', $id)
-                    ->distinct()
-                    ->pluck('tahun_ajaran')
-                    ->toArray();
+            // Mendapatkan tahun ajaran yang unik berdasarkan siswa_id
+            $thajar = NilaiSiswa::where('siswa_id', $id)
+                ->distinct()
+                ->pluck('tahun_ajaran')
+                ->toArray();
 
-                // Mengambil parameter query string
-                $nisn = $request->query('nisn');
-                $nama_siswa = $request->query('nama_siswa');
+            // Mengambil parameter query string
+            $nisn = $request->query('nisn');
+            $nama_siswa = $request->query('nama_siswa');
 
-                // Menggunakan model MataPelajaran untuk mendapatkan semua mata pelajaran
-                $mapel = MataPelajaran::all();
+            // Menggunakan model MataPelajaran untuk mendapatkan semua mata pelajaran
+            $mapel = MataPelajaran::all();
 
-                // Filter NilaiSiswa berdasarkan siswa_id dengan eager loading mataPelajaran
-                $tagihan = NilaiSiswa::with(['siswa', 'kelas', 'mataPelajaran'])->where('siswa_id', $id)->get();
+            // Filter NilaiSiswa berdasarkan siswa_id dengan eager loading mataPelajaran
+            $tagihan = NilaiSiswa::with(['siswa', 'kelas', 'mataPelajaran'])->where('siswa_id', $id)->get();
 
-                $title = "Data Nilai Siswa";
-                $siswa = Siswa::findOrFail($id);
-                $kelas = Kelas::all();
+            $title = "Data Nilai Siswa";
+            $siswa = Siswa::findOrFail($id);
+            $kelas = Kelas::all();
 
-                $data = NilaiSiswa::with('mataPelajaran')->where('siswa_id', $id)->get();
+            $data = NilaiSiswa::with('mataPelajaran')->where('siswa_id', $id)->get();
 
-                // Mengembalikan view dengan data yang diperlukan
-                // return view('dashboard.NilaiSiswa.TambahNilaiSiswa', compact('title', 'siswa', 'data', 'kelas', 'mapel', 'smtr', 'thajar'))->with('success', 'Data siswa berhasil diperbarui!');
-                // Filter NilaiSiswa berdasarkan siswa_id dengan eager loading mataPelajaran, siswa, dan kelas
-                $tagihan = NilaiSiswa::with(['siswa', 'kelas', 'mataPelajaran'])->where('siswa_id', $id)->get();
+            // Mengembalikan view dengan data yang diperlukan
+            // return view('dashboard.NilaiSiswa.TambahNilaiSiswa', compact('title', 'siswa', 'data', 'kelas', 'mapel', 'smtr', 'thajar'))->with('success', 'Data siswa berhasil diperbarui!');
+            // Filter NilaiSiswa berdasarkan siswa_id dengan eager loading mataPelajaran, siswa, dan kelas
+            $tagihan = NilaiSiswa::with(['siswa', 'kelas', 'mataPelajaran'])->where('siswa_id', $id)->get();
 
-                // Menentukan judul halaman
-                $title = "Data Nilai Siswa";
+            // Menentukan judul halaman
+            $title = "Data Nilai Siswa";
 
-                // Mendapatkan data siswa berdasarkan id
-                $siswa = Siswa::findOrFail($id);
+            // Mendapatkan data siswa berdasarkan id
+            $siswa = Siswa::findOrFail($id);
 
-                // Mendapatkan semua data kelas
-                $kelas = Kelas::all();
+            // Mendapatkan semua data kelas
+            $kelas = Kelas::all();
 
-                // Mendapatkan data nilai siswa dengan relasi mataPelajaran berdasarkan siswa_id
-                $data = NilaiSiswa::with('mataPelajaran')->where('siswa_id', $id)->get();
+            // Mendapatkan data nilai siswa dengan relasi mataPelajaran berdasarkan siswa_id
+            $data = NilaiSiswa::with('mataPelajaran')->where('siswa_id', $id)->get();
 
-                if (Auth::guard('guru')->check()) {
-                    if (Auth::guard('guru')->user()->level == "wali kelas") {
-                        if (intval($id_siswa) == intval($id)) {
-                            return view('dashboard.NilaiSiswa.TambahNilaiSiswa', compact('title', 'siswa', 'data', 'kelas', 'mapel', 'smtr', 'thajar'))->with('success', 'Data siswa berhasil diperbarui!');
-                        }else{
-                            return back();
-                        }
+            if (Auth::guard('guru')->check()) {
+                if (Auth::guard('guru')->user()->level == "wali kelas") {
+                    if (intval($id_siswa) == intval($id)) {
+                        return view('dashboard.NilaiSiswa.TambahNilaiSiswa', compact('title', 'siswa', 'data', 'kelas', 'mapel', 'smtr', 'thajar'))->with('success', 'Data siswa berhasil diperbarui!');
+                    } else {
+                        return back();
                     }
                 }
-                // Mengembalikan view dengan data yang diperlukan
-                return view('dashboard.NilaiSiswa.TambahNilaiSiswa', compact('title', 'siswa', 'data', 'kelas', 'mapel', 'smtr', 'thajar'))->with('success', 'Data siswa berhasil diperbarui!');
-
-            } else {
-                return back();
             }
-        
+            // Mengembalikan view dengan data yang diperlukan
+            return view('dashboard.NilaiSiswa.TambahNilaiSiswa', compact('title', 'siswa', 'data', 'kelas', 'mapel', 'smtr', 'thajar'))->with('success', 'Data siswa berhasil diperbarui!');
+
+        } else {
+            return back();
+        }
+
     }
 
 
@@ -503,6 +527,18 @@ class NilaiSiswaController extends Controller
      */
     public function update(Request $request, $id)
     {
+
+        $messages = [
+            'nilai.required' => 'Nilai wajib diisi.',
+        ];
+
+        $validator = Validator::make($request->all(), [
+            'nilai' => 'required',
+        ], $messages);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
         // Menemukan data NilaiSiswa berdasarkan ID
         $nilai = NilaiSiswa::findOrFail($id);
 

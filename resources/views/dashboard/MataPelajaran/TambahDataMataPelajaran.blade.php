@@ -120,7 +120,8 @@
                                                     <div class="col-md-6">
                                                         <label for="exampleSelectBorder">Kode Mata Pelajaran</label>
                                                         <input type="text" class="form-control" name="kd_pelajaran"
-                                                               placeholder="Masukkan Kode Mata Pelajaran...">
+                                                               placeholder="Masukkan Kode Mata Pelajaran..."
+                                                               value="{{old('kd_pelajaran')}}>
                                                         @error('kd_pelajaran')
                                                         <div class="text-danger">{{ $message }}</div>
                                                         @enderror

@@ -27,93 +27,90 @@
                 <!-- Small boxes (Stat box) -->
 
                 @if (Auth::guard('guru')->check())
-                    <div class="row col-md-12">
-                        <div class="col-lg-5 col-6">
-                            <div class="card" style="border-radius: 15px;">
-                                <div class="card-body p-4">
-                                    <div class="d-flex">
-                                        <div class="flex-shrink-0">
-                                            <img src="{{ asset('storage/guru/' . Auth::guard('guru')->user()->foto) }}"
-                                                alt="Generic placeholder image" class="img-fluid"
-                                                style="width: 180px; border-radius: 10px;">
-                                        </div>
-                                        <div class="flex-grow-1 ms-3 ml-4">
-                                            <h5 class="mb-1">{{ Auth::guard('guru')->user()->nama_guru }}</h5>
-                                            <p class="mb-2 pb-1">{{ Auth::guard('guru')->user()->level }}</p>
-                                            <div class="d-flex justify-content-start rounded-3 p-2 mb-2 bg-body-tertiary">
-                                                <div>
-                                                    <p class="small text-muted mb-1">Kelas</p>
-                                                    <p class="mb-0">{{ $DataGuru->angka_kelas }}</p>
-                                                </div>
-                                                <div class="px-3">
-                                                    <p class="small text-muted mb-1">Jumlah Murid</p>
-                                                    <p class="mb-0">{{ $JumlahMurid }}</p>
-                                                </div>
-                                                <div>
-                                                    <p class="small text-muted mb-1">Email</p>
-                                                    <p class="mb-0">{{ Auth::guard('guru')->user()->email }}</p>
-                                                </div>
-                                            </div>
-                                            @if (Auth::guard('guru')->user()->level == 'wali kelas')
-                                                <div class="d-flex pt-1">
-                                                    <a href="{{ route('jadwal.show', Auth::guard('guru')->user()->kelas_id) }}"
-                                                        class="btn btn-primary">Absen Sekarang</a>
-                                                </div>
-                                            @endif
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                    
                 @endif
 
-                <div class="col-lg-2 col-6">
+                <div class="w-full col-md-12 row">
+                    <div class="col-md-4 col-12 card  flex-row justify-content-center d-none d-md-flex " style="border-radius: 5px;">
+                        <div class="flex-shrink-0" style="margin-left:-7px;">
+                            <img src="{{ asset('storage/guru/' . Auth::guard('guru')->user()->foto) }}"
+                                alt="Generic placeholder image" class="img-fluid"
+                                style="width: 180px; border-radius:5px;">
+                        </div>
+                        <div class="flex-grow-1 ms-3 ml-4">
+                            <h5 class="mt-2">{{ Auth::guard('guru')->user()->nama_guru }}<br> <span style="font-size: 15px;">{{ Auth::guard('guru')->user()->level }}</span></h5>
+                            {{-- <p class="mb-2">{{ Auth::guard('guru')->user()->level }}</p> --}}
+                            <div class="d-flex justify-content-start rounded-3 bg-body-tertiary">
+                                <div>
+                                    <p class="small text-muted mb-1">Kelas</p>
+                                    <p class="mb-0">{{ $DataGuru->angka_kelas }}</p>
+                                </div>
+                                <div class="px-3">
+                                    <p class="small text-muted mb-1">Jumlah Murid</p>
+                                    <p class="mb-0">{{ $JumlahMurid }}</p>
+                                </div>
+                                <div>
+                                    <p class="small text-muted mb-1">Email</p>
+                                    <p class="mb-0">{{ Auth::guard('guru')->user()->email }}</p>
+                                </div>
+                            </div>
+                            @if (Auth::guard('guru')->user()->level == 'wali kelas')
+                                <div class="d-flex mt-3">
+                                    <a href="{{ route('jadwal.show', Auth::guard('guru')->user()->kelas_id) }}"
+                                        class="btn btn-primary">Absen Sekarang</a>
+                                </div>
+                            @endif
+                        </div>
+                </div>
+                <div class=" col-md-4 col-12">
                     <!-- small box -->
                     <div class="small-box bg-info">
                         <div class="inner">
-                            <h3>150</h3>
+                            <h3>Siswa</h3>
 
-                            <p>New Orders</p>
+                            <p>Data Siswa Kelas: {{$DataGuru->angka_kelas}}</p>
+
                         </div>
                         <div class="icon">
                             <i class="ion ion-bag"></i>
                         </div>
-                        <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                        <a href="{{ route('siswa.index') }}"
+                            class="small-box-footer">Lihat Data <i class="fas fa-arrow-circle-right"></i></a>
                     </div>
                 </div>
                 <!-- ./col -->
-                <div class="col-lg-3 col-6">
+                <div class=" col-md-4 col-12">
                     <!-- small box -->
                     <div class="small-box bg-success">
                         <div class="inner">
-                            <h3>53<sup style="font-size: 20px">%</sup></h3>
+                            <h3>History Absensi</sup></h3>
 
-                            <p>Bounce Rate</p>
+                            <p>Data Rekap Absensi Siswa Kelas {{$DataGuru->angka_kelas}}</p>
                         </div>
                         <div class="icon">
                             <i class="ion ion-stats-bars"></i>
                         </div>
-                        <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                        <a href="{{ route('absensi.index') }}"
+                            class="small-box-footer">Lihat Data <i class="fas fa-arrow-circle-right"></i></a>
                     </div>
                 </div>
                 <!-- ./col -->
-                <div class="col-lg-2 col-6">
+                <div class=" col-md-4 col-12">
                     <!-- small box -->
-                    <div class="small-box bg-warning">
+                    <div class="small-box bg-purple">
                         <div class="inner">
-                            <h3>44</h3>
+                            <h3>Nilai</h3>
 
-                            <p>User Registrations</p>
+                            <p>Data Lihat Nilai <br> {{ Auth::guard('guru')->user()->nama_siswa }}</p>
+
                         </div>
                         <div class="icon">
                             <i class="ion ion-person-add"></i>
                         </div>
-                        <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                        <a href="{{ route('nilai.index') }}"
+                            class="small-box-footer">Lihat Data <i class="fas fa-arrow-circle-right"></i></a>
                     </div>
                 </div>
-                <!-- ./col -->
-
-                <!-- ./col -->
             </div>
             <!-- /.row -->
             <!-- Main row -->

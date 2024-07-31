@@ -56,6 +56,7 @@ class HomeController extends Controller
                     ->select('siswas.*', 'kelas.nama_kelas', 'kelas.angka_kelas', 'kelas.id as id_kelas')
                     ->where('siswas.id', $user->id)
                     ->first();
+                
                 return view('dashboard.indexOrtu', compact('title','DataSiswa'));
             }
         }

@@ -7,6 +7,7 @@ use App\Models\Siswa;
 use App\Models\Kelas;
 use Illuminate\Support\Facades\Auth;
 use RealRashid\SweetAlert\Facades\Alert;
+use Illuminate\Support\Facades\Hash;
 
 class SiswaController extends Controller
 {
@@ -61,6 +62,29 @@ class SiswaController extends Controller
     {
         if (Auth::guard('guru')->user()->level == 'tata usaha') {
             // Validasi data yang diterima dari form
+
+            $customMessages = [
+                'NISN.required' => 'NISN wajib diisi.',
+                'NISN.unique' => 'NISN sudah terdaftar.',
+                'NIK.required' => 'NIK wajib diisi.',
+                'NIK.unique' => 'NIK sudah terdaftar.',
+                'NIS.required' => 'NIS wajib diisi.',
+                'NO_KK.required' => 'Nomor Kartu Keluarga wajib diisi.',
+                'nama_siswa.required' => 'Nama siswa wajib diisi.',
+                'tanggal_lahir.required' => 'Tanggal lahir wajib diisi.',
+                'wali_siswa.required' => 'Nama wali siswa wajib diisi.',
+                'jenis_kelamin.required' => 'Jenis kelamin wajib diisi.',
+                'kelas_id.required' => 'Kelas wajib dipilih.',
+                'email.required' => 'Email wajib diisi.',
+                'email.email' => 'Format email tidak valid.',
+                'email.unique' => 'Email sudah terdaftar.',
+                'password.required' => 'Password wajib diisi.',
+                'agama.required' => 'Agama wajib diisi.',
+                'tempat.required' => 'Tempat lahir wajib diisi.',
+                'anak_ke.required' => 'Anak keberapa wajib diisi.',
+                'anak_ke.integer' => 'Anak keberapa harus berupa angka.'
+            ];
+
             $request->validate([
                 'NISN' => 'required|unique:siswas,nisn|numeric',
                 'NIK' => 'required|unique:siswas,nik|numeric',
@@ -71,13 +95,14 @@ class SiswaController extends Controller
                 'wali_siswa' => 'required|string|max:255',
                 'jenis_kelamin' => 'required|in:laki,perempuan',
                 'kelas' => 'required|exists:kelas,id',
-
+                'password'=>'required',
+                'email'=>'required',
                 'agama' => 'required|string|max:255',
                 'tempat' => 'required|string|max:255',
-                'anak_ke' => 'required|numeric',
+                'anak_ke' => 'required',
 
                 'foto_siswa' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // Ubah sesuai kebutuhan
-            ], ['NISN.unique' => 'NISN sudah ada.']);
+            ], $customMessages);
 
             // Simpan data guru ke dalam basis data
             $siswa = new Siswa();
@@ -90,6 +115,8 @@ class SiswaController extends Controller
             $siswa->wali_siswa = $request->wali_siswa;
             $siswa->jenis_kelamin = $request->jenis_kelamin;
             $siswa->kelas_id = $request->kelas;
+            $siswa->email = $request->email;
+            $siswa->password = Hash::make($request->password);
 
             $siswa->agama = $request->agama;
             $siswa->tempat = $request->tempat;
@@ -214,22 +241,64 @@ class SiswaController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        
+        $customMessages = [
+            'NISN.required' => 'NISN wajib diisi.',
+            'NISN.unique' => 'NISN sudah terdaftar.',
+            'NIK.required' => 'NIK wajib diisi.',
+            'NIK.unique' => 'NIK sudah terdaftar.',
+            'NIS.required' => 'NIS wajib diisi.',
+            'NO_KK.required' => 'Nomor Kartu Keluarga wajib diisi.',
+            'nama_siswa.required' => 'Nama siswa wajib diisi.',
+            'tanggal_lahir.required' => 'Tanggal lahir wajib diisi.',
+            'wali_siswa.required' => 'Nama wali siswa wajib diisi.',
+            'jenis_kelamin.required' => 'Jenis kelamin wajib diisi.',
+            'kelas_id.required' => 'Kelas wajib dipilih.',
+            'email.required' => 'Email wajib diisi.',
+            'email.email' => 'Format email tidak valid.',
+            'email.unique' => 'Email sudah terdaftar.',
+            'password.required' => 'Password wajib diisi.',
+            'agama.required' => 'Agama wajib diisi.',
+            'tempat.required' => 'Tempat lahir wajib diisi.',
+            'anak_ke.required' => 'Anak keberapa wajib diisi.',
+            'anak_ke.integer' => 'Anak keberapa harus berupa angka.'
+        ];
+
         // Validasi data yang diterima dari form
+        // $request->validate([
+        //     'nama_siswa' => 'required|string|max:255',
+        //     'NISN' => 'required|numeric',
+        //     'tanggal_lahir' => 'required|date',
+        //     'wali_siswa' => 'required|string|max:255',
+        //     'jenis_kelamin' => 'required|in:laki,perempuan',
+        //     'kelas' => 'required|exists:kelas,id',
+
+        //     'agama' => 'required|string|max:255',
+        //     'tempat' => 'required|string|max:255',
+        //     'anak_ke' => 'required|numeric',
+        //     'semester' => 'required|in:Semester 1,Semester 2',
+
+        //     'image' => 'image|mimes:jpeg,png,jpg,gif|max:2048', // Ubah sesuai kebutuhan
+        // ]);
+
         $request->validate([
+            'NISN' => 'required|unique:siswas,nisn|numeric',
+            'NIK' => 'required|unique:siswas,nik|numeric',
+            'NIS' => 'required|numeric  ',
+            'NO_KK' => 'required|numeric',
             'nama_siswa' => 'required|string|max:255',
-            'NISN' => 'required|numeric',
             'tanggal_lahir' => 'required|date',
             'wali_siswa' => 'required|string|max:255',
             'jenis_kelamin' => 'required|in:laki,perempuan',
             'kelas' => 'required|exists:kelas,id',
-
+            'password'=>'required',
+            'email'=>'required',
             'agama' => 'required|string|max:255',
             'tempat' => 'required|string|max:255',
-            'anak_ke' => 'required|numeric',
-            'semester' => 'required|in:Semester 1,Semester 2',
+            'anak_ke' => 'required',
 
-            'image' => 'image|mimes:jpeg,png,jpg,gif|max:2048', // Ubah sesuai kebutuhan
-        ]);
+            'foto_siswa' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // Ubah sesuai kebutuhan
+        ], $customMessages);
 
         // Temukan data siswa berdasarkan ID
         $siswa = Siswa::findOrFail($id);

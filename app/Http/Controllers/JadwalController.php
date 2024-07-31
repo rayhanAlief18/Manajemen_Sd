@@ -92,6 +92,7 @@ class JadwalController extends Controller
                 'jam_selesai.after' => 'Jam selesai harus setelah jam mulai.',
                 'jumlah_sesi.required' => 'Jumlah sesi harus diisi.',
                 'jumlah_sesi.min' => 'Jumlah sesi minimal adalah 1.',
+                'hari.required' => 'Hari harus diisi.',
             ];
             $validator = Validator::make($request->all(), [
                 'id_mapel' => 'required',
@@ -194,23 +195,24 @@ class JadwalController extends Controller
                     } else {
                         return back();
                     }
-                } elseif (Auth::guard('guru')->user()->level == 'tata usaha') {
-                    return view('dashboard.Jadwal.DataJadwal', [
-                        'title' => $title,
-                        'DataGuru' => $DataGuru,
-                        'mapel' => $mapel,
-                        'kelas' => $kelas,
-                        'kelasNow' => $kelasNow,
-                        'kelasAbs' => $kelasAbs,
-                        'jadwal' => $jadwal,
-                        'hariIni' => $hariIni,
-                    ]);
                 }
             } else {
+            dd('ss');
+
                 return back();
             }
-
+            return view('dashboard.Jadwal.DataJadwal', [
+                'title' => $title,
+                'DataGuru' => $DataGuru,
+                'mapel' => $mapel,
+                'kelas' => $kelas,
+                'kelasNow' => $kelasNow,
+                'kelasAbs' => $kelasAbs,
+                'jadwal' => $jadwal,
+                'hariIni' => $hariIni,
+            ]);
         } else {
+            dd('s');
             return back();
         }
     }
@@ -241,7 +243,7 @@ class JadwalController extends Controller
                 ->first();
             // dd($mapel);
 
-            if (Auth::guard('guru')->user()->level == 'wali kelas') {
+            if (Auth::guard('guru')->user()->level == 'wali kelas' || Auth::guard('guru')->user()->level == 'tata usaha') {
                 if (intval($id) == intval(session('id_jadwal'))) {
                     return view('dashboard.Jadwal.DataEditJadwal', [
                         'title' => $title,
@@ -254,13 +256,13 @@ class JadwalController extends Controller
                     return back();
                 }
             }
-            return view('dashboard.Jadwal.DataEditJadwal', [
-                'title' => $title,
-                'DataGuru' => $DataGuru,
-                'mapel' => $mapel,
-                'kelas' => $kelas,
-                'jadwal' => $jadwal,
-            ]);
+            // return view('dashboard.Jadwal.DataEditJadwal', [
+            //     'title' => $title,
+            //     'DataGuru' => $DataGuru,
+            //     'mapel' => $mapel,
+            //     'kelas' => $kelas,
+            //     'jadwal' => $jadwal,
+            // ]);
 
         } else {
             return back();

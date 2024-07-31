@@ -107,6 +107,7 @@ class PembayaranSppController extends Controller
                 'jumlah_pembayaran.required' => 'Jumlah pembayaran wajib diisi.',
                 'jumlah_pembayaran.numeric' => 'Jumlah pembayaran harus berupa angka.',
                 'bukti_pembayaran.image' => 'Bukti pembayaran harus berupa gambar.',
+                'bukti_pembayaran.required' => 'Bukti pembayaran wajib diisi.',
                 'bukti_pembayaran.mimes' => 'Bukti pembayaran harus berupa file dengan format: jpeg, png, jpg, gif.',
                 'bukti_pembayaran.max' => 'Bukti pembayaran tidak boleh lebih dari 2048 kilobyte.',
             ];
@@ -116,7 +117,7 @@ class PembayaranSppController extends Controller
                 'bulan' => 'required|string',
                 'tahun' => 'required|numeric',
                 'jumlah_pembayaran' => 'required|numeric',
-                'bukti_pembayaran' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+                'bukti_pembayaran' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
             ], $customMessages);
 
             // Cek apakah sudah ada entri untuk bulan dan tahun yang sama

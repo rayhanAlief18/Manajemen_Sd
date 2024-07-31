@@ -1,7 +1,6 @@
 @extends('layoutDash.main')
 
 @section('content')
-
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
@@ -26,12 +25,12 @@
         <section class="content">
             <div class="container-fluid">
                 @if ($errors->any())
-                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                            <strong>Kesalahan!</strong> Data yang dimasukkan tidak sesuai
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <strong>Kesalahan!</strong> Data yang dimasukkan tidak sesuai
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
                 @endif
                 <!-- general form elements -->
                 <div class="card card-info">
@@ -40,7 +39,8 @@
                     </div>
 
                     <!-- form start -->
-                    <form id="sppForm" action="{{ route('BayarSpp.store') }}" method="POST" enctype="multipart/form-data">
+                    <form id="sppForm" action="{{ route('BayarSpp.store') }}" method="POST"
+                        enctype="multipart/form-data">
                         @csrf
                         <input type="hidden" name="id_siswa" value="{{ $siswa->id }}">
                         <div class="card-body row">
@@ -58,18 +58,19 @@
                             <div class="form-group col-sm-6">
                                 <label for="kd_bayar">kd_bayar</label>
                                 <input type="number" name="kd_bayar" class="form-control" id="kd_bayar"
-                                    placeholder="Masukkan Kode Bayar..." value="{{old('kd_bayar')}}">
-                                    @error('kd_bayar')
-                                        <div class="text-danger">{{ $message }}</div>
-                                    @enderror
+                                    placeholder="Masukkan Kode Bayar..." value="{{ old('kd_bayar') }}">
+                                @error('kd_bayar')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
                             </div>
                             <div class="form-group col-sm-3">
                                 <label for="bulan">Bulan</label>
                                 <select name="bulan" class="form-control" id="bulan">
                                     <option value="">Pilih bulan...</option>
                                     @foreach (['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'] as $month => $months)
-                                        <option value="{{ $months }}" {{ old('bulan') == $months ? 'selected' : '' }}>{{ $months }}</option>
-                                        @endforeach
+                                        <option value="{{ $months }}"
+                                            {{ old('bulan') == $months ? 'selected' : '' }}>{{ $months }}</option>
+                                    @endforeach
                                 </select>
                                 @error('bulan')
                                     <div class="text-danger">{{ $message }}</div>
@@ -81,7 +82,8 @@
                                 <select name="tahun" class="form-control" id="tahun">
                                     <option value="">Pilih tahun...</option>
                                     @for ($year = 2010; $year <= date('Y'); $year++)
-                                        <option value="{{ $year }}" {{ old('tahun') == $year ? 'selected' : '' }}>{{ $year }}</option>
+                                        <option value="{{ $year }}" {{ old('tahun') == $year ? 'selected' : '' }}>
+                                            {{ $year }}</option>
                                     @endfor
                                 </select>
                                 @error('tahun')
@@ -92,8 +94,8 @@
                             <div class="form-group col-sm-6">
                                 <label for="jumlah_pembayaran">Nominal</label>
                                 <input type="text" name="jumlah_pembayaran" class="form-control" id="jumlah_pembayaran"
-                                    placeholder="Masukkan jumlah_pembayaran..." value="{{old('jumlah_pembayaran')}}">
-                                    @error('jumlah_pembayaran')
+                                    placeholder="Masukkan jumlah_pembayaran..." value="{{ old('jumlah_pembayaran') }}">
+                                @error('jumlah_pembayaran')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
                             </div>
@@ -118,7 +120,8 @@
                         <!-- /.card-body -->
 
                         <div class="card-footer">
-                            <button type="button" class="btn btn-outline-secondary" onclick="window.history.back();">Kembali</button>
+                            <button type="button" class="btn btn-outline-secondary"
+                                onclick="window.history.back();">Kembali</button>
                             <button type="button" class="btn btn-info float-right" onclick=confirmSubmit()>Submit</button>
                             {{-- <button type="reset" class="btn btn-danger float-right">reset</button> --}}
                         </div>

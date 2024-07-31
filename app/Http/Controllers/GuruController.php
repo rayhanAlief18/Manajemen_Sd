@@ -27,7 +27,7 @@ class GuruController extends Controller
 
                 $title = "Guru";
                 $DataGuru = Guru::select('gurus.*', 'gurus.id', 'gurus.nama_guru', 'kelas.angka_kelas', 'kelas.id as id_kelas')->join('kelas', 'kelas.id', '=', 'gurus.kelas_id')
-                    ->get();
+                ->orderBy('kelas.id', 'asc') ->get();
                 return view('dashboard.Guru.DataGuru', [
                     'title' => $title,
                     'DataGuru' => $DataGuru,

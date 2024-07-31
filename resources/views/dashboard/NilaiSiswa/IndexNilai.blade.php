@@ -78,6 +78,7 @@
                             <h3>{{ $kelass->nama_kelas }}</h3>
 
                             <p>Jumlah Siswa: {{ $kelass->siswa_count }}</p>
+                            <p>Wali Kelas: {{ $kelass->nama_guru }}</p>
                         </div>
                         <div class="icon">
                             <i class="ion ion-bag"></i>

@@ -46,13 +46,26 @@ class BarangController extends Controller
     {
         if (Auth::guard('guru')->user()->level == 'tata usaha') {
             // Validasi data
+            $messages = [
+                'nama.required' => 'Nama barang wajib diisi.',
+                'nama.max' => 'Nama barang tidak boleh lebih dari 100 karakter.',
+                'barang_baik.required' => 'Jumlah barang baik wajib diisi.',
+                'barang_baik.integer' => 'Jumlah barang baik harus berupa angka.',
+                'barang_baik.min' => 'Jumlah barang baik tidak boleh kurang dari 0.',
+                'barang_rusak.required' => 'Jumlah barang rusak wajib diisi.',
+                'barang_rusak.integer' => 'Jumlah barang rusak harus berupa angka.',
+                'barang_rusak.min' => 'Jumlah barang rusak tidak boleh kurang dari 0.',
+                'ruangan_id.required' => 'ID ruangan wajib diisi.',
+                'ruangan_id.exists' => 'ID ruangan tidak valid.',
+            ];
+
             $validator = Validator::make($request->all(), [
                 'nama' => 'required|max:100',
                 'barang_baik' => 'required|integer|min:0',
                 'barang_rusak' => 'required|integer|min:0',
                 'deskripsi' => 'nullable',
                 'ruangan_id' => 'required|exists:ruangans,id',
-            ]);
+            ],$messages);
 
             // Jika validasi gagal
             if ($validator->fails()) {
