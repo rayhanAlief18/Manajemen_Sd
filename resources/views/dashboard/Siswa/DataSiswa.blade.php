@@ -41,6 +41,20 @@
                             <a href="{{ route('siswa.create') }}" class="btn btn-primary"><i
                                     class="mr-2 fas fa-user-plus"></i>
                                 Tambah Data</a>
+                                @foreach ($landing_page as $item)
+                                @if ($item->status == 'on')
+                                    <form action="{{ route('BukaDaftar', $item->id) }}" method="POST" style="display:inline;">
+                                        @csrf
+                                        <button type="submit" class="btn btn-success ml-3">Pendaftaran Buka</button>
+                                    </form>
+                                @else
+                                    <form action="{{ route('BukaDaftar', $item->id) }}" method="POST" style="display:inline;">
+                                        @csrf
+                                        <button type="submit" class="btn btn-outline-danger ml-3">Pendaftaran Tutup</button>
+                                    </form>
+                                @endif
+                            @endforeach
+                            {{-- END --}}
                             <button type="button" class="btn btn-info btn-sm ml-auto" data-toggle="modal"
                                 data-target="#NaikKelas">
                                 Naik Kelas

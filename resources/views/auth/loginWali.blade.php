@@ -19,9 +19,11 @@
             <img src="{{ asset('lte/dist/img/LOGO-SD-BHAYANGKARI.png') }}" alt="AdminLTE Logo"
                 class="brand-image img-circle elevation-3 w-25">
         </div>
-        <h5 style="text-align: center">SD Kemala Bhayangkari 1 Surabaya</h5>
-        <p class="text-warning text-center">( Login sebagai Orang Tua )</p>
-
+        <h5 style="text-align: center">
+            SD Kemala Bhayangkari 1 Surabaya 
+        </h5>
+        <p class="text-warning text-center">( Login sebagai Wali Murid )</p>
+        
         <div class="mt-5 input-box">
             <input type="email" name="email" placeholder="Email" required>
             <i class='bx bxs-user'></i>
@@ -34,10 +36,10 @@
             <button type="submit" class="btn">Login</button>
 
         </div>
-        <div class="register-link">
-            <p>Login sebagai <a href="{{route('loginGuru')}}">Guru</a></p>
-        </div>
     </form>
+    <div class="register-link">
+        <p>Login sebagai <a href="{{url('/loginGuru')}}">Guru</a></p>
+    </div>
 
 </div>
 @endsection

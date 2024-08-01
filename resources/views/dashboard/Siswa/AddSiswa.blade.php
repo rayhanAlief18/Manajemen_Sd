@@ -230,12 +230,13 @@
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
                             </div>
-                            <div class="form-group col-sm-4">
-                                <label for="anak_ke">Password</label>
-                                <input type="text" name="password" class="form-control" id="password"
-                                    placeholder="Masukkan Passowrd..." value="{{ old('password') }}">
+                            
+                            <div class="form-group col-md-4 ">
+                                <label for="exampleInputEmail1">Password</label>
+                                <input type="text" name="password" class="form-control" id="exampleInputEmail1"
+                                       placeholder="Masukkan Password..." value="{{old('password')}}">
                                 @error('password')
-                                    <div class="text-danger">{{ $message }}</div>
+                                <div class="text-danger">{{ $message }}</div>
                                 @enderror
                             </div>
                             

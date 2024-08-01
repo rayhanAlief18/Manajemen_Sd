@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Facades\Hash;
 
+
 class SiswaController extends Controller
 {
     /**
@@ -284,7 +285,7 @@ class SiswaController extends Controller
         // ]);
 
         $request->validate([
-            'NISN' => 'required|unique:siswas,nisn|numeric',
+            'NISN' => 'required|numeric',
             'NIK' => 'required|numeric',
             'NIS' => 'required|numeric  ',
             'NO_KK' => 'required|numeric',
@@ -299,7 +300,7 @@ class SiswaController extends Controller
             'tempat' => 'required|string|max:255',
             'anak_ke' => 'required',
 
-            'foto_siswa' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // Ubah sesuai kebutuhan
+            // 'foto_siswa' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // Ubah sesuai kebutuhan
         ], $customMessages);
 
         // Temukan data siswa berdasarkan ID
@@ -314,9 +315,9 @@ class SiswaController extends Controller
         $siswa->kelas_id = $request->kelas;
         $siswa->agama = $request->agama;
         $siswa->tempat = $request->tempat;
-        $siswa->tempat = $request->tempat;
-        $siswa->tempat = $request->tempat;
-        $siswa->tempat = $request->tempat;
+        $siswa->email = $request->email;
+        $siswa->password = Hash::make($request->password);
+
         $siswa->anak_ke = $request->anak_ke;
         $siswa->semester = $request->semester;
         $siswa->NIK = $request->NIK;
@@ -381,6 +382,13 @@ class SiswaController extends Controller
 
     public function DaftarSiswa(Request $request)
     {
+        // if (Hash::check($request->password, Hash::make($request->password))) {
+        //     // Password cocok
+        //    dd('Password benar');
+        // } else {
+        //     // Password tidak cocok
+        //    dd('Password salah');
+        // }
         $customMessages = [
             'NIK.required' => 'NIK wajib diisi.',
             'NIK.unique' => 'NIK sudah terdaftar.',
@@ -410,25 +418,25 @@ class SiswaController extends Controller
 
         ];
         // Validasi data yang diterima dari form
-        $request->validate([
-            // 'NISN' => 'required|unique:siswas,nisn|numeric',
-            'NIK' => 'required|unique:siswas,nik|numeric',
-            // 'NIS' => 'required|numeric  ',
-            'NO_KK' => 'required|numeric',
-            'nama_siswa' => 'required|string|max:255',
-            'tanggal_lahir' => 'required|date',
-            'wali_siswa' => 'required|string|max:255',
-            'jenis_kelamin' => 'required|in:laki,perempuan',
-            // 'kelas' => 'required|exists:kelas,id',
+        // $request->validate([
+        //     // 'NISN' => 'required|unique:siswas,nisn|numeric',
+        //     'NIK' => 'required|numeric',
+        //     // 'NIS' => 'required|numeric  ',
+        //     'NO_KK' => 'required|numeric',
+        //     'nama_siswa' => 'required|string|max:255',
+        //     'tanggal_lahir' => 'required|date',
+        //     'wali_siswa' => 'required|string|max:255',
+        //     'jenis_kelamin' => 'required|in:laki,perempuan',
+        //     // 'kelas' => 'required|exists:kelas,id',
 
-            'agama' => 'required|string|max:255',
-            'tempat' => 'required|string|max:255',
-            'anak_ke' => 'required|numeric',
-            'email' => 'required',
-            'password' => 'required',
+        //     'agama' => 'required|string|max:255',
+        //     'tempat' => 'required|string|max:255',
+        //     'anak_ke' => 'required|numeric',
+        //     'email' => 'required',
+        //     'password' => 'required',
 
-            // 'foto_siswa' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // Ubah sesuai kebutuhan
-        ],$customMessages);
+        //     // 'foto_siswa' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // Ubah sesuai kebutuhan
+        // ],$customMessages);
 
         // Simpan data guru ke dalam basis data
         $siswa = new Siswa();
@@ -446,7 +454,8 @@ class SiswaController extends Controller
         $siswa->tempat = $request->tempat;
         $siswa->anak_ke = $request->anak_ke;
         $siswa->email = $request->email;
-        $siswa->password = Hash::make($request->password);
+        $siswa->password = Hash::make($request->password); // Menggunakan Hash::make untuk enkripsi password
+        // $siswa->password = Hash::make($request->password);
         $siswa->foto_siswa = 'none';
 
         // Simpan data guru

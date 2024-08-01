@@ -1,7 +1,9 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Illuminate\Support\Facades\DB;
+use App\Models\Siswa;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -39,7 +41,6 @@ class AuthController extends Controller
         ];
 
         if (Auth::guard('guru')->attempt($infoLogin)) {
-           
             return redirect()->route('dashboard');
         } else {
             return redirect()->back()->withErrors("Email dan Password Tidak Valid")->withInput();

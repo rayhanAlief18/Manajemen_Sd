@@ -35,10 +35,10 @@ class Siswa extends Model implements AuthenticatableContract
     ];
 
     // Jika Anda menggunakan hashing password, pastikan untuk menghash password sebelum menyimpan
-    public function setPasswordAttribute($password)
-    {
-        $this->attributes['password'] = bcrypt($password);
-    }
+    // public function setPasswordAttribute($password)
+    // {
+    //     $this->attributes['password'] = bcrypt($password);
+    // }
     public function kelas()
     {
         return $this->belongsTo(Kelas::class, 'kelas_id');

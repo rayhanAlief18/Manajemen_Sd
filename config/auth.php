@@ -47,7 +47,7 @@ return [
         ],
         'waliMurid'=> [
             'driver' => 'session',
-            'provider' => 'siswas',
+            'provider' => 'waliMurid',
         ],
 ],
 
@@ -83,7 +83,7 @@ return [
             'driver' => 'eloquent',
             'model' => App\Models\Guru::class,
         ],
-        'siswas' => [
+        'waliMurid' => [
             'driver' => 'eloquent',
             'model' => App\Models\Siswa::class,
         ],

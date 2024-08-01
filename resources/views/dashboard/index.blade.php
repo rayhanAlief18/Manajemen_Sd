@@ -8,7 +8,9 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1 class="m-0">Selamat datang : </h1>
+                        @if (Auth::guard('guru')->check())
+                        <h1 class="m-0">Selamat datang : {{ Auth::guard('guru')->user()->nama_guru }}</h1>
+                    @endif
                     </div><!-- /.col -->
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
@@ -43,11 +45,19 @@
                             <div class="d-flex justify-content-start rounded-3 bg-body-tertiary">
                                 <div>
                                     <p class="small text-muted mb-1">Kelas</p>
+                                    @if(Auth::guard('guru')->user()->level == 'wali kelas')
                                     <p class="mb-0">{{ $DataGuru->angka_kelas }}</p>
+                                    @else
+                                    <p class="mb-0">-</p>
+                                    @endif
                                 </div>
                                 <div class="px-3">
                                     <p class="small text-muted mb-1">Jumlah Murid</p>
+                                    @if(Auth::guard('guru')->user()->level == 'wali kelas')
                                     <p class="mb-0">{{ $JumlahMurid }}</p>
+                                    @else
+                                    <p class="mb-0">-</p>
+                                    @endif
                                 </div>
                                 <div>
                                     <p class="small text-muted mb-1">Email</p>
@@ -67,9 +77,14 @@
                     <div class="small-box bg-info">
                         <div class="inner">
                             <h3>Siswa</h3>
-
-                            <p>Data Siswa Kelas: {{$DataGuru->angka_kelas}}</p>
-
+                            @if(Auth::guard('guru')->user()->level == 'wali kelas')
+                            <p>Data Siswa 
+                                Kelas: {{$DataGuru->angka_kelas}}
+                            </p>
+                            @else
+                            <p>Data Siswa 
+                            </p>
+                            @endif
                         </div>
                         <div class="icon">
                             <i class="ion ion-bag"></i>
@@ -84,8 +99,12 @@
                     <div class="small-box bg-success">
                         <div class="inner">
                             <h3>History Absensi</sup></h3>
-
+                            @if(Auth::guard('guru')->user()->level == 'wali kelas')
                             <p>Data Rekap Absensi Siswa Kelas {{$DataGuru->angka_kelas}}</p>
+                            @else
+                            <p>Data History Absensi Siswa
+                            </p>
+                            @endif
                         </div>
                         <div class="icon">
                             <i class="ion ion-stats-bars"></i>

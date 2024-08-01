@@ -68,8 +68,10 @@
                                 <input name="image" type="file" id="inputFoto" accept="image/*">
                             </div>
                         </div>
+                        
                         <div id="previewContainer">
-                            <img id="previewFoto" src="#" alt="Preview Foto" style="max-width: 600px; max-height: 400px;">
+                            <img src="{{ asset('storage/absensi/' . $DataAbsensiNow->foto_surat_izin) }}" alt="Foto Surat Izin"
+                                 style="max-width: 200px; max-height: 200px;">
                         </div>
                     </div>
                 </div>

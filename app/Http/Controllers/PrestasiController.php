@@ -83,6 +83,7 @@ class PrestasiController extends Controller
             $prestasi->tingkat = $request->input('tingkat');
             $prestasi->tgl_prestasi = $request->input('tgl_prestasi');
             $prestasi->deskripsi = $request->input('deskripsi');
+            $prestasi->status = 'off';
 
             // Input gambar thumbnail
             if ($request->hasFile('gambar_thumbnail')) {
@@ -158,7 +159,7 @@ class PrestasiController extends Controller
         if (Auth::guard('guru')->user()->level == 'tata usaha') {
             // Validasi input
             $validator = Validator::make($request->all(), [
-                'gambar_thumbnail' => 'required|image|mimes:jpeg,png,jpg,svg|max:2048',
+                'gambar_thumbnail' => 'image|mimes:jpeg,png,jpg,svg|max:2048',
                 'gambar_prestasi' => 'nullable|image|mimes:jpeg,png,jpg,svg|max:2048',
                 'nama_prestasi' => 'required|string',
                 'anggota' => 'required|string',
@@ -167,7 +168,7 @@ class PrestasiController extends Controller
                 'deskripsi' => 'nullable|string',
                 'dokumentasi.*' => 'nullable|image|mimes:jpeg,png,jpg,gif',
             ], [
-                'gambar_thumbnail.required' => 'Gambar thumbnail wajib diunggah.',
+                // 'gambar_thumbnail.required' => 'Gambar thumbnail wajib diunggah.',
                 'gambar_thumbnail.image' => 'Gambar thumbnail harus berupa file gambar | jpeg, png, jpg, atau svg',
                 'gambar_thumbnail.max' => 'Ukuran gambar thumbnail maksimal 2MB.',
                 'gambar_prestasi.image' => 'Gambar prestasi harus berupa file gambar | jpeg, png, jpg, atau svg',
@@ -256,6 +257,19 @@ class PrestasiController extends Controller
         } else {
             return back();
         }
+    }
+
+    public function ViewWeb(string $id)
+    {
+        $prestasi = Prestasi::findOrFail($id);
+        if ($prestasi->status == "on") {
+            $prestasi->status = 'off';
+        } else {
+            $prestasi->status = 'on';
+        }
+        $prestasi->save();
+
+        return redirect()->route('prestasi.index')->with('success', 'Prestasi berhasil diperbarui.');
     }
 
     /**

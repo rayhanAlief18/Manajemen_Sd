@@ -27,7 +27,7 @@ class GuruController extends Controller
 
                 $title = "Guru";
                 $DataGuru = Guru::select('gurus.*', 'gurus.id', 'gurus.nama_guru', 'kelas.angka_kelas', 'kelas.id as id_kelas')->join('kelas', 'kelas.id', '=', 'gurus.kelas_id')
-                ->orderBy('kelas.id', 'asc') ->get();
+                    ->orderBy('kelas.id', 'asc')->get();
                 return view('dashboard.Guru.DataGuru', [
                     'title' => $title,
                     'DataGuru' => $DataGuru,
@@ -69,6 +69,7 @@ class GuruController extends Controller
      */
     public function store(Request $request)
     {
+        
         if (Auth::guard('guru')->user()->level == 'tata usaha') {
             $messages = [
                 'image.required' => 'Foto harus diunggah.',
@@ -120,36 +121,36 @@ class GuruController extends Controller
             ];
 
 
-            $validator = Validator::make($request->all(), [
-                'image' => 'required|mimes:jpeg,jpg,png|max:2048',
-                'nama_guru' => 'required|string|max:255',
-                'tempat_lahir' => 'required|string|max:255',
-                'tanggal_lahir' => 'required|date',
-                'nik' => 'required|numeric|digits:16',
-                'no_kk' => 'required|numeric|digits:16',
-                'agama' => 'required|string|in:islam,kristen,hindu,budha,khongucu',
-                'email' => 'required|string|email|max:255|unique:gurus,email',
-                'password' => 'required|string|min:8',
-                'jenis_kelamin' => 'required|string|in:laki laki,perempuan',
-                'nomor_npwp' => 'required|numeric|digits:16',
-                'gelar_depan' => 'nullable|string|max:50',
-                'gelar_belakang' => 'nullable|string|max:50',
-                'nomor_telepon' => 'required|numeric',
-                'nomor_hp' => 'required|',
-                'jenjang' => 'required|string|max:100',
-                'tahun_lulus' => 'required|numeric|digits:4',
-                'jurusan' => 'required|string|max:100',
-                // 'jabatan' => 'required|string|max:100',
-                'kelas_id' => 'required|integer|exists:kelas,id',
-                // 'role' => 'required|string|in:admin,guru,staff',
-                'level' => 'required|string|in:kepala sekolah,tata usaha,wali kelas,guru mapel',
-                'status' => 'required|string|in:aktif,nonaktif',
-            ], $messages);
+            // $validator = Validator::make($request->all(), [
+            //     'image' => 'required|mimes:jpeg,jpg,png|max:2048',
+            //     'nama_guru' => 'required|string|max:255',
+            //     'tempat_lahir' => 'required|string|max:255',
+            //     'tanggal_lahir' => 'required|date',
+            //     'nik' => 'required|numeric|digits:16',
+            //     'no_kk' => 'required|numeric|digits:16',
+            //     'agama' => 'required|string|in:islam,kristen,hindu,budha,khongucu',
+            //     'email' => 'required|string|email|max:255|unique:gurus,email',
+            //     'password' => 'required|string|min:8',
+            //     'jenis_kelamin' => 'required|string|in:laki laki,perempuan',
+            //     'nomor_npwp' => 'required|numeric|digits:16',
+            //     'gelar_depan' => 'nullable|string|max:50',
+            //     'gelar_belakang' => 'nullable|string|max:50',
+            //     'nomor_telepon' => 'required|numeric',
+            //     'nomor_hp' => 'required|',
+            //     'jenjang' => 'required|string|max:100',
+            //     'tahun_lulus' => 'required|numeric|digits:4',
+            //     'jurusan' => 'required|string|max:100',
+            //     // 'jabatan' => 'required|string|max:100',
+            //     'kelas_id' => 'required|integer|exists:kelas,id',
+            //     // 'role' => 'required|string|in:admin,guru,staff',
+            //     'level' => 'required|string|in:kepala sekolah,tata usaha,wali kelas,guru mapel',
+            //     'status' => 'required|string|in:aktif,nonaktif',
+            // ], $messages);
 
 
-            if ($validator->fails()) {
-                return redirect()->back()->withErrors($validator)->withInput();
-            }
+            // if ($validator->fails()) {
+            //     return redirect()->back()->withErrors($validator)->withInput();
+            // }
 
             $image = $request->file('image');
             $filename = date('Y-m-d') . $image->getClientOriginalName();
@@ -158,32 +159,63 @@ class GuruController extends Controller
             // Menggunakan putFile() untuk menyimpan file langsung
             Storage::disk('public')->put($path, file_get_contents($image));
             // Buat post baru setelah file disimpan
-            Guru::create([
-                'foto' => $filename,
-                'nama_guru' => $request->nama_guru,
-                'tempat_lahir' => $request->tempat_lahir,
-                'tanggal_lahir' => $request->tanggal_lahir,
-                'nik' => $request->nik,
-                'no_kk' => $request->no_kk,
-                'agama' => $request->agama,
-                'email' => $request->email,
-                'password' => Hash::make($request->password),
-                'jenis_kelamin' => $request->jenis_kelamin,
-                'nomor_npwp' => $request->nomor_npwp,
-                'gelar_depan' => $request->gelar_depan,
-                'gelar_belakang' => $request->gelar_belakang,
-                'nomor_telepon' => $request->nomor_telepon,
-                'nomor_hp' => $request->nomor_hp,
-                'jenjang' => $request->jenjang,
-                'tahun_lulus' => $request->tahun_lulus,
-                'jurusan' => $request->jurusan,
-                //Jabatan & Tugas
-                // 'jabatan' => $request->jabatan,
-                'kelas_id' => $request->kelas_id,
-                // 'role' => $request->role,
-                'level' => $request->level,
-                'status' => $request->status,
-            ]);
+            // Guru::create([
+            //     'foto' => $filename,
+            //     'nama_guru' => $request->nama_guru,
+            //     'tempat_lahir' => $request->tempat_lahir,
+            //     'tanggal_lahir' => $request->tanggal_lahir,
+            //     'nik' => $request->nik,
+            //     'no_kk' => $request->no_kk,
+            //     'agama' => $request->agama,
+            //     'email' => $request->email,
+            //     'password' => Hash::make($request->password),
+            //     'jenis_kelamin' => $request->jenis_kelamin,
+            //     'nomor_npwp' => $request->nomor_npwp,
+            //     'gelar_depan' => $request->gelar_depan,
+            //     'gelar_belakang' => $request->gelar_belakang,
+            //     'nomor_telepon' => $request->nomor_telepon,
+            //     'nomor_hp' => $request->nomor_hp,
+            //     'jenjang' => $request->jenjang,
+            //     'tahun_lulus' => $request->tahun_lulus,
+            //     'jurusan' => $request->jurusan,
+            //     //Jabatan & Tugas
+            //     // 'jabatan' => $request->jabatan,
+            //     'kelas_id' => $request->kelas_id,
+            //     // 'role' => $request->role,
+            //     'level' => $request->level,
+            //     'status' => $request->status,
+            // ]);
+
+            // Buat instance baru dari model Guru
+            $guru = new Guru();
+
+            // Isi atribut model Guru
+            $guru->foto = $filename;
+            $guru->nama_guru = $request->nama_guru;
+            $guru->tempat_lahir = $request->tempat_lahir;
+            $guru->tanggal_lahir = $request->tanggal_lahir;
+            $guru->nik = $request->nik;
+            $guru->no_kk = $request->no_kk;
+            $guru->agama = $request->agama;
+            $guru->email = $request->email;
+            $guru->password = Hash::make($request->password); // Menggunakan Hash::make untuk enkripsi password
+            $guru->jenis_kelamin = $request->jenis_kelamin;
+            $guru->nomor_npwp = $request->nomor_npwp;
+            $guru->gelar_depan = $request->gelar_depan;
+            $guru->gelar_belakang = $request->gelar_belakang;
+            $guru->nomor_telepon = $request->nomor_telepon;
+            $guru->nomor_hp = $request->nomor_hp;
+            $guru->jenjang = $request->jenjang;
+            $guru->tahun_lulus = $request->tahun_lulus;
+            $guru->jurusan = $request->jurusan;
+            // $guru->jabatan = $request->jabatan; // Uncomment jika dibutuhkan
+            $guru->kelas_id = $request->kelas_id;
+            // $guru->role = $request->role; // Uncomment jika dibutuhkan
+            $guru->level = $request->level;
+            $guru->status = $request->status;
+
+            // Simpan data guru
+            $guru->save();
 
             // Sweet alert
             Alert::success('Berhasil Ditambahkan', 'Data Guru berhasil ditambahkan.');
@@ -390,7 +422,7 @@ class GuruController extends Controller
             ]);
 
             // Sweet alert
-            
+
             Alert::success('Perubahan Berhasil', 'Data Guru berhasil diubah.');
             return redirect()->route('guru.index');
         } else {
