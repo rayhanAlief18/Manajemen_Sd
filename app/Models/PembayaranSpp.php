@@ -9,7 +9,6 @@ class PembayaranSpp extends Model
 {
     use HasFactory;
     protected $table = 'pembayaran_spps';
-
     protected $fillable = [
         'kd_bayar',
         'siswa_id',

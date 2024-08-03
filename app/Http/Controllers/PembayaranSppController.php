@@ -8,6 +8,7 @@ use App\Models\Siswa;
 use App\Models\Kelas;
 use Illuminate\Support\Facades\Auth;
 use RealRashid\SweetAlert\Facades\Alert;
+use Illuminate\Support\Facades\DB;
 
 class PembayaranSppController extends Controller
 {
@@ -38,7 +39,18 @@ class PembayaranSppController extends Controller
             // Logika untuk mengambil data riwayat pembayaran
             $title = "Riwayat Pembayaran";
             $siswa = Siswa::all();
-            $data = PembayaranSpp::all(); // atau sesuai dengan kebutuhan
+            // $data = PembayaranSpp::all(); // atau sesuai dengan kebutuhan
+            $data = DB::table('pembayaran_spps')
+            ->join('siswas', 'siswas.id', '=', 'pembayaran_spps.siswa_id')
+            ->join('kelas', 'kelas.id', '=', 'siswas.kelas_id')
+            ->select( 'pembayaran_spps.*', 'siswas.nama_siswa','kelas.nama_kelas')
+            ->get();
+
+            // $DataSiswa = DB::table('siswas')
+            //         ->join('kelas', 'siswas.kelas_id', '=', 'kelas.id')->join('gurus', 'gurus.kelas_id', '=', 'siswas.kelas_id')
+            //         ->select('siswas.*', 'kelas.angka_kelas', 'kelas.id as id_kelas', 'gurus.nama_guru')
+            //         ->where('siswas.kelas_id', $id)
+            //         ->get();
 
             return view('dashboard.PembayaranSpp.RiwayatBayar', compact('data', 'title'));
         } else {

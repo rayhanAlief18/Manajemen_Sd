@@ -57,11 +57,12 @@
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ $datas->kd_bayar }}</td>
-                                        <td>{{ $datas->siswa->nama_siswa }}</td>
-                                        <td>{{ $datas->siswa->kelas->nama_kelas }}</td>
+                                        <td>{{ $datas->nama_siswa }}</td>
+                                        <td>{{ $datas->nama_kelas }}</td>
                                         <td>{{ $datas->bulan. " " . $datas->tahun }}</td>
                                         <td>Rp {{ number_format($datas->jumlah_pembayaran, 0, ',', '.') }}</td>
-                                        <td>{{ $datas->created_at->format('d F Y') }}</td>
+                                        {{-- <td>{{ $datas->created_at->format('d F Y') }}</td> --}}
+                                        <td>{{ \Carbon\Carbon::parse($datas->created_at)->format('d F Y') }}</td>
                                         <td>
                                             {{-- <div class="form-group">
                                                 <img id="previewFoto" src="{{ asset('storage/BuktiBayar/'.$datas->bukti_pembayaran) }}" alt="Bukti Pembayaran"
@@ -102,7 +103,7 @@
                                                         <div class="col-md-6">
                                                             <div>
                                                                 <label for="">Nama </label>
-                                                                <p>{{$datas->siswa->nama_siswa}}</p>
+                                                                <p>{{$datas->nama_siswa}}</p>
                                                             </div>
                                                             <div>
                                                                 <label for="">Tanggal Bayar </label>
