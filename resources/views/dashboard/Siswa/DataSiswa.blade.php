@@ -12,7 +12,7 @@
                     </div><!-- /.col -->
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="#">Home</a></li>
+                            <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Home</a></li>
                             <li class="breadcrumb-item active">{{ $title }}</li>
                         </ol>
                     </div><!-- /.col -->
@@ -110,7 +110,7 @@
                                     <th>Kelas</th>
                                     {{-- <th>Semester</th> --}}
                                     <th>Ortu / Wali Siswa</th>
-                                    <th>Action</th>
+                                    <th class="text-center">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -293,8 +293,8 @@
                                     <th>Tanggal Lahir</th>
                                     <th>Jenis Kelamin</th>
                                     <th>Kelas</th>
-                                    <th>Wali Siswa</th>
-                                    <th>Action</th>
+                                    <th>Ortu / Wali Siswa</th>
+                                    <th class="text-center">Action</th>
                                 </tr>
                             </tfoot>
                         </table>

@@ -13,9 +13,9 @@
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <!-- Nav Page -->
-                            <li class="breadcrumb-item"><a href="#">Home</a></li>
+                            <li class="breadcrumb-item"><a href="{{route('dashboard')}}">Home</a></li>
                             <li class="breadcrumb-item"><a href="{{ route('prestasi.index') }}">Prestasi</a></li>
-                            <li class="breadcrumb-item"><a>Tambah Prestasi</a></li>
+                            <li class="breadcrumb-item"><a>{{$title}}</a></li>
                         </ol>
                     </div>
                 </div>
@@ -123,8 +123,8 @@
 
                         <!-- Button Start-->
                         <div class="card-footer">
-                            <a href="{{ route('prestasi.index') }}" class="btn btn-secondary">Back</a>
-                            <button type="button" class="btn btn-info" onclick="confirmSubmit()">Submit</button>
+                            <a href="{{ route('prestasi.index') }}" class="btn btn-outline-secondary">Kembali</a>
+                            <button type="button" class="btn btn-info float-right" onclick="confirmSubmit()">Submit</button>
                         </div>
                         <!-- Button End -->
                     </form> <!-- End Form -->

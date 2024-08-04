@@ -159,7 +159,7 @@ class JadwalController extends Controller
             $currentDay = Carbon::now()->translatedFormat('l');
             $hariIni = strtolower($currentDay);
 
-            $title = "Jadwal Kelas : ";
+            $title = "Jadwal Kelas";
             $jadwal = Jadwal::all();
             $DataGuru = Guru::all();
             $mapel = MataPelajaran::all();

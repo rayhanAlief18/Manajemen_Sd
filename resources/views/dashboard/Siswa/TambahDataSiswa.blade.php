@@ -13,7 +13,8 @@
                     </div><!-- /.col -->
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="#">Home</a></li>
+                            <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Home</a></li>
+                            <li class="breadcrumb-item"><a href="{{ route('siswa.index') }}">Data Siswa</a></li>
                             <li class="breadcrumb-item active">{{ $title }}</li>
                         </ol>
                     </div><!-- /.col -->
@@ -202,10 +203,8 @@
                         <!-- /.card-body -->
 
                         <div class="card-footer">
-                            <button type="button" class="btn btn-outline-secondary"
-                                onclick="window.history.back();">Kembali</button>
-                            <button type="button" class="btn btn-info" onclick="confirmSubmit()">Submit</button>
-                            {{-- <button type="reset" class="btn btn-danger float-right">reset</button> --}}
+                            <a href="{{ route('siswa.index') }}" class="btn btn-outline-secondary">Kembali</a>
+                            <button type="button" class="btn btn-info float-right" onclick="confirmSubmit()">Submit</button>
                         </div>
                     </form>
                 </div>
