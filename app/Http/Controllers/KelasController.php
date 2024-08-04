@@ -72,7 +72,7 @@ class KelasController extends Controller
      */
     public function show(string $id)
     {
-        $Title = 'Data Siswa Kelas :';
+        $Title = 'Data Siswa Kelas';
         $guru = DB::table('siswas')  // Nama tabel harus 'siswas'
         ->join('kelas', 'siswas.kelas_id', '=', 'kelas.id')  // Menggunakan 'siswas' bukan 'siswa'
         ->select('siswas.*', 'kelas.angka_kelas')
