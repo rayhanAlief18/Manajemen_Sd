@@ -30,14 +30,13 @@ class KelasController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(string $id)
     {
-        $title = "Tambah Data Kelas";
-        $guru = Guru::all();
-        return view('dashboard.Operational.Kelas.TambahDataKelas',[
-            'title'=>$title,
-            'guru'=>$guru,
-        ]);
+        $kelas_id = $id;
+
+        $title = "Tambah Siswa";
+        $kelas = Kelas::all();
+        return view('dashboard.Operational.Kelas.TambahDataKelas', compact('title', 'kelas', 'kelas_id'));
     }
 
     /**
@@ -79,9 +78,12 @@ class KelasController extends Controller
         ->where('siswas.kelas_id', $id)
         ->get();
 
+        $kelas_id = $id;
+
         return view('dashboard.Operational.Kelas.MuridTiapKelas',[
             'title'=>$Title,
             'guru'=>$guru,
+            'kelas'=>$kelas_id
         ]);
     }
 

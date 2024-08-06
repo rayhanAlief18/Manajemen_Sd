@@ -39,7 +39,7 @@
                 <div class="card">
                     <div class="card-header d-flex">
                         @if (Auth::guard('guru')->user()->level == 'tata usaha')
-                            <a href="{{ route('siswa.create') }}" class="btn btn-primary"><i
+                            <a href="{{ route('kelas.create', ['id' => $kelas]) }}" class="btn btn-primary"><i
                                     class="mr-2 fas fa-user-plus"></i>
                                 Tambah Data</a>
                             <button type="button" class="btn btn-info btn-sm ml-auto" data-toggle="modal"
@@ -97,7 +97,7 @@
                                     <th>Kelas</th>
                                     {{-- <th>Semester</th> --}}
                                     <th>Ortu / Wali Siswa</th>
-                                    <th>Action</th>
+                                    <th class="text-center">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -281,8 +281,8 @@
                                     <th>Tanggal Lahir</th>
                                     <th>Jenis Kelamin</th>
                                     <th>Kelas</th>
-                                    <th>Wali Siswa</th>
-                                    <th>Action</th>
+                                    <th>Ortu / Wali Siswa</th>
+                                    <th class="text-center">Action</th>
                                 </tr>
                             </tfoot>
                         </table>
