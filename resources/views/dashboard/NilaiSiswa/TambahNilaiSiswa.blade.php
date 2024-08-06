@@ -11,7 +11,8 @@
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="#">Home</a></li>
+                            <li class="breadcrumb-item"><a href="{{route('dashboard')}}">Home</a></li>
+                            <li class="breadcrumb-item"><a href="{{route('nilai.index')}}">Data Nilai</a></li>
                             <li class="breadcrumb-item active">{{ $title }}</li>
                         </ol>
                     </div>
@@ -44,7 +45,8 @@
                         <div class="card-header">
                             <h3 class="card-title text-center">Data Diri Siswa</h3>
                         </div>
-                        <form id="nilaiForm" action="{{ route('nilai.store') }}" method="POST" enctype="multipart/form-data">
+                        <form id="nilaiForm" action="{{ route('nilai.store') }}" method="POST"
+                              enctype="multipart/form-data">
                             @csrf
                             <input type="hidden" name="id_siswa" value="{{ $siswa->id }}">
                             <div class="card-body row">
@@ -151,7 +153,9 @@
                             <div class="card-footer">
                                 {{-- <input type="text" value="{{$siswa->id}}" name="id_siswas" style="display:none;"> --}}
 
-                                <button type="button" class="btn btn-info float-right" onclick="confirmSubmit()">Submit</button>
+                                <button type="button" class="btn btn-info float-right" onclick="confirmSubmit()">
+                                    Submit
+                                </button>
                                 <button type="button" class="btn btn-outline-secondary"
                                         onclick="window.history.back();">Kembali
                                 </button>
@@ -175,7 +179,7 @@
                                 <th>Nilai</th>
                                 <th>Catatan</th>
                                 @if (Auth::guard('guru')->check())
-                                    <th>Aksi</th>
+                                    <th>Action</th>
                                 @endif
                             </tr>
                             </thead>
@@ -203,11 +207,13 @@
                                                         data-toggle="tooltip" data-placement="top">Edit
                                                 </button>
                                             </form>
-                                            <form action="{{ route('nilai.destroy', $datas->id) }}" method="POST" style="display:inline;">
+                                            <form action="{{ route('nilai.destroy', $datas->id) }}" method="POST"
+                                                  style="display:inline;">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="btn btn-sm btn-outline-danger btn-delete"
-                                                        data-toggle="tooltip" data-placement="top" data-name="{{ $datas->mataPelajaran->nama_pelajaran }}"
+                                                        data-toggle="tooltip" data-placement="top"
+                                                        data-name="{{ $datas->mataPelajaran->nama_pelajaran }}"
                                                         title="Hapus Nilai Siswa">
                                                     Hapus
                                                 </button>
@@ -220,7 +226,6 @@
                         </table>
                     </div>
                 </div>
-
             </div>
         </section>
     </div>

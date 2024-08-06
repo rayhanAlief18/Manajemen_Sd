@@ -92,8 +92,8 @@
 
                         <!-- Button Start -->
                         <div class="card-footer">
-                            <a href="{{ route('showLantai', $lantai) }}" class="btn btn-secondary">Back</a>
-                            <button type="button" class="btn btn-info" onclick="confirmSubmit()">Submit</button>
+                            <a href="{{ route('showLantai', $lantai) }}" class="btn btn-outline-secondary">Kembali</a>
+                            <button type="button" class="btn btn-info float-right" onclick="confirmSubmit()">Submit</button>
                         </div> <!-- Button End -->
                     </form> <!-- End Form -->
                 </div> <!-- General Form Input End -->

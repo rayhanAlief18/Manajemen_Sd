@@ -207,7 +207,7 @@ class PembayaranSppController extends Controller
             // $tagihan = PembayaranSpp::with('siswa')->where('siswa_id', $request->siswa_id)->get();
 
             // Mendefinisikan variabel untuk tampilan
-            $title = "Data Pembayaran";
+            $title = "Tambah Pembayaran";
             $siswa = Siswa::findOrFail($id);
             $kelas = Kelas::all();
             $data = PembayaranSpp::all();

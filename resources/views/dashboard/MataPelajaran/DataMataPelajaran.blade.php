@@ -13,7 +13,7 @@
                     </div><!-- /.col -->
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="#">Home</a></li>
+                            <li class="breadcrumb-item"><a href="{{route('dashboard')}}">Home</a></li>
                             <li class="breadcrumb-item active">{{ $title }}</li>
                         </ol>
                     </div><!-- /.col -->
@@ -46,13 +46,13 @@
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">
-                        <table id="example1" class="table table-bordered table-striped tablealert">
+                        <table id="example1" class="table table-striped tablealert">
                             <thead>
                                 <tr>
                                     <th>No</th>
                                     <th>Nama Mata pelajaran</th>
                                     <th>Kode Mata Pelajaran</th>
-                                    <th>Action</th>
+                                    <th class="text-center">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -62,13 +62,13 @@
                                         <td>{{ $mapel->nama_pelajaran }}</td>
                                         <td>{{ $mapel->kd_pelajaran }}</td>
 
-                                        <td>
+                                        <td class="text-center">
                                             @if (Auth::guard('guru')->user()->level == 'tata usaha')
                                             <form action="{{ route('matapelajaran.destroy', $mapel->id) }}" method="POST">
                                                 @csrf
                                                 @method('DELETE')
-                                                <a href="{{ route('matapelajaran.edit', $mapel->id) }}" class="btn btn-warning"><i class="fas fa-edit"></i></a>
-                                                <button type="submit" class="btn btn-danger btn-delete" data-name="{{ $mapel->nama_pelajaran }}"><i class="fas fa-trash"></i></button>
+                                                <a href="{{ route('matapelajaran.edit', $mapel->id) }}" class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></a>
+                                                <button type="submit" class="btn btn-sm btn-danger btn-delete" data-name="{{ $mapel->nama_pelajaran }}"><i class="fas fa-trash"></i></button>
                                             </form>
                                             @else
                                             -
@@ -82,7 +82,7 @@
                                     <th>No</th>
                                     <th>Nama Mata pelajaran</th>
                                     <th>Kode Mata Pelajaran</th>
-                                    <th>Action</th>
+                                    <th class="text-center">Action</th>
                                 </tr>
                             </tfoot>
                         </table>

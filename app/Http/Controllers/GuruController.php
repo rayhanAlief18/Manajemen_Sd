@@ -25,7 +25,7 @@ class GuruController extends Controller
         if (Auth::guard('guru')->check()) {
             if (Auth::guard('guru')->user()->level == 'tata usaha') {
 
-                $title = "Guru";
+                $title = "Data Guru";
                 $DataGuru = Guru::select('gurus.*', 'gurus.id', 'gurus.nama_guru', 'kelas.angka_kelas', 'kelas.id as id_kelas')->join('kelas', 'kelas.id', '=', 'gurus.kelas_id')
                     ->orderBy('kelas.id', 'asc')->get();
                 return view('dashboard.Guru.DataGuru', [
@@ -69,7 +69,7 @@ class GuruController extends Controller
      */
     public function store(Request $request)
     {
-        
+
         if (Auth::guard('guru')->user()->level == 'tata usaha') {
             $messages = [
                 'image.required' => 'Foto harus diunggah.',
@@ -240,7 +240,7 @@ class GuruController extends Controller
     public function edit(string $id)
     {
         if (Auth::guard('guru')->user()->level == 'tata usaha') {
-            $title = 'Edit Data Gurus';
+            $title = 'Edit Data Guru';
             $guru = Guru::all();
             $DataGuru = DB::table('gurus')
                 ->join('kelas', 'gurus.kelas_id', '=', 'kelas.id')

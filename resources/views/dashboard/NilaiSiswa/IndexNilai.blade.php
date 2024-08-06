@@ -12,7 +12,7 @@
                     </div><!-- /.col -->
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="#">Home</a></li>
+                            <li class="breadcrumb-item"><a href="{{route('dashboard')}}">Home</a></li>
                             <li class="breadcrumb-item active">{{ $title }}</li>
                         </ol>
                     </div><!-- /.col -->
@@ -63,7 +63,7 @@
                                             <div class="icon">
                                                 <i class="ion ion-bag"></i>
                                             </div>
-                                           
+
                                             <a href="{{ route('DaftarKelas', $kelass->id) }}" class="small-box-footer">More
                                                 info <i class="fas fa-arrow-circle-right"></i></a>
                                         </div>
@@ -91,11 +91,8 @@
                 @endif
                 @endforeach
             </div>
-
+        </section>
     </div><!-- /.container-fluid -->
-    </section>
-    <!-- /.content -->
-    </div>
 
     {{-- TOOLTIP TOOLS --}}
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

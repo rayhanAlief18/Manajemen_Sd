@@ -12,7 +12,8 @@
                     </div><!-- /.col -->
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="#">Home</a></li>
+                            <li class="breadcrumb-item"><a href="{{route('dashboard')}}">Home</a></li>
+                            <li class="breadcrumb-item"><a href="{{ route('jadwal.index') }}">Pilih Kelas</a></li>
                             <li class="breadcrumb-item active">{{ $title }}</li>
                         </ol>
                     </div><!-- /.col -->
@@ -129,7 +130,7 @@
                                                     <th scope="col">Durasi Sesi</th>
                                                     <th scope="col">Hari</th>
                                                     @if (!Auth::guard('waliMurid')->check())
-                                                    
+
                                                         <th scope="col">Action</th>
                                                     @endif
                                                 </tr>
@@ -162,7 +163,7 @@
                                                                                 class="btn btn-warning btn-sm"><i
                                                                                 class="fas fa-edit"></i></button>
                                                                         </form>
-                                                                        
+
                                                                         <form id="seninForm{{$senin->id_jadwal}}" action="{{ route('jadwal.destroy', $senin->id_jadwal) }}" method="POST">
                                                                             @method('DELETE')
                                                                             @csrf
@@ -198,7 +199,7 @@
                                                     <th scope="col">Durasi Sesi</th>
                                                     <th scope="col">Hari</th>
                                                     @if (!Auth::guard('waliMurid')->check())
-                                                    
+
                                                         <th scope="col">Action</th>
                                                     @endif
                                                 </tr>
@@ -217,7 +218,7 @@
                                                             @if (Auth::guard('guru')->check())
                                                                 @if (Auth::guard('guru')->user()->level == 'tata usaha' || Auth::guard('guru')->user()->level == 'wali kelas')
                                                                     <td>
-                                                                        
+
                                                                         <form method="POST"
                                                                             action="{{ route('TransitJadwal',$selasa->id_jadwal)  }}">
                                                                             @csrf
@@ -229,7 +230,7 @@
                                                                                 class="btn btn-warning btn-sm"><i
                                                                                 class="fas fa-edit"></i></button>
                                                                         </form>
-                                                                       
+
                                                                         <form id="selasaForm{{$selasa->id_jadwal}}" action="{{ route('jadwal.destroy', $selasa->id_jadwal) }}" method="POST">
                                                                             @method('DELETE')
                                                                             @csrf
@@ -283,7 +284,7 @@
                                                             @if (Auth::guard('guru')->check())
                                                                 @if (Auth::guard('guru')->user()->level == 'tata usaha' || Auth::guard('guru')->user()->level == 'wali kelas')
                                                                     <td>
-                                                                        
+
                                                                         <form method="POST"
                                                                             action="{{route('TransitJadwal',$rabu->id_jadwal)  }}">
                                                                             @csrf
@@ -295,7 +296,7 @@
                                                                                 class="btn btn-warning btn-sm"><i
                                                                                 class="fas fa-edit"></i></button>
                                                                         </form>
-                                                                        
+
                                                                         <form id="rabuForm{{$rabu->id_jadwal}}" action="{{ route('jadwal.destroy', $rabu->id_jadwal) }}" method="POST">
                                                                             @method('DELETE')
                                                                             @csrf
@@ -331,7 +332,7 @@
                                                     <th scope="col">Durasi Sesi</th>
                                                     <th scope="col">Hari</th>
                                                     @if (!Auth::guard('waliMurid')->check())
-                                                    
+
                                                         <th scope="col">Action</th>
                                                     @endif
                                                 </tr>
@@ -350,7 +351,7 @@
                                                             @if (Auth::guard('guru')->check())
                                                                 @if (Auth::guard('guru')->user()->level == 'tata usaha' || Auth::guard('guru')->user()->level == 'wali kelas')
                                                                     <td>
-                                                                        
+
                                                                         <form method="POST"
                                                                             action="{{ route('TransitJadwal',$kamis->id_jadwal)  }}">
                                                                             @csrf
@@ -362,7 +363,7 @@
                                                                                 class="btn btn-warning btn-sm"><i
                                                                                 class="fas fa-edit"></i></button>
                                                                         </form>
-                                                                        
+
                                                                         <form id="kamisForm{{$kamis->id_jadwal}}" action="{{ route('jadwal.destroy', $kamis->id_jadwal) }}" method="POST">
                                                                             @method('DELETE')
                                                                             @csrf
@@ -398,7 +399,7 @@
                                                     <th scope="col">Durasi Sesi</th>
                                                     <th scope="col">Hari</th>
                                                     @if (!Auth::guard('waliMurid')->check())
-                                                    
+
                                                         <th scope="col">Action</th>
                                                     @endif
                                                 </tr>
@@ -417,7 +418,7 @@
                                                             @if (Auth::guard('guru')->check())
                                                                 @if (Auth::guard('guru')->user()->level == 'tata usaha' || Auth::guard('guru')->user()->level == 'wali kelas')
                                                                     <td>
-                                                                       
+
                                                                         <form method="POST"
                                                                             action="{{ route('TransitJadwal',$jumat->id_jadwal)  }}">
                                                                             @csrf
@@ -429,7 +430,7 @@
                                                                                 class="btn btn-warning btn-sm"><i
                                                                                 class="fas fa-edit"></i></button>
                                                                         </form>
-                                                                        
+
                                                                         <form id="jumatForm{{$jumat->id_jadwal}}" action="{{ route('jadwal.destroy', $jumat->id_jadwal) }}" method="POST">
                                                                             @method('DELETE')
                                                                             @csrf
@@ -465,7 +466,7 @@
                                                     <th scope="col">Durasi Sesi</th>
                                                     <th scope="col">Hari</th>
                                                     @if (!Auth::guard('waliMurid')->check())
-                                                    
+
                                                         <th scope="col">Action</th>
                                                     @endif
                                                 </tr>
@@ -484,7 +485,7 @@
                                                             @if (Auth::guard('guru')->check())
                                                                 @if (Auth::guard('guru')->user()->level == 'tata usaha' || Auth::guard('guru')->user()->level == 'wali kelas')
                                                                     <td>
-                                                                        
+
                                                                         <form method="POST"
                                                                             action="{{ route('TransitJadwal',$sabtu->id_jadwal) }}">
                                                                             @csrf
@@ -496,7 +497,7 @@
                                                                                 class="btn btn-warning btn-sm"><i
                                                                                 class="fas fa-edit"></i></button>
                                                                         </form>
-                                                                       
+
                                                                         <form id="sabtuForm{{$sabtu->id_jadwal}}" action="{{ route('jadwal.destroy', $sabtu->id_jadwal) }}" method="POST">
                                                                             @method('DELETE')
                                                                             @csrf

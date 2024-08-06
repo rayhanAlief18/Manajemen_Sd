@@ -72,7 +72,7 @@
                                                     data-target="#showModal{{ $datas->id }}">
                                                     <i class="fas fa-user"></i>
                                                 </button>
-                                            
+
                                         </td>
                                         {{-- <td>
                                             <a class="btn btn-sm btn-primary" href="{{ route('BayarSpp.show', $datas->id) . '?id=' . $datas->id . '&nisn=' . $datas->nisn . '&nama_siswa=' . $datas->nama_siswa }}">Tambah Pembayaran</a>

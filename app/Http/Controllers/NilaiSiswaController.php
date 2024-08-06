@@ -216,7 +216,7 @@ class NilaiSiswaController extends Controller
     {
         if (Auth::guard('guru')->check() || Auth::guard('waliMurid')->check()) {
             $title = "Data Nilai";
-            $title2 = "Daftar kelas";
+            $title2 = "Daftar Kelas";
             // $kelass = Kelas::withCount('siswa')->where('angka_kelas', '<=', 6)->orderBy('angka_kelas', 'asc')->get();
             $kelass = DB::table('kelas')
                 ->leftJoin('siswas', 'siswas.kelas_id', '=', 'kelas.id')

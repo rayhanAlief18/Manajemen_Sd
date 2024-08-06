@@ -12,7 +12,7 @@
                     </div><!-- /.col -->
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="#">Home</a></li>
+                            <li class="breadcrumb-item"><a href="{{route('dashboard')}}">Home</a></li>
                             <li class="breadcrumb-item active">{{ $title }}</li>
                         </ol>
                     </div><!-- /.col -->
@@ -38,7 +38,7 @@
             </div>
             <!-- /.card-header -->
             <div class="card-body">
-                <table id="example1" class="table table-bordered table-striped tablealert">
+                <table id="example1" class="table table-striped tablealert">
                     <thead>
                     <tr>
                         <th>No</th>
@@ -46,7 +46,7 @@
                         <th>Jabatan</th>
                         <th>Kelas</th>
                         {{-- <th>Data Siswa</th> --}}
-                        <th>Action</th>
+                        <th class="text-center">Action</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -69,7 +69,7 @@
                     -
                   @endif
                 </td> --}}
-                            <td>
+                            <td class="text-center">
                                 <form action="{{ route('guru.destroy', $guru->id) }}" method="POST">
                                     @csrf
                                     @method('DELETE')
@@ -239,7 +239,7 @@
                         <th>Jabatan</th>
                         <th>Kelas</th>
                         {{-- <th>Data Siswa</th> --}}
-                        <th>Action</th>
+                        <th class="text-center">Action</th>
                     </tr>
                     </tfoot>
                 </table>
