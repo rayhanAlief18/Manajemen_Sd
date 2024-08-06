@@ -77,7 +77,8 @@ Route::resource('/alumni', AlumniController::class)->middleware('protect');
 Route::resource('/inventaris', InventarisController::class)->middleware('protect');
 //operasional
 Route::resource('kelas', KelasController::class)->middleware('protect');
-Route::get('/kelas/{id}/create', [KelasController::class, 'create'])->name('kelas.create')->middleware('protect');;
+Route::get('/kelas/{id}/create', [KelasController::class, 'create'])->name('kelas.create')->middleware('protect');
+Route::get('/kelas/{id}/edit/{kelas_id}', [KelasController::class, 'edit'])->name('kelas.edit')->middleware('protect');
 
 Route::get('/riwayatbayar', [PembayaranSppController::class, 'riwayatBayar'])->name('RiwayatBayar')->middleware('protect');
 Route::get('/BuktiRiwayarBayar/{id}', [PembayaranSppController::class, 'BuktiRiwayatBayar'])->name('BuktiRiwayatBayar')->middleware('protect');

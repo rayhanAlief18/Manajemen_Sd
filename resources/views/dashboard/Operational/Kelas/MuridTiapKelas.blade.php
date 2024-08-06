@@ -8,7 +8,7 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1 class="m-0">{{ $title }}</h1>
+                        <h1 class="m-0">{{ $title }} </h1>
                     </div><!-- /.col -->
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
@@ -86,7 +86,7 @@
 
                     <!-- /.card-header -->
                     <div class="card-body">
-                        <table id="example1" class="table table-striped">
+                        <table id="example1" class="table table-striped tablealert">
                             <thead>
                                 <tr>
                                     <th>No</th>
@@ -118,9 +118,9 @@
                                                 @csrf
                                                 @method('DELETE')
                                                 @if (Auth::guard('guru')->user()->level == 'tata usaha')
-                                                    <a href="{{ route('siswa.edit', $guru->id) }}"
+                                                    <a href="{{ route('kelas.edit', ['id' => $guru->id, 'kelas_id' => $kelas]) }}"
                                                         class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></a>
-                                                    <button type="submit" class="btn btn-danger btn-sm"><i
+                                                    <button type="submit" class="btn btn-danger btn-delete btn-sm" data-name="{{ $guru->nama_siswa }}"><i
                                                             class="fas fa-trash"></i></button>
                                                 @endif
                                                 <button type="button" class="btn btn-info btn-sm" data-toggle="modal"
@@ -294,4 +294,29 @@
         </section>
         <!-- /.content -->
     </div>
+    @push('scripts')
+        <script type="module">
+            $(document).ready(function() {
+                $(".tablealert").on("click", ".btn-delete", function(e) {
+                    e.preventDefault();
+
+                    var form = $(this).closest("form");
+                    var name = $(this).data("name");
+
+                    Swal.fire({
+                        title: "Hapus Data " + name + "?",
+                        text: "Anda tidak akan bisa kembalikan data ini lagi",
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonClass: "bg-primary",
+                        confirmButtonText: "Ya, Saya Yakin",
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            form.submit();
+                        }
+                    });
+                });
+            });
+        </script>
+    @endpush
 @endsection

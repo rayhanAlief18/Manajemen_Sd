@@ -15,7 +15,7 @@
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a href="{{route('dashboard')}}">Home</a></li>
                             <li class="breadcrumb-item"><a href="{{route('kelas.index')}}">Data Kelas</a></li>
-                            <li class="breadcrumb-item"><a href="{{route('kelas.show', $kelas_id)}}">Data Siswa Kelas</a></li>
+                            <li class="breadcrumb-item"><a href="{{route('kelas.show', $kelas_id)}}">Data Siswa Kelas {{$nama_kelas}}</a></li>
                             <li class="breadcrumb-item active">{{ $title }}</li>
                         </ol>
                     </div><!-- /.col -->
@@ -43,7 +43,7 @@
 
                     <!-- /.card-header -->
                     <!-- form start -->
-                    <form id="siswaForm" action="{{ route('siswa.store') }}" method="POST" enctype="multipart/form-data">
+                    <form id="siswaForm" action="{{ route('kelas.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="card-body row">
                             <div class="form-group col-sm-4">
@@ -148,22 +148,9 @@
                                 @enderror
                             </div>
                             <div class="form-group col-sm-4">
-                                <label for="exampleSelectBorder">Kelas</label>
-                                <select name="kelas" class="form-control" id="exampleSelectBorder">
-                                    @foreach ($kelas as $class)
-                                        <option value="{{ $class->id }}"
-                                            {{ old('kelas') == $class->id ? 'selected' : '' }}>
-                                            @if ($class->angka_kelas <= 6)
-                                                {{ $class->angka_kelas }}
-                                            @elseif($class->angka_kelas == 7)
-                                                Lulus
-                                            @elseif($class->angka_kelas == 8)
-                                                (untuk pegawai)
-                                            @endif
-
-                                        </option>
-                                    @endforeach
-                                </select>
+                                <label for="kelasDisplay">Kelas</label>
+                                <input type="hidden" name="kelas" value="{{ $kelas_id }}">
+                                <input type="text" class="form-control" id="kelasDisplay" value="{{ $nama_kelas }}" disabled>
                                 @error('kelas')
                                 <div class="text-danger">{{ $message }}</div>
                                 @enderror
@@ -204,7 +191,7 @@
                         <!-- /.card-body -->
 
                         <div class="card-footer">
-                            <a href="{{ route('siswa.index') }}" class="btn btn-outline-secondary">Kembali</a>
+                            <a href="{{ route('kelas.show', $kelas_id) }}" class="btn btn-outline-secondary">Kembali</a>
                             <button type="button" class="btn btn-info float-right" onclick="confirmSubmit()">Submit</button>
                         </div>
                     </form>
