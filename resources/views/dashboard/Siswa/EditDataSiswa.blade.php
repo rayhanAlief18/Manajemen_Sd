@@ -5,26 +5,27 @@
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
-        {{-- <div class="content-header">
+        <div class="content-header">
             <div class="container-fluid">
                 <div class="row mb-2">
-                    <div class="col-sm-4">
+                    <div class="col-sm-6">
                         <h1 class="m-0">{{ $title }}</h1>
                     </div><!-- /.col -->
-                    <div class="col-sm-4">
+                    <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="#">Home</a></li>
+                            <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Home</a></li>
+                            <li class="breadcrumb-item"><a href="{{ route('siswa.index') }}">Data Siswa</a></li>
                             <li class="breadcrumb-item active">{{ $title }}</li>
                         </ol>
                     </div><!-- /.col -->
                 </div><!-- /.row -->
             </div><!-- /.container-fluid -->
-        </div> --}}
+        </div>
         <!-- /.content-header -->
 
         <!-- Main content -->
         <section class="content">
-            <div class="container-fluid mt-4">
+            <div class="container-fluid">
                 @if ($errors->any())
                         <div class="alert alert-danger alert-dismissible fade show" role="alert">
                             <strong>Kesalahan! </strong> mohon periksa kembali
@@ -186,7 +187,7 @@
                                 @error('kelas')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
-                            </div>  
+                            </div>
 
                             <div class="form-group col-sm-4">
                                 <label for="semester">Semester</label>
@@ -202,7 +203,7 @@
                                 @enderror
                             </div>
 
-                            
+
                             <div class="form-group col-sm-4">
                                 <label for="anak_ke">Email</label>
                                 <input type="text" name="email" class="form-control" id="anak_ke"
@@ -223,10 +224,8 @@
                         <!-- /.card-body -->
 
                         <div class="card-footer">
-                            <button type="button" class="btn btn-outline-secondary"
-                                onclick="window.history.back();">Kembali</button>
-                            <button type="button" class="btn btn-info" onclick="confirmSubmit()">Submit</button>
-                            {{-- <button type="reset" class="btn btn-danger ">reset</button> --}}
+                            <a href="{{ route('siswa.index') }}" class="btn btn-outline-secondary">Kembali</a>
+                            <button type="button" class="btn btn-info float-right" onclick="confirmSubmit()">Submit</button>
                         </div>
                     </form>
                 </div>

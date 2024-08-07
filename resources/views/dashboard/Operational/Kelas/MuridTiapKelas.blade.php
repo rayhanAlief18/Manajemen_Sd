@@ -8,11 +8,12 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1 class="m-0">{{ $title }}</h1>
+                        <h1 class="m-0">{{ $title }} </h1>
                     </div><!-- /.col -->
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="#">Home</a></li>
+                            <li class="breadcrumb-item"><a href="{{route('dashboard')}}">Home</a></li>
+                            <li class="breadcrumb-item"><a href="{{route('kelas.index')}}">Data Kelas</a></li>
                             <li class="breadcrumb-item active">{{ $title }}</li>
                         </ol>
                     </div><!-- /.col -->
@@ -38,7 +39,7 @@
                 <div class="card">
                     <div class="card-header d-flex">
                         @if (Auth::guard('guru')->user()->level == 'tata usaha')
-                            <a href="{{ route('siswa.create') }}" class="btn btn-primary"><i
+                            <a href="{{ route('kelas.create', ['id' => $kelas]) }}" class="btn btn-primary"><i
                                     class="mr-2 fas fa-user-plus"></i>
                                 Tambah Data</a>
                             <button type="button" class="btn btn-info btn-sm ml-auto" data-toggle="modal"
@@ -85,7 +86,7 @@
 
                     <!-- /.card-header -->
                     <div class="card-body">
-                        <table id="example1" class="table table-striped">
+                        <table id="example1" class="table table-striped tablealert">
                             <thead>
                                 <tr>
                                     <th>No</th>
@@ -96,7 +97,7 @@
                                     <th>Kelas</th>
                                     {{-- <th>Semester</th> --}}
                                     <th>Ortu / Wali Siswa</th>
-                                    <th>Action</th>
+                                    <th class="text-center">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -117,9 +118,9 @@
                                                 @csrf
                                                 @method('DELETE')
                                                 @if (Auth::guard('guru')->user()->level == 'tata usaha')
-                                                    <a href="{{ route('siswa.edit', $guru->id) }}"
+                                                    <a href="{{ route('kelas.edit', ['id' => $guru->id, 'kelas_id' => $kelas]) }}"
                                                         class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></a>
-                                                    <button type="submit" class="btn btn-danger btn-sm"><i
+                                                    <button type="submit" class="btn btn-danger btn-delete btn-sm" data-name="{{ $guru->nama_siswa }}"><i
                                                             class="fas fa-trash"></i></button>
                                                 @endif
                                                 <button type="button" class="btn btn-info btn-sm" data-toggle="modal"
@@ -280,8 +281,8 @@
                                     <th>Tanggal Lahir</th>
                                     <th>Jenis Kelamin</th>
                                     <th>Kelas</th>
-                                    <th>Wali Siswa</th>
-                                    <th>Action</th>
+                                    <th>Ortu / Wali Siswa</th>
+                                    <th class="text-center">Action</th>
                                 </tr>
                             </tfoot>
                         </table>
@@ -293,4 +294,29 @@
         </section>
         <!-- /.content -->
     </div>
+    @push('scripts')
+        <script type="module">
+            $(document).ready(function() {
+                $(".tablealert").on("click", ".btn-delete", function(e) {
+                    e.preventDefault();
+
+                    var form = $(this).closest("form");
+                    var name = $(this).data("name");
+
+                    Swal.fire({
+                        title: "Hapus Data " + name + "?",
+                        text: "Anda tidak akan bisa kembalikan data ini lagi",
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonClass: "bg-primary",
+                        confirmButtonText: "Ya, Saya Yakin",
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            form.submit();
+                        }
+                    });
+                });
+            });
+        </script>
+    @endpush
 @endsection

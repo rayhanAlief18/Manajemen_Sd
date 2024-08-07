@@ -12,7 +12,8 @@
                     </div><!-- /.col -->
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="#">Home</a></li>
+                            <li class="breadcrumb-item"><a href="{{route('dashboard')}}">Home</a></li>
+                            <li class="breadcrumb-item"><a href="{{route('nilai.index')}}">Data Nilai</a></li>
                             <li class="breadcrumb-item active">{{ $title }}</li>
                         </ol>
                     </div><!-- /.col -->
@@ -24,7 +25,6 @@
         <!-- Main content -->
         <section class="content">
             <div class="container-fluid">
-
 
                 @if (session('Success'))
                     <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -39,14 +39,15 @@
                     <!-- /.card-header -->
                     <div class="card-body">
                         <div class="text-right mb-3">
-                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#filterModal">
+                            <button type="button" class="btn btn-primary" data-toggle="modal"
+                                    data-target="#filterModal">
                                 Lihat Nilai
                             </button>
                         </div>
 
                         <!-- Modal -->
                         <div class="modal fade" id="filterModal" tabindex="-1" role="dialog"
-                            aria-labelledby="filterModalLabel" aria-hidden="true">
+                             aria-labelledby="filterModalLabel" aria-hidden="true">
                             <div class="modal-dialog" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
@@ -91,32 +92,32 @@
                                 </div>
                             </div>
                         </div>
-
-                    </div>
-
-                    <table id="example1" class="table table-striped">
-                        <thead>
+                        <table id="example1" class="table table-striped">
+                            <thead>
                             <tr>
                                 <th>No</th>
                                 <th>NISN</th>
                                 <th>Nama</th>
                                 <th>Semester</th>
-                                <th>Aksi</th>
+                                <th class="text-center">Action</th>
                             </tr>
-                        </thead>
-                        <tbody>
+                            </thead>
+                            <tbody>
                             @foreach ($data as $datas)
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ $datas->NISN }}</td>
                                     <td>{{ $datas->nama_siswa }}</td>
                                     <td>{{ $datas->semester }}</td>
-                                    <td>
+                                    <td class="text-center">
                                         <form method="POST" action="{{ route('TransitNilaiSiswa',$datas->id) }}">
                                             @csrf
                                             <input type="hidden" value="{{ $datas->id }}" name="id_siswa_nilai">
-                                            <button data-toggle="tooltip" data-placement="top" title="Masukkan Nilai Siswa"
-                                            class="btn btn-sm btn-primary" type="submit" class="btn btn-info">+ Nilai</button>
+                                            <button data-toggle="tooltip" data-placement="top"
+                                                    title="Masukkan Nilai Siswa"
+                                                    class="btn btn-sm btn-primary" type="submit" class="btn btn-info">+
+                                                Nilai
+                                            </button>
                                         </form>
                                         {{-- <a data-toggle="tooltip" data-placement="top" title="Masukkan Nilai Siswa"
                                             class="btn btn-sm btn-primary"
@@ -130,13 +131,13 @@
                                     const inputFoto{{ $datas->id }} = document.getElementById('foto_siswa{{ $datas->id }}');
                                     const previewFoto{{ $datas->id }} = document.getElementById('previewFoto{{ $datas->id }}');
 
-                                    inputFoto{{ $datas->id }}.addEventListener('change', function() {
+                                    inputFoto{{ $datas->id }}.addEventListener('change', function () {
                                         const file = this.files[0];
 
                                         if (file) {
                                             const reader = new FileReader();
 
-                                            reader.addEventListener('load', function() {
+                                            reader.addEventListener('load', function () {
                                                 previewFoto{{ $datas->id }}.src = reader.result;
                                             });
 
@@ -148,16 +149,23 @@
                                     });
                                 </script>
                             @endforeach
-                        </tbody>
-                    </table>
+                            </tbody>
+                            <tfoot>
+                            <tr>
+                                <th>No</th>
+                                <th>NISN</th>
+                                <th>Nama</th>
+                                <th>Semester</th>
+                                <th class="text-center">Action</th>
+                            </tr>
+                            </tfoot>
+                        </table>
+                    </div>
                 </div>
-                <!-- /.card-body -->
             </div>
-
+            <!-- /.card-body -->
+        </section>
     </div><!-- /.container-fluid -->
-    </section>
-    <!-- /.content -->
-    </div>
 
     {{-- TOOLTIP TOOLS --}}
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -168,7 +176,7 @@
     <!-- AdminLTE JS -->
     <script src="path/to/adminlte.min.js"></script>
     <script>
-        $(function() {
+        $(function () {
             $('[data-toggle="tooltip"]').tooltip();
         });
     </script>

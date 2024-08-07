@@ -31,10 +31,10 @@
 
                 <div>
                     <a href="{{ route('ruangan.create', ['lantai' => request()->segment(3)]) }}" class="btn btn-primary col-2" style="margin-right: 2%; border-bottom-left-radius: 0; border-bottom-right-radius: 0">
-                        <i class="mr-2 fas fa-user-plus"></i> Data Ruangan
+                        <i class="mr-2 fas fa-building"></i> Data Ruangan
                     </a>
                     <a href="{{ route('barang.create', ['lantai' => request()->segment(3)]) }}" class="btn btn-primary col-2" style="margin-right: 2%; border-bottom-left-radius: 0; border-bottom-right-radius: 0">
-                        <i class="mr-2 fas fa-user-plus"></i> Data Barang
+                        <i class="mr-2 fas fa-box"></i> Data Barang
                     </a>
                 </div>
 

@@ -13,7 +13,7 @@
                     <div class="col-sm-6">
                         <!-- Nav Page -->
                         <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="#">Home</a></li>
+                            <li class="breadcrumb-item"><a href="{{route('dashboard')}}">Home</a></li>
                             <li class="breadcrumb-item active">{{ $title }}</li>
                         </ol>
                     </div>
@@ -42,7 +42,7 @@
                     </div>
                     <!-- Table Start -->
                     <div class="card-body">
-                        <table id="example1" class="table table-bordered table-striped tablealert">
+                        <table id="example1" class="table table-striped tablealert">
                             <thead>
                                 <tr>
                                     <th>No</th>
@@ -50,7 +50,8 @@
                                     <th>Anggota</th>
                                     <th>Tingkat</th>
                                     <th>Tanggal</th>
-                                    <th>Action</th>
+                                    <th class="text-center">Action</th>
+                                    <th class="text-center">Status</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -61,23 +62,7 @@
                                         <td>{{ $item->anggota }}</td>
                                         <td>{{ $item->tingkat }}</td>
                                         <td>{{ $item->tgl_prestasi }}</td>
-                                        <td class="text-center d-flex " style="gap:5px">
-                                            {{-- BUTTON TAMPIL WEB --}}
-                                            @if ($item->status == 'on')
-                                                <form action="{{ route('ViewWeb', $item->id) }}" method="POST"
-                                                    style="display:inline;">
-                                                    @csrf
-                                                    <button type="submit" class="btn btn-sm btn-success ml-3">ON</button>
-                                                </form>
-                                            @else
-                                                <form action="{{ route('ViewWeb', $item->id) }}" method="POST"
-                                                    style="display:inline;">
-                                                    @csrf
-                                                    <button type="submit"
-                                                        class="btn btn-sm btn-outline-danger ml-3">OFF</button>
-                                                </form>
-                                            @endif
-                                            {{-- END --}}
+                                        <td class="text-center" style="gap:5px">
                                             <form class="" action="{{ route('prestasi.destroy', $item->id) }}" method="POST">
                                                 @csrf
                                                 @method('DELETE')
@@ -90,6 +75,24 @@
                                                     data-toggle="modal" data-target="#showModal{{ $item->id }}"><i
                                                         class="fas fa-eye"></i></button>
                                             </form>
+                                        </td>
+                                        <td class="text-center">
+                                            {{-- BUTTON TAMPIL WEB --}}
+                                            @if ($item->status == 'on')
+                                                <form action="{{ route('ViewWeb', $item->id) }}" method="POST"
+                                                      style="display:inline;">
+                                                    @csrf
+                                                    <button type="submit" class="btn btn-sm btn-success ml-3">ON</button>
+                                                </form>
+                                            @else
+                                                <form action="{{ route('ViewWeb', $item->id) }}" method="POST"
+                                                      style="display:inline;">
+                                                    @csrf
+                                                    <button type="submit"
+                                                            class="btn btn-sm btn-outline-danger ml-3">OFF</button>
+                                                </form>
+                                            @endif
+                                            {{-- END --}}
                                         </td>
                                     </tr>
 
@@ -208,7 +211,8 @@
                                     <th>Anggota</th>
                                     <th>Tingkat</th>
                                     <th>Tanggal</th>
-                                    <th>Action</th>
+                                    <th class="text-center">Action</th>
+                                    <th class="text-center">Status</th>
                                 </tr>
                             </tfoot>
                         </table> <!-- End Table -->

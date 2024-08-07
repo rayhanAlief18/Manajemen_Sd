@@ -12,7 +12,7 @@
                     </div><!-- /.col -->
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="#">Home</a></li>
+                            <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Home</a></li>
                             <li class="breadcrumb-item active">{{ $title }}</li>
                         </ol>
                     </div><!-- /.col -->
@@ -50,7 +50,7 @@
                                     <th>Nama</th>
                                     <th>Jenis Kelamin</th>
                                     <th>Kelas</th>
-                                    <th>Action</th>
+                                    <th class="text-center">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -61,7 +61,7 @@
                                         <td>{{ $datas->nama_siswa }}</td>
                                         <td>{{ $datas->jenis_kelamin }}</td>
                                         <td>{{ $datas->kelas->angka_kelas }}</td>
-                                        <td>
+                                        <td class="text-center">
                                             <a class="btn btn-sm btn-primary" data-toggle="tooltip" data-placement="top" title="Tambah Pembayaran Siswa"  href="{{ route('BayarSpp.show', $datas->id) . '?id=' . $datas->id . '&nisn=' . $datas->nisn . '&nama_siswa=' . $datas->nama_siswa }}">+ Tambah</a>
                                             <a data-toggle="tooltip" data-placement="top" title="Riwayat Pembayaran Siswa" class="btn btn-sm btn-info"
                                             href="{{ route('riwayatBayarById',  $datas->id) }}"><i class="fa fa-history" aria-hidden="true"></i></a>
@@ -165,6 +165,16 @@
                                     </script> --}}
                                 @endforeach
                             </tbody>
+                            <tfoot>
+                            <tr>
+                                <th>No</th>
+                                <th>NISN</th>
+                                <th>Nama</th>
+                                <th>Jenis Kelamin</th>
+                                <th>Kelas</th>
+                                <th class="text-center">Action</th>
+                            </tr>
+                            </tfoot>
                         </table>
                     </div>
                     <!-- /.card-body -->

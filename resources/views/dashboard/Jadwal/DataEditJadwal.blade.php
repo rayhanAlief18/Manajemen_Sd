@@ -12,7 +12,10 @@
                     </div><!-- /.col -->
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="#">Home</a></li>
+                            <li class="breadcrumb-item"><a href="{{route('dashboard')}}">Home</a></li>
+                            <li class="breadcrumb-item"><a href="{{ route('jadwal.index') }}">Pilih Kelas</a></li>
+                            <li class="breadcrumb-item"><a href="{{route('jadwal.show', $jadwal->id_kelas)}}">Jadwal
+                                    Kelas</a></li>
                             <li class="breadcrumb-item active">{{$title}} </li>
                         </ol>
                     </div><!-- /.col -->
@@ -117,21 +120,20 @@
                                     <div class="text-danger">{{ $message }}</div>
                                     @enderror
                                 </div>
-                            </div>
-
-                            <div class="form-group col-md-6">
-                                <label for="exampleSelectBorder">Jumlah Sesi (25 menit = 1 sesi)</label>
-                                <input name="jumlah_sesi" type="number" class="form-control"
-                                       placeholder="Masukan jumlah sesi..." value="{{$jadwal->jumlah_sesi}}">
-                                @error('jumlah_sesi')
-                                <div class="text-danger">{{ $message }}</div>
-                                @enderror
+                                <div class="form-group col-md-6">
+                                    <label for="exampleSelectBorder">Jumlah Sesi (25 menit = 1 sesi)</label>
+                                    <input name="jumlah_sesi" type="number" class="form-control"
+                                           placeholder="Masukan jumlah sesi..." value="{{$jadwal->jumlah_sesi}}">
+                                    @error('jumlah_sesi')
+                                    <div class="text-danger">{{ $message }}</div>
+                                    @enderror
+                                </div>
                             </div>
                         </div>
                     </form>
                     <div class="card-footer">
-                        <a href="{{ route('jadwal.index') }}" class="btn btn-danger">Cancel</a>
-                        <button type="submit" class="btn btn-info float-right" onclick="confirmSubmit()">Save</button>
+                        <a href="{{ route('jadwal.show', $jadwal->id_kelas) }}" class="btn btn-outline-secondary">Kembali</a>
+                        <button type="submit" class="btn btn-info float-right" onclick="confirmSubmit()">Submit</button>
                     </div>
                 </div>
             </div>
