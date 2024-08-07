@@ -54,7 +54,7 @@ Route::middleware('guest')->group(function() {
 
 Route::get('/logout', [AuthController::class, 'logout']);
 
-Route::get('/dashboard',[HomeController::class,'dashboard'])->name('dashboard');
+Route::get('/dashboard',[HomeController::class,'dashboard'])->name('dashboard')->middleware('protect');
 
 //EXPORT NILAI ALL BY KELAS
 Route::get('/nilai-siswa/export/pdf/{kelas_id}', [NilaiSiswaController::class, 'exportPdfFiltered'])->name('ExPdfAll');

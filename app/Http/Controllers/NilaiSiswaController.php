@@ -227,7 +227,7 @@ class NilaiSiswaController extends Controller
                 ->orderBy('angka_kelas', 'asc')
                 ->get();
 
-            $guru = Guru::with('kelas')->get();
+            // $guru = Guru::with('kelas')->get();
             // $kelass = DB::table('kelas')
             //         ->join('gurus', 'gurus.kelas_id', '=', 'kelas.id')
             //         ->join('siswas', 'siswas.kelas_id','=','kelas.id')
@@ -294,29 +294,37 @@ class NilaiSiswaController extends Controller
 
     public function riwayatBayar()
     {
-        if (Auth::guard('guru')->user()->level == 'tata usaha') {
-            // Logika untuk mengambil data riwayat pembayaran
-            $title = "Riwayat Pembayaran";
-            $siswa = Siswa::all();
-            $data = PembayaranSpp::all(); // atau sesuai dengan kebutuhan
+        if (Auth::guard('guru')->check()) {
 
-            return view('dashboard.PembayaranSpp.RiwayatBayar', compact('data', 'title'));
+            if (Auth::guard('guru')->user()->level == 'tata usaha') {
+                // Logika untuk mengambil data riwayat pembayaran
+                $title = "Riwayat Pembayaran";
+                $siswa = Siswa::all();
+                $data = PembayaranSpp::all(); // atau sesuai dengan kebutuhan
+
+                return view('dashboard.PembayaranSpp.RiwayatBayar', compact('data', 'title'));
+            } else {
+                return back();
+            }
         } else {
             return back();
         }
     }
 
-    public function riwayatBayarById(Request $request, $id)
-    {
-        // Ambil data pembayaran berdasarkan ID siswa
-        $title = "Riwayat Pembayaran";
-        $data = PembayaranSpp::where('siswa_id', $id)->get();
+    // public function riwayatBayarById(Request $request, $id)
+    // {
+    //     if (Auth::guard('guru')->check()) {
+    //     if (Auth::guard('guru')->user()->level == 'tata usaha') {
 
-        // Ambil data siswa untuk ditampilkan di view
-        $siswa = Siswa::findOrFail($id);
+    //     // Ambil data pembayaran berdasarkan ID siswa
+    //     $title = "Riwayat Pembayaran";
+    //     $data = PembayaranSpp::where('siswa_id', $id)->get();
 
-        return view('dashboard.PembayaranSpp.RiwayatById', compact('data', 'siswa', 'title'));
-    }
+    //     // Ambil data siswa untuk ditampilkan di view
+    //     $siswa = Siswa::findOrFail($id);
+
+    //     return view('dashboard.PembayaranSpp.RiwayatById', compact('data', 'siswa', 'title'));
+    // }
     //     $title = "Data Nilai Siswa";
     //     $kelas = Kelas::findOrFail($id); // Ambil data kelas berdasarkan ID
     //     $data = $kelas->siswa; // Mengambil data siswa yang terkait dengan kelas
@@ -349,61 +357,66 @@ class NilaiSiswaController extends Controller
 
     public function store(Request $request)
     {
-        $customMessages = [
-            'id_siswa.required' => 'ID siswa wajib diisi.',
-            'id_siswa.exists' => 'ID siswa tidak valid.',
-            'pelajaran_id.required' => 'ID pelajaran wajib diisi.',
-            'pelajaran_id.exists' => 'ID pelajaran tidak valid.',
-            'tahun_ajaran.required' => 'Tahun ajaran wajib diisi.',
-            'tahun_ajaran.string' => 'Tahun ajaran harus berupa teks.',
-            'kategori.required' => 'Kategori wajib diisi.',
-            'kategori.string' => 'Kategori harus berupa teks.',
-            'nilai.required' => 'Nilai wajib diisi.',
-            'nilai.numeric' => 'Nilai harus berupa angka.',
-            'nilai.between' => 'Nilai harus antara 0 dan 100.',
-            'catatan.string' => 'Catatan harus berupa teks.',
-        ];
+        if (Auth::guard('guru')->check()) {
 
-        $request->validate([
-            'pelajaran_id' => 'required|exists:mata_pelajarans,id',
-            'tahun_ajaran' => 'required|string',
-            'kategori' => 'required|string',
-            'nilai' => 'required|integer',
-        ], $customMessages);
+            $customMessages = [
+                'id_siswa.required' => 'ID siswa wajib diisi.',
+                'id_siswa.exists' => 'ID siswa tidak valid.',
+                'pelajaran_id.required' => 'ID pelajaran wajib diisi.',
+                'pelajaran_id.exists' => 'ID pelajaran tidak valid.',
+                'tahun_ajaran.required' => 'Tahun ajaran wajib diisi.',
+                'tahun_ajaran.string' => 'Tahun ajaran harus berupa teks.',
+                'kategori.required' => 'Kategori wajib diisi.',
+                'kategori.string' => 'Kategori harus berupa teks.',
+                'nilai.required' => 'Nilai wajib diisi.',
+                'nilai.numeric' => 'Nilai harus berupa angka.',
+                'nilai.between' => 'Nilai harus antara 0 dan 100.',
+                'catatan.string' => 'Catatan harus berupa teks.',
+            ];
 
-        // Menggunakan siswa_id untuk menemukan siswa
-        $student = Siswa::find($request->id_siswa);
+            $request->validate([
+                'pelajaran_id' => 'required|exists:mata_pelajarans,id',
+                'tahun_ajaran' => 'required|string',
+                'kategori' => 'required|string',
+                'nilai' => 'required|integer',
+            ], $customMessages);
 
-        // Cek apakah nilai untuk kombinasi semester, tahun ajaran, siswa_id, dan pelajaran_id sudah ada
-        $existingRecord = NilaiSiswa::where('siswa_id', $request->id_siswa)
-            ->where('pelajaran_id', $request->pelajaran_id)
-            ->where('semester', $student->semester)
-            ->where('tahun_ajaran', $request->tahun_ajaran)
-            ->where('kategori', $request->kategori)
-            ->first();
+            // Menggunakan siswa_id untuk menemukan siswa
+            $student = Siswa::find($request->id_siswa);
 
-        if ($existingRecord) {
-            // Jika sudah ada, kembalikan dengan pesan error
-            return redirect()->back()->withErrors(['tahun_ajaran' => 'Nilai untuk tahun ajaran tersebut sudah ada.'])->withInput();
+            // Cek apakah nilai untuk kombinasi semester, tahun ajaran, siswa_id, dan pelajaran_id sudah ada
+            $existingRecord = NilaiSiswa::where('siswa_id', $request->id_siswa)
+                ->where('pelajaran_id', $request->pelajaran_id)
+                ->where('semester', $student->semester)
+                ->where('tahun_ajaran', $request->tahun_ajaran)
+                ->where('kategori', $request->kategori)
+                ->first();
+
+            if ($existingRecord) {
+                // Jika sudah ada, kembalikan dengan pesan error
+                return redirect()->back()->withErrors(['tahun_ajaran' => 'Nilai untuk tahun ajaran tersebut sudah ada.'])->withInput();
+            }
+
+            // Jika tidak ada, lanjutkan menyimpan data baru
+            $nilai_siswa = new NilaiSiswa();
+            $nilai_siswa->siswa_id = $request->id_siswa;
+            $nilai_siswa->pelajaran_id = $request->pelajaran_id;
+            $nilai_siswa->semester = $student->semester;
+            $nilai_siswa->tahun_ajaran = $request->tahun_ajaran;
+            $nilai_siswa->kategori = $request->kategori;
+            $nilai_siswa->nilai = $request->nilai;
+            $nilai_siswa->catatan = $request->filled('catatan') ? $request->catatan : 'Tidak ada catatan';
+
+            $nilai_siswa->save();
+            // Sweet alert
+            Alert::success('Berhasil Ditambahkan', 'Nilai siswa berhasil ditambahkan.');
+
+            // Setelah menyimpan, arahkan ke halaman detail nilai siswa
+            // return redirect()->route('nilai.showNilaiID')->with('success', 'Grade created successfully.');
+            return redirect()->route('nilai.show', ['nilai' => $student]);
+        } else {
+            return back();
         }
-
-        // Jika tidak ada, lanjutkan menyimpan data baru
-        $nilai_siswa = new NilaiSiswa();
-        $nilai_siswa->siswa_id = $request->id_siswa;
-        $nilai_siswa->pelajaran_id = $request->pelajaran_id;
-        $nilai_siswa->semester = $student->semester;
-        $nilai_siswa->tahun_ajaran = $request->tahun_ajaran;
-        $nilai_siswa->kategori = $request->kategori;
-        $nilai_siswa->nilai = $request->nilai;
-        $nilai_siswa->catatan = $request->filled('catatan') ? $request->catatan : 'Tidak ada catatan';
-
-        $nilai_siswa->save();
-        // Sweet alert
-        Alert::success('Berhasil Ditambahkan', 'Nilai siswa berhasil ditambahkan.');
-
-        // Setelah menyimpan, arahkan ke halaman detail nilai siswa
-        // return redirect()->route('nilai.showNilaiID')->with('success', 'Grade created successfully.');
-        return redirect()->route('nilai.show', ['nilai' => $student]);
     }
 
     public function TransitNilaiSiswa(Request $request, $id_siswa)
