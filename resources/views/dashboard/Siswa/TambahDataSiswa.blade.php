@@ -1,7 +1,6 @@
 @extends('layoutDash.main')
 
 @section('content')
-
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
@@ -27,12 +26,12 @@
         <section class="content">
             <div class="container-fluid">
                 @if ($errors->any())
-                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                            <strong>Kesalahan!</strong> mohon periksa kembali
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <strong>Kesalahan!</strong> mohon periksa kembali
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
                 @endif
                 <!-- general form elements -->
                 <div class="card card-info">
@@ -153,11 +152,11 @@
                                         <option value="{{ $class->id }}"
                                             {{ old('kelas') == $class->id ? 'selected' : '' }}>
                                             @if ($class->angka_kelas <= 6)
-                                                {{ $class->angka_kelas }}
+                                                {{ $class->nama_kelas }}
                                             @elseif($class->angka_kelas == 7)
                                                 Lulus
-                                            @elseif($class->angka_kelas == 8)
-                                                (untuk pegawai)
+                                            @else
+                                                -
                                             @endif
 
                                         </option>
@@ -204,7 +203,8 @@
 
                         <div class="card-footer">
                             <a href="{{ route('siswa.index') }}" class="btn btn-outline-secondary">Kembali</a>
-                            <button type="button" class="btn btn-info float-right" onclick="confirmSubmit()">Submit</button>
+                            <button type="button" class="btn btn-info float-right"
+                                onclick="confirmSubmit()">Submit</button>
                         </div>
                     </form>
                 </div>

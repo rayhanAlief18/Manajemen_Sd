@@ -37,6 +37,8 @@
     <link rel="stylesheet" href="{{ asset('lte/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
     <link rel="stylesheet" href="{{ asset('lte/plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
     {{-- <link rel="stylesheet" href="{{ asset('style.css') }}"> --}}
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -95,14 +97,14 @@
                         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                             data-accordion="false">
                             <li class="nav-header">Dashboard</li>
-                                <li class="nav-item">
-                                    <a href="{{ route('dashboard') }}" class="nav-link">
-                                        <i class="nav-icon fas fa-address-book "></i>
-                                        <p>
-                                            Dashboard
-                                        </p>
-                                    </a>
-                                </li> 
+                            <li class="nav-item">
+                                <a href="{{ route('dashboard') }}" class="nav-link">
+                                    <i class="nav-icon fas fa-address-book "></i>
+                                    <p>
+                                        Dashboard
+                                    </p>
+                                </a>
+                            </li>
                             <!-- Add icons to the links using the .nav-icon class
                             with font-awesome or any other icon font library -->
                             <li class="nav-header">Operasional</li>
@@ -134,7 +136,6 @@
                                     </li>
                                 @endif
                             @endauth
-
                             <li class="nav-item">
                                 <a href="{{ url('/nilai') }}" class="nav-link">
                                     <i class="nav-icon fas fa-file-invoice-dollar  "></i>
@@ -170,14 +171,14 @@
                                 </a>
                             </li>
                             @if (Auth::guard('guru')->user()->level == 'tata usaha')
-                            <li class="nav-item">
-                                <a href="{{ url('/kelas') }}" class="nav-link">
-                                    <i class="nav-icon fas fa-layer-group"></i>
-                                    <p>
-                                        Kelas
-                                    </p>
-                                </a>
-                            </li>
+                                <li class="nav-item">
+                                    <a href="{{ url('/kelas') }}" class="nav-link">
+                                        <i class="nav-icon fas fa-layer-group"></i>
+                                        <p>
+                                            Kelas
+                                        </p>
+                                    </a>
+                                </li>
                             @endif
                             @auth('guru')
                                 @if (Auth::guard('guru')->user()->level == 'tata usaha')
@@ -225,7 +226,7 @@
                                 data-accordion="false">
                                 <!-- Add icons to the links using the .nav-icon class
                             with font-awesome or any other icon font library -->
-                            <li class="nav-header">Dashboard</li>
+                                <li class="nav-header">Dashboard</li>
                                 <li class="nav-item">
                                     <a href="{{ route('dashboard') }}" class="nav-link">
                                         <i class="nav-icon fas fa-address-book "></i>
@@ -233,10 +234,11 @@
                                             Dashboard
                                         </p>
                                     </a>
-                                </li>    
-                            <li class="nav-header">Operasional</li>
+                                </li>
+                                <li class="nav-header">Operasional</li>
                                 <li class="nav-item">
-                                    <a href="{{ route('jadwal.show',Auth::guard('waliMurid')->user()->kelas_id) }}" class="nav-link">
+                                    <a href="{{ route('jadwal.show', Auth::guard('waliMurid')->user()->kelas_id) }}"
+                                        class="nav-link">
                                         <i class="nav-icon fas fa-calendar-alt"></i>
                                         <p>
                                             Pengelolaan Jadwal
@@ -244,7 +246,8 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="{{ url('ShowAllKelasTiapSiswa/'.Auth::guard('waliMurid')->user()->kelas_id.'/'.Auth::guard('waliMurid')->user()->id) }}" class="nav-link">
+                                    <a href="{{ url('ShowAllKelasTiapSiswa/' . Auth::guard('waliMurid')->user()->kelas_id . '/' . Auth::guard('waliMurid')->user()->id) }}"
+                                        class="nav-link">
                                         <i class="nav-icon fas fa-calendar-check  "></i>
                                         <p>
                                             History Absensi
@@ -252,7 +255,8 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="{{ route('NilaiSiswaPribadi',Auth::guard('waliMurid')->user()->id)}}" class="nav-link">
+                                    <a href="{{ route('NilaiSiswaPribadi', Auth::guard('waliMurid')->user()->id) }}"
+                                        class="nav-link">
                                         <i class="nav-icon fas fa-list"></i>
                                         <p>
                                             Nilai Siswa
@@ -279,7 +283,7 @@
             </div>
             <!-- /.sidebar -->
         </aside>
-
+        
         @yield('content');
         @include('sweetalert::alert')
         @stack('scripts')
@@ -336,6 +340,8 @@
     <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
     <script src="{{ asset('lte/dist/js/pages/dashboard.js') }}"></script>
 
+    
+
     {{-- data tables --}}
     <script src="{{ asset('lte/plugins/datatables/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('lte/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
@@ -350,6 +356,8 @@
     <script src="{{ asset('lte/plugins/datatables-buttons/js/buttons.print.min.js') }}"></script>
     <script src="{{ asset('lte/plugins/datatables-buttons/js/buttons.colVis.min.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    
 
     <script>
         $(function() {
@@ -370,6 +378,8 @@
             });
         });
     </script>
+
+    
 </body>
 
 </html>

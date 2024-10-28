@@ -208,21 +208,13 @@
                                                         <label for="wali_siswa{{ $guru->id }}">Jabatan</label>
                                                         <p>{{ $guru->jabatan }}</p>
                                                     </div>
-                                                    @if ($guru->jabatan == 'guru wali kelas')
+                                                    @if ($guru->level == 'wali kelas')
                                                         <div class="form-group">
                                                             <label for="wali_siswa{{ $guru->id }}">Kelas
                                                                 Yang Diampu</label>
-                                                            <p>{{ $guru->angka_kelas }}</p>
+                                                            <p>{{ $guru->nama_kelas }}</p>
                                                         </div>
                                                     @endif
-                                                    <div class="form-group">
-                                                        <label for="wali_siswa{{ $guru->id }}">Kelas Yang
-                                                            Diampu</label>
-                                                        @if ($guru->angka_kelas == 7)
-                                                            <p>Tidak ada kelas yang diampu</p>
-                                                        @endif
-                                                        <p>{{ $guru->angka_kelas }}</p>
-                                                    </div>
                                                 </div>
                                             </div>
                                         </div>

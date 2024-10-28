@@ -270,19 +270,13 @@
                                     <select name="level" class="custom-select form-control"
                                             id="level">
                                         <option readonly selected>Masukkan Peran Pengguna...</option>
-                                        <option
-                                            value="kepala sekolah" {{ old('level') == 'kepala sekolah' ? 'selected' : '' }}>
-                                            Kepala Sekolah
-                                        </option>
                                         <option value="tata usaha" {{ old('level') == 'tata usaha' ? 'selected' : '' }}>
                                             Tata Usaha
                                         </option>
                                         <option value="wali kelas" {{ old('level') == 'wali kelas' ? 'selected' : '' }}>
                                             Wali Kelas
                                         </option>
-                                        <option value="guru mapel" {{ old('level') == 'guru mapel' ? 'selected' : '' }}>
-                                            Guru Mapel
-                                        </option>
+                                        
                                     </select>
                                     @error('level')
                                     <div class="text-danger">{{ $message }}</div>

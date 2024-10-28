@@ -41,16 +41,19 @@
                             <a href="{{ route('siswa.create') }}" class="btn btn-primary"><i
                                     class="mr-2 fas fa-user-plus"></i>
                                 Tambah Data</a>
-                                @foreach ($landing_page as $item)
+                            @foreach ($landing_page as $item)
                                 @if ($item->status == 'on')
-                                    <form action="{{ route('BukaDaftar', $item->id) }}" method="POST" style="display:inline;">
+                                    <form action="{{ route('BukaDaftar', $item->id) }}" method="POST"
+                                        style="display:inline;">
                                         @csrf
                                         <button type="submit" class="btn btn-success ml-3">Pendaftaran Buka</button>
                                     </form>
                                 @else
-                                    <form action="{{ route('BukaDaftar', $item->id) }}" method="POST" style="display:inline;">
+                                    <form action="{{ route('BukaDaftar', $item->id) }}" method="POST"
+                                        style="display:inline;">
                                         @csrf
-                                        <button type="submit" class="btn btn-outline-danger ml-3">Pendaftaran Tutup</button>
+                                        <button type="submit" class="btn btn-outline-danger ml-3">Pendaftaran
+                                            Tutup</button>
                                     </form>
                                 @endif
                             @endforeach
@@ -122,7 +125,11 @@
                                         <td>{{ $siswa->tanggal_lahir }}</td>
                                         <td>{{ $siswa->jenis_kelamin }}</td>
                                         <td>
-                                            {{ $siswa->kelas->angka_kelas }}
+                                            @if ($siswa->kelas->angka_kelas == 7 )
+                                                <p>Alumni</p>
+                                            @else
+                                                <p>{{ $siswa->kelas->angka_kelas }}</p>
+                                            @endif
                                         </td>
                                         {{-- <td>{{ siswa->semester }}</td> --}}
                                         <td>{{ $siswa->wali_siswa }}</td>
@@ -131,8 +138,11 @@
                                                 @csrf
                                                 @method('DELETE')
                                                 @if (Auth::guard('guru')->user()->level == 'tata usaha')
-                                                    <a href="{{ route('siswa.edit', $siswa->id) }}" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></a>
-                                                    <button type="submit" class="btn btn-sm btn-danger btn-delete" data-name="{{$siswa->nama_siswa}}"><i class="fas fa-trash"></i></button>
+                                                    <a href="{{ route('siswa.edit', $siswa->id) }}"
+                                                        class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></a>
+                                                    <button type="submit" class="btn btn-sm btn-danger btn-delete"
+                                                        data-name="{{ $siswa->nama_siswa }}"><i
+                                                            class="fas fa-trash"></i></button>
                                                 @endif
                                                 <button type="button" class="btn btn-info btn-sm" data-toggle="modal"
                                                     data-target="#showModal{{ $siswa->id }}">
@@ -232,7 +242,11 @@
 
                                                             <div class="form-group col-sm-4">
                                                                 <label for="wali_siswa{{ $siswa->id }}">Kelas</label>
-                                                                <p>{{ $siswa->kelas->angka_kelas }}</p>
+                                                                @if ($siswa->kelas->angka_kelas == '7')
+                                                                    <p>Alumni</p>
+                                                                @else
+                                                                    <p>{{ $siswa->kelas->nama_kelas }}</p>
+                                                                @endif
                                                             </div>
 
                                                             <div class="form-group col-sm-4">

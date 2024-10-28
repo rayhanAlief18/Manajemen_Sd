@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Charts\SiswaChart;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -14,10 +14,11 @@ class HomeController extends Controller
 
     }
 
-    public function dashboard()
+    public function dashboard(SiswaChart $chart)
     {
-        $title = "Dashboard";
 
+        $title = "Dashboard";
+        
         // $user = Auth::guard('guru')->user();
         // if($user){
         //     if (Auth::guard('guru')->user()->level == 'tata usaha' || Auth::guard('guru')->user()->level == 'wali kelas') {
@@ -43,7 +44,7 @@ class HomeController extends Controller
                     ->where('gurus.id', $user->id)
                     ->first();
                 $JumlahMurid = DB::table('siswas')->where('kelas_id', $user->kelas_id)->count();
-                return view('dashboard.index', compact('title', 'DataGuru', 'JumlahMurid'));
+                return view('dashboard.index',['chart' => $chart->build()], compact('title' ,'DataGuru', 'JumlahMurid'));
             }
         }
 

@@ -249,7 +249,7 @@ class PembayaranSppController extends Controller
                 // Mengembalikan view dengan data yang diperlukan
                 return view('dashboard.PembayaranSpp.TambahBayarSPP', compact('title', 'siswa', 'data', 'kelas'));
             } else {
-                return view('/login')->with('error', 'Anda tidak bisa mengakses halaman ini');
+                return back();
             }
         } else {
             return back();

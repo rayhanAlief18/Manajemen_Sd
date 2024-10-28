@@ -11,6 +11,14 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
+    public function logout(Request $request)
+    {
+        Auth::logout();
+        $request->session()->invalidate();
+
+        $request->session()->regenerateToken();
+        return redirect('/')->with('error', 'Anda telah logout.');
+    }
     public function index()
     {
         // return view('auth.loginWali');
@@ -27,6 +35,7 @@ class AuthController extends Controller
 
     public function loginGuruExecute(Request $request)
     {
+
         $request->validate([
             'email' => 'required',
             'password' => 'required'
@@ -41,6 +50,9 @@ class AuthController extends Controller
         ];
 
         if (Auth::guard('guru')->attempt($infoLogin)) {
+            if(Auth::guard('guru')->user()->status == "non aktif"){
+                return redirect()->route('logout');
+            }
             return redirect()->route('dashboard');
         } else {
             return redirect()->back()->withErrors("Email dan Password Tidak Valid")->withInput();
@@ -63,7 +75,9 @@ class AuthController extends Controller
         ];
 
         if (Auth::guard('waliMurid')->attempt($infoLogin)) {
-
+            if(Auth::guard('waliMurid')->user()->status == "non aktif"){
+                return redirect()->route('logout');
+            }
             return redirect()->route('dashboard');
         } else {
             return redirect()->back()->withErrors("Email dan Password Tidak Valid")->withInput();
@@ -71,10 +85,6 @@ class AuthController extends Controller
     }
 
 
-    public function logout()
-    {
-        Auth::logout();
-        return redirect('/')->with('error', 'Anda telah logout.');
-    }
+   
 
 }

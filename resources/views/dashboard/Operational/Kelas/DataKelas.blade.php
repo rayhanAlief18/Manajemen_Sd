@@ -56,7 +56,7 @@
                     <td>
                       {{$class->nama_kelas}}
                     </td>
-                    @if($class->angka_kelas <= 6)
+                    @if($class->angka_kelas <= 7)
                     <td>
                       <a href="{{route('kelas.show',$class->id)}}" class="btn btn-info"><i class="fas fa-person"></i>Murid</a>
                     </td>

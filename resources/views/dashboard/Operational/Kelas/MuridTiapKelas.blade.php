@@ -12,8 +12,8 @@
                     </div><!-- /.col -->
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="{{route('dashboard')}}">Home</a></li>
-                            <li class="breadcrumb-item"><a href="{{route('kelas.index')}}">Data Kelas</a></li>
+                            <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Home</a></li>
+                            <li class="breadcrumb-item"><a href="{{ route('kelas.index') }}">Data Kelas</a></li>
                             <li class="breadcrumb-item active">{{ $title }}</li>
                         </ol>
                     </div><!-- /.col -->
@@ -109,7 +109,11 @@
                                         <td>{{ $guru->tanggal_lahir }}</td>
                                         <td>{{ $guru->jenis_kelamin }}</td>
                                         <td>
-                                            {{ $guru->angka_kelas }}
+                                            @if ($guru->angka_kelas === 7)
+                                                Alumni
+                                            @else
+                                                {{ $guru->angka_kelas }}
+                                            @endif
                                         </td>
                                         {{-- <td>{{ $guru->semester }}</td> --}}
                                         <td>{{ $guru->wali_siswa }}</td>
@@ -120,7 +124,8 @@
                                                 @if (Auth::guard('guru')->user()->level == 'tata usaha')
                                                     <a href="{{ route('kelas.edit', ['id' => $guru->id, 'kelas_id' => $kelas]) }}"
                                                         class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></a>
-                                                    <button type="submit" class="btn btn-danger btn-delete btn-sm" data-name="{{ $guru->nama_siswa }}"><i
+                                                    <button type="submit" class="btn btn-danger btn-delete btn-sm"
+                                                        data-name="{{ $guru->nama_siswa }}"><i
                                                             class="fas fa-trash"></i></button>
                                                 @endif
                                                 <button type="button" class="btn btn-info btn-sm" data-toggle="modal"

@@ -180,7 +180,7 @@
                                     @foreach ($kelas as $class)
                                         <option value="{{ $class->id }}"
                                             {{ $siswa->kelas_id == $class->id ? 'selected' : '' }}>
-                                            {{ $class->angka_kelas }}
+                                            {{ $class->nama_kelas }}
                                         </option>
                                     @endforeach
                                 </select>

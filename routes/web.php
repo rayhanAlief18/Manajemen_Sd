@@ -52,7 +52,7 @@ Route::middleware('guest')->group(function() {
     Route::post('/',[WebController::class,'login']);
 });
 
-Route::get('/logout', [AuthController::class, 'logout']);
+Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::get('/dashboard',[HomeController::class,'dashboard'])->name('dashboard')->middleware('protect');
 

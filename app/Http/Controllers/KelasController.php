@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 //kelas
 use App\Models\Kelas;
 use App\Models\Guru;
@@ -21,28 +22,38 @@ class KelasController extends Controller
      */
     public function index()
     {
-        $title = "Data Kelas";
-        // $kelas = Kelas::all();
-        $kelas = DB::table('kelas')->join('gurus', 'gurus.kelas_id', '=', 'kelas.id')->select('kelas.*', 'gurus.nama_guru')->orderBy('angka_kelas', 'asc')->get();
+        if (Auth::guard('guru')->check()) {
+            if (Auth::guard('guru')->user()->level == 'tata usaha') {
 
-        return view('dashboard.Operational.Kelas.DataKelas', [
-            'title' => $title,
-            'kelas' => $kelas,
-        ]);
+                $title = "Data Kelas";
+                // $kelas = Kelas::all();
+                $kelas = DB::table('kelas')->join('gurus', 'gurus.kelas_id', '=', 'kelas.id')->select('kelas.*', 'gurus.nama_guru')->orderBy('angka_kelas', 'asc')->get();
+
+                return view('dashboard.Operational.Kelas.DataKelas', [
+                    'title' => $title,
+                    'kelas' => $kelas,
+                ]);
+            } else {
+                return back();
+            }
+        } else {
+            return back();
+        }
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create(string $id)
+    public function create()
     {
-        $kelas_id = $id;
-        $kelas_siswa = Kelas::findOrFail($id);
-        $nama_kelas = $kelas_siswa->angka_kelas;
+        // $kelas_id = $id;
+        // $kelas_siswa = Kelas::findOrFail($id);
+        // $nama_kelas = $kelas_siswa->angka_kelas;
 
-        $title = "Tambah Siswa";
-        $kelas = Kelas::all();
-        return view('dashboard.Operational.Kelas.TambahDataKelas', compact('title', 'kelas', 'kelas_id', 'nama_kelas'));
+        // $title = "Tambah Siswa";
+        // $kelas = Kelas::all();
+        // return view('dashboard.Operational.Kelas.TambahDataKelas', compact('title', 'kelas', 'kelas_id', 'nama_kelas'));
+        return back();
     }
 
     /**
@@ -143,23 +154,31 @@ class KelasController extends Controller
      */
     public function show(string $id)
     {
-        $guru = DB::table('siswas')  // Nama tabel harus 'siswas'
-        ->join('kelas', 'siswas.kelas_id', '=', 'kelas.id')  // Menggunakan 'siswas' bukan 'siswa'
-        ->select('siswas.*', 'kelas.angka_kelas')
-            ->where('siswas.kelas_id', $id)
-            ->get();
+        if (Auth::guard('guru')->check()) {
+            if (Auth::guard('guru')->user()->level == 'tata usaha') {
+                $guru = DB::table('siswas')  // Nama tabel harus 'siswas'
+                    ->join('kelas', 'siswas.kelas_id', '=', 'kelas.id')  // Menggunakan 'siswas' bukan 'siswa'
+                    ->select('siswas.*', 'kelas.angka_kelas')
+                    ->where('siswas.kelas_id', $id)
+                    ->get();
 
-        $kelas_id = $id;
-        $kelas_siswa = Kelas::findOrFail($id);
-        $nama_kelas = $kelas_siswa->angka_kelas;
+                $kelas_id = $id;
+                $kelas_siswa = Kelas::findOrFail($id);
+                $nama_kelas = $kelas_siswa->angka_kelas;
 
-        $Title = 'Data Siswa Kelas ' . $nama_kelas;
+                $Title = 'Data Siswa Kelas ' . $nama_kelas;
 
-        return view('dashboard.Operational.Kelas.MuridTiapKelas', [
-            'title' => $Title,
-            'guru' => $guru,
-            'kelas' => $kelas_id,
-        ]);
+                return view('dashboard.Operational.Kelas.MuridTiapKelas', [
+                    'title' => $Title,
+                    'guru' => $guru,
+                    'kelas' => $kelas_id,
+                ]);
+            } else {
+                return back();
+            }
+        } else {
+            return back();
+        }
     }
 
     /**

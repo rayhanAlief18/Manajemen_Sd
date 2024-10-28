@@ -266,12 +266,14 @@
                                             </td>
 
                                             <td class="d-flex flex-row">
+                                                @if($class->status !== 'hadir')
                                                 <a href="{{ route('absensi.edit', $class->id) }}"
                                                     class="btn btn-primary mr-2"><i class="fas fa-plus-circle"></i></a>
                                                 <button type="button" class="btn btn-info" data-toggle="modal"
                                                     data-target="#showModal{{ $class->id }}">
                                                     <i class="fas fa-user"></i>
                                                 </button>
+                                                @endif
                                             </td>
                                         </tr>
                                         <!-- Modal -->
